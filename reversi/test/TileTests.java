@@ -5,7 +5,7 @@ import model.Tile;
 
 public class TileTests {
   Tile tile1;
-  Tile tile2
+  Tile tile2;
 
   @Before
   public void init() {
