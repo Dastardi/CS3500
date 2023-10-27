@@ -9,7 +9,7 @@ public class TileTests {
 
   @Before
   public void init() {
-    this.tile1 = new Tile()
+    this.tile1 = new Tile(5, 5);
   }
 
   @Test
