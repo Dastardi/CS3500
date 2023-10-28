@@ -1,5 +1,8 @@
 package model;
 
+/**
+ * A representation of a basic game of Reversi.
+ */
 public class BasicReversi implements ReversiModel, PlayerActions {
   private final int boardSize;
   private final Tile[][] board;
@@ -29,7 +32,8 @@ public class BasicReversi implements ReversiModel, PlayerActions {
   }
 
   @Override
-  public void move(PlayerColor color, Coordinate coordinate) throws IllegalArgumentException, IllegalStateException {
+  public void move(PlayerColor color, Coordinate coordinate)
+          throws IllegalArgumentException, IllegalStateException {
     //TODO
     //after every move, the most recent action was a move so pass count should be zero
     passCount = 0;
@@ -65,7 +69,7 @@ public class BasicReversi implements ReversiModel, PlayerActions {
   }
 
   @Override
-  public PlayerColor getTileContents() {
+  public PlayerColor getTileContents(Coordinate coordinate) {
     return null;
   }
 }

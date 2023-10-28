@@ -11,28 +11,29 @@ public interface ReversiModel {
   public boolean isGameOver();
 
   /**
-   *
-   * @return
+   * Returns the winner if the game is over. If the game is not over, throws an error.
+   * @return the PlayerColor of the player with more discs on the board.
+   * @throws IllegalStateException if the game is not over.
    */
-  public PlayerColor getWinner();
+  public PlayerColor getWinner() throws IllegalStateException;
 
   /**
-   *
-   * @param color
-   * @return
+   * Returns the score of the given player.
+   * @param color the color of the player whose score the method is checking.
+   * @return the number of tiles the player with the given color has on the board.
    */
   public int getPlayerScore(PlayerColor color);
 
   /**
-   *
-   * @param coordinate
-   * @return
+   * Checks if the provided tile has a disc in it.
+   * @param coordinate the coordinate of the tile to check.
+   * @return true iff the tile's contents are null.
    */
   public boolean isTileEmpty(Coordinate coordinate);
 
   /**
-   *
-   * @return
+   * Returns the contents of a given tile.
+   * @return the color of the disc in the given tile.
    */
-  public PlayerColor getTileContents();
+  public PlayerColor getTileContents(Coordinate coordinate);
 }
