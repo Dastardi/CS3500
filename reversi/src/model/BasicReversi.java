@@ -3,7 +3,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Holds the model for a game of Reversi. weeeeeeeee.
+ * Holds the model for a game of Reversi.
  * Contains all fields and methods necessary for internal gameplay.
  */
 public class BasicReversi implements ReversiModel, PlayerActions {
