@@ -10,8 +10,7 @@ public interface PlayerActions {
    * @throws IllegalStateException if the chosen tile already has a disc in it or if the move
    * is illegal.
    */
-  public void move(PlayerColor color, Coordinate coordinate)
-          throws IllegalArgumentException, IllegalStateException;
+  public void move(Coordinate coordinate) throws IllegalArgumentException, IllegalStateException;
 
   /**
    * Passes the current player's turn without placing a disc.

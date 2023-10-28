@@ -25,15 +25,9 @@ public interface ReversiModel {
   public int getPlayerScore(PlayerColor color);
 
   /**
-   * Checks if the provided tile has a disc in it.
+   * Returns the tile at the given coordinate.
    * @param coordinate the coordinate of the tile to check.
-   * @return true iff the tile's contents are null.
+   * @throws IllegalArgumentException if the given coordinate is invalid.
    */
-  public boolean isTileEmpty(Coordinate coordinate);
-
-  /**
-   * Returns the contents of a given tile.
-   * @return the color of the disc in the given tile.
-   */
-  public PlayerColor getTileContents(Coordinate coordinate);
+  public Tile getTileAt(Coordinate coordinate) throws IllegalArgumentException;
 }

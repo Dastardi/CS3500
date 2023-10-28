@@ -1,11 +1,11 @@
 package model;
 
 public class Tile implements ReversiTile {
-  Coordinate coordinate;
-  PlayerColor contents;
+  private final Coordinate coordinate;
+  private PlayerColor contents;
 
-  public Tile(int x, int y) {
-    this.coordinate = new Coordinate(x, y, -x-y);
+  public Tile(int r, int q) {
+    this.coordinate = new Coordinate(r, q);
     this.contents = null;
   }
 
@@ -14,6 +14,7 @@ public class Tile implements ReversiTile {
     if (this.contents == null) {
       throw new IllegalStateException("Cannot flip a non-existent disc.");
     }
+    //not necessary to do anything different if trying to flip to existing color
     this.contents = color;
   }
 
@@ -26,10 +27,20 @@ public class Tile implements ReversiTile {
   }
 
   @Override
+  public boolean isEmpty() {
+    return this.contents==null;
+  }
+
+  @Override
   public void placeDisc(PlayerColor color) {
     if (contents != null) {
       throw new IllegalStateException("Cannot place a disc on a nonempty tile.");
     }
     this.contents = color;
+  }
+
+  @Override
+  public Coordinate getCoordinate() {
+    return this.coordinate;
   }
 }
