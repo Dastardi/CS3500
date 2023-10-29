@@ -21,16 +21,16 @@ public interface ReversiTile {
   public void flip(PlayerColor color) throws IllegalStateException;
 
   /**
-   * Returns a boolean based on whether or not this tile is empty
+   * Returns a boolean based on whether or not this tile is empty.
    * @return true iff this tile has no disc in it
    */
   public boolean isEmpty();
 
 
-    /**
-     * Returns the current color of this tile, or null if it is empty.
-     * @return the current contents of this tile.
-     */
+  /**
+   * Returns the current color of this tile, or null if it is empty.
+   * @return the current contents of this tile.
+   */
   public PlayerColor getContents();
 
   /**

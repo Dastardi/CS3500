@@ -6,7 +6,9 @@ import java.util.Objects;
  * A class to represent hexagonal cube coordinates in Reversi.
  */
 public class Coordinate {
-  public final int q, r, s;
+  public final int q;
+  public final int r;
+  public final int s;
 
   /**
    * Constructs the coordinate. Creates the s value from the r and q values.
@@ -16,7 +18,7 @@ public class Coordinate {
   public Coordinate(int r, int q) {
     this.q = q;
     this.r = r;
-    this.s = -q-r;
+    this.s = - q - r;
   }
 
   /**

@@ -1,5 +1,8 @@
 package model;
 
+/**
+ * Represents a Tile in a hexagonal board for a game of Reversi.
+ */
 public class Tile implements ReversiTile {
   private final Coordinate coordinate;
   private PlayerColor contents;
@@ -25,7 +28,7 @@ public class Tile implements ReversiTile {
 
   @Override
   public boolean isEmpty() {
-    return this.contents==null;
+    return this.contents == null;
   }
 
   @Override

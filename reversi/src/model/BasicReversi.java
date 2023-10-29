@@ -1,6 +1,6 @@
 package model;
+
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 
@@ -90,7 +90,8 @@ public class BasicReversi implements ReversiModel, PlayerActions {
     if (!validRows.isEmpty()) {
       //place a disc of the color of the current player at the requested coordinate
       getTileAt(coordinate).placeDisc(currentColor);
-      //flip all non-current player's discs in the row (up to the next instance of current player's disc)
+      //flip all non-current player's discs in the row
+      //(up to the next instance of current player's disc)
       flipDiscs(validRows, currentColor);
     }
     //if no rows fulfill valid move criteria, throw an exception
