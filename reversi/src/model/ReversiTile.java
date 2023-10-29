@@ -28,11 +28,10 @@ public interface ReversiTile {
 
 
     /**
-     * Returns the current color of this tile.
-     * @return the current contents of this disc.
-     * @throws IllegalStateException if this tile does not have a disc placed in it.
+     * Returns the current color of this tile, or null if it is empty.
+     * @return the current contents of this tile.
      */
-  public PlayerColor getColor() throws IllegalStateException;
+  public PlayerColor getContents();
 
   /**
    *

@@ -1,6 +1,8 @@
 package model;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Holds the model for a game of Reversi.
@@ -20,18 +22,27 @@ public class BasicReversi implements ReversiModel, PlayerActions {
   private int currentPlayerIndex;
 
   /**
-   * Constructs a model object for playing a game of Reversi.
-   * Initializes all class fields for the game.
+   * Constructs a basic model object for playing a game of Reversi with 6 tiles on each side.
    */
   public BasicReversi() {
-    this.boardSize = 11;
+    this(6);
+  }
+
+  /**
+   * Constructs a model object for playing a game of Reversi, given a side length.
+   * Useful for testing to be able to set custom board size.
+   * Initializes all class fields for the game.
+   */
+  public BasicReversi(int sideLength) {
+    this.boardSize = (sideLength * 2) - 1;
     this.board = new Tile[this.boardSize][this.boardSize];
     this.passCount = 0;
     fillBoard(this.boardSize);
+    placeStartingTiles();
     this.currentPlayerIndex = 0;
   }
 
-  //helper method called in the constructor that fills the 2D array representing the game board
+  //helps set up game state by filling the 2D array representing the game board
   //with Tile objects representing each tile on the board
   private void fillBoard(int size) {
     for (int r = 0; r < size; r++) {
@@ -47,6 +58,24 @@ public class BasicReversi implements ReversiModel, PlayerActions {
         }
       }
     }
+  }
+
+  //helps set up game state by placing alternating discs in all tiles around the center of the board
+  private void placeStartingTiles() {
+    int centerTileQR = this.boardSize / 2;
+    //get all the neighbors of the center tile
+    List<Tile> neighborsOfCenter = getNeighbors(new Coordinate(centerTileQR, centerTileQR));    
+    for (int i = 0; i < neighborsOfCenter.size(); i++) {
+      if (i % 2 == 0) {
+        //place a black disc in the top left, bottom left, and right
+        neighborsOfCenter.get(i).placeDisc(PlayerColor.BLACK);
+      }
+      else {
+        //place a white disc in the top right, bottom right, and left
+        neighborsOfCenter.get(i).placeDisc(PlayerColor.WHITE);
+      }
+    }
+    
   }
 
   @Override
@@ -82,18 +111,18 @@ public class BasicReversi implements ReversiModel, PlayerActions {
     //iterate over all six potential valid rows
     for (Tile neighbor : neighbors) {
       //if the color of the neighbor is empty or the same as the color, it doesn't count - ignore it
-      if (neighbor.isEmpty() || neighbor.getColor() != currentColor) {
+      if (neighbor.isEmpty() || neighbor.getContents() != currentColor) {
         //initialize a list to represent this specific row
         List<Tile> row = new ArrayList<>();
         //get the next tile in the row
         Tile nextTile = getNextInRow(getTileAt(coordinate), neighbor);
         //while the next row is the opposite color, keep iterating and adding to the row
-        while (nextTile != null && nextTile.getColor() != currentColor) {
+        while (nextTile != null && nextTile.getContents() != currentColor) {
           row.add(nextTile);
           nextTile = getNextInRow(neighbor, nextTile);
         }
         //if it's not empty and would be the correct color to create a sandwich, it's a valid row
-        if (nextTile != null && nextTile.getColor() == currentColor) {
+        if (nextTile != null && nextTile.getContents() == currentColor) {
           validRows.add(row);
         }
       }
@@ -116,27 +145,50 @@ public class BasicReversi implements ReversiModel, PlayerActions {
     //get the changes in axial coordinates for finding the next tile in the sequence
     int deltaQ = neighbor.getCoordinate().q - tile.getCoordinate().q;
     int deltaR = neighbor.getCoordinate().r - tile.getCoordinate().r;
-    return this.board[neighbor.getCoordinate().q + deltaQ][neighbor.getCoordinate().r + deltaR];
+    int nextTileQ = neighbor.getCoordinate().q + deltaQ;
+    int nextTileR = neighbor.getCoordinate().r + deltaR;
+    if (tileInBoard(nextTileQ, nextTileR)) {
+      return this.board[nextTileQ][nextTileR];
+    }
+    //if the tile is not on the board, return null
+    return null;
   }
 
-  //gets all 6 neighbors of a tile at a given coordinate
+  //gets all six neighbors of a tile at a given coordinate
   private List<Tile> getNeighbors(Coordinate coordinate) {
     List<Tile> neighbors = new ArrayList<>();
 
     //tile to the right of center
-    neighbors.add(board[coordinate.q + 1][coordinate.r]);
+    addTileIfInBoard(neighbors,coordinate.q + 1, coordinate.r);
     //tile to the bottom right of center
-    neighbors.add(board[coordinate.q][coordinate.r + 1]);
+    addTileIfInBoard(neighbors, coordinate.q, coordinate.r + 1);
     //tile to the bottom left of center
-    neighbors.add(board[coordinate.q - 1][coordinate.r + 1]);
+    addTileIfInBoard(neighbors, coordinate.q - 1, coordinate.r + 1);
     //tile to the left of center
-    neighbors.add(board[coordinate.q - 1][coordinate.r]);
+    addTileIfInBoard(neighbors, coordinate.q - 1, coordinate.r);
     //tile to the top left of center
-    neighbors.add(board[coordinate.q][coordinate.r - 1]);
+    addTileIfInBoard(neighbors, coordinate.q, coordinate.r - 1);
     //tile to the top right of center
-    neighbors.add(board[coordinate.q + 1][coordinate.r - 1]);
+    addTileIfInBoard(neighbors, coordinate.q + 1, coordinate.r - 1);
 
+    //since addTileIfInBoard can return null values due to the 2d array of axial values,
+    //we need to remove potential null values from the list.
+    neighbors.removeIf(Objects::isNull);
     return neighbors;
+  }
+
+  //adds a tile to a given list of tiles if that tile is within the board's limits.
+  private void addTileIfInBoard(List<Tile> tileList, int q, int r) {
+    if (tileInBoard(q, r)) {
+      tileList.add(board[q][r]);
+    }
+  }
+
+  //returns whether the given coordinates correspond to a tile on the game board
+  //will return true if the "tile" is null due to the 2d axial array format, even
+  // though it technically does not exist in that case
+  private boolean tileInBoard(int q, int r) {
+    return (q >= 0 && q < this.boardSize && r >= 0 && r < this.boardSize);
   }
 
   @Override
@@ -147,8 +199,7 @@ public class BasicReversi implements ReversiModel, PlayerActions {
     this.passCount++;
   }
 
-  //helper method that uses the index field to get the color
-  //of the player that is making this current turn
+  //uses the index field to get the color of the player that is making this current turn
   //and increment the index to provide the next player on the next turn
   private PlayerColor getCurrentPlayer() {
     PlayerColor[] playerColors = PlayerColor.values();
@@ -199,7 +250,7 @@ public class BasicReversi implements ReversiModel, PlayerActions {
 
     for (int r = 0; r < this.boardSize; r++) {
       for (int q = 0; q < this.boardSize; q++) {
-        if (this.board[r][q].getColor() == color) {
+        if (this.board[r][q].getContents() == color) {
           score++;
         }
       }
@@ -210,7 +261,7 @@ public class BasicReversi implements ReversiModel, PlayerActions {
   @Override
   public Tile getTileAt(Coordinate coordinate) {
     try {
-      return this.board[coordinate.r][coordinate.q];
+      return this.board[coordinate.q][coordinate.r];
     } catch (IndexOutOfBoundsException e) { //TODO test to make sure this is correct exception
       throw new IllegalArgumentException("Coordinate is invalid.");
     }

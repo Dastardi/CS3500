@@ -6,32 +6,50 @@ import org.junit.Before;
 import org.junit.Test;
 
 public class ReversiModelTests {
-  ReversiModel modelEmptyBoard;
+  ReversiModel modelStartingBoard;
+  ReversiModel smallBoard;
 
   @Before
   public void init() {
-    this.modelEmptyBoard = new BasicReversi();
+    this.modelStartingBoard = new BasicReversi();
+    this.smallBoard = new BasicReversi(3);
   }
+
+  //move() tests
+
+
+
+
+  //pass() tests
+
+
+
 
   //isGameOver() tests
   @Test
-  public void testSomething() {
-    Assert.assertEquals(5, 5);
+  public void testIsGameOver() {
+
   }
 
   //getWinner() tests
   @Test
-  public void testGetWinnerThrowing() {
+  public void testGetWinnerThrows() {
 
   }
 
 
-
   //getPlayerScore() tests
   @Test
-  public void testZeroScoreEmptyBoard() {
-    Assert.assertEquals(this.modelEmptyBoard.getPlayerScore(PlayerColor.BLACK), 0);
-    Assert.assertEquals(this.modelEmptyBoard.getPlayerScore(PlayerColor.WHITE), 0);
+  public void testStartOfGameScore() {
+    //score for both players should be 3 when the game is first started
+    //because it starts with both players having 3 discs automatically placed
+    Assert.assertEquals(this.modelStartingBoard.getPlayerScore(PlayerColor.BLACK), 3);
+    Assert.assertEquals(this.modelStartingBoard.getPlayerScore(PlayerColor.WHITE), 3);
+  }
+
+  @Test
+  public void testGetScoreOnNonEmptyBoard() {
+
   }
 
   @Test

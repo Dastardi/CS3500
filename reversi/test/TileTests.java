@@ -1,3 +1,4 @@
+import model.Coordinate;
 import model.PlayerColor;
 import org.junit.Assert;
 import org.junit.Before;
@@ -21,29 +22,22 @@ public class TileTests {
   }
 
   @Test
-  public void testGetColor() {
+  public void testGetContents() {
     this.tile1.placeDisc(PlayerColor.BLACK);
-    Assert.assertEquals(this.tile1.getColor(), PlayerColor.BLACK);
+    Assert.assertEquals(PlayerColor.BLACK, this.tile1.getContents());
     this.tile2.placeDisc(PlayerColor.WHITE);
-    Assert.assertEquals(this.tile2.getColor(), PlayerColor.WHITE);
-  }
-
-  @Test
-  public void testGetColorThrows() {
-    this.tile1.placeDisc(PlayerColor.BLACK);
-    Assert.assertEquals(this.tile1.getColor(), PlayerColor.BLACK);
-    Assert.assertThrows(IllegalStateException.class, () -> this.tile2.getColor());
-    Assert.assertThrows(IllegalStateException.class, () -> this.tile3.getColor());
+    Assert.assertEquals(PlayerColor.WHITE, this.tile2.getContents());
+    Assert.assertNull(this.tile3.getContents());
   }
 
   @Test
   public void testFlipSimple() {
     this.tile1.placeDisc(PlayerColor.BLACK);
-    Assert.assertEquals(this.tile1.getColor(), PlayerColor.BLACK);
+    Assert.assertEquals(this.tile1.getContents(), PlayerColor.BLACK);
     this.tile1.flip(PlayerColor.WHITE);
-    Assert.assertEquals(this.tile1.getColor(), PlayerColor.WHITE);
+    Assert.assertEquals(this.tile1.getContents(), PlayerColor.WHITE);
     this.tile1.flip(PlayerColor.WHITE);
-    Assert.assertEquals(PlayerColor.WHITE, this.tile1.getColor());
+    Assert.assertEquals(PlayerColor.WHITE, this.tile1.getContents());
   }
 
   @Test
@@ -53,14 +47,19 @@ public class TileTests {
 
   @Test
   public void testPlaceDiscSimple() {
-    Assert.assertThrows(IllegalStateException.class, () -> this.tile1.getColor());
+    Assert.assertNull(this.tile1.getContents());
     this.tile1.placeDisc(PlayerColor.WHITE);
-    Assert.assertEquals(PlayerColor.WHITE, this.tile1.getColor());
+    Assert.assertEquals(PlayerColor.WHITE, this.tile1.getContents());
   }
 
   @Test
   public void testPlaceDiscOnOccupiedTile() {
     this.tile1.placeDisc(PlayerColor.BLACK);
     Assert.assertThrows(IllegalStateException.class, () -> this.tile1.placeDisc(PlayerColor.BLACK));
+  }
+
+  @Test
+  public void testGetCoordinateSimple() {
+    Assert.assertEquals(new Coordinate(5, 5), this.tile1.getCoordinate());
   }
 }

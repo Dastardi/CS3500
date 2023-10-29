@@ -19,10 +19,7 @@ public class Tile implements ReversiTile {
   }
 
   @Override
-  public PlayerColor getColor() {
-    if (this.contents == null) {
-      throw new IllegalStateException("Cannot get the color of a disc that does not exist.");
-    }
+  public PlayerColor getContents() {
     return this.contents;
   }
 
