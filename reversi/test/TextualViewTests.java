@@ -13,12 +13,14 @@ public class TextualViewTests {
   ReversiModel model;
   ReversiModel smallModel;
   ReversiTextualView view;
+  ReversiTextualView smallView;
 
   @Before
   public void init() {
     this.model = new BasicReversi();
     this.smallModel = new BasicReversi(3);
-    this.view = new ReversiTextualView(model);
+    this.view = new ReversiTextualView(this.model);
+    this.smallView = new ReversiTextualView(this.smallModel);
   }
 
   @Test
@@ -51,4 +53,24 @@ public class TextualViewTests {
         "    _ _ _ _ _ _ _\n" +
         "     _ _ _ _ _ _\n", view.toString());
   }
+
+  @Test
+  public void testSmallBoard() {
+    Assert.assertEquals("  _ _ _\n" +
+        " _ X O _\n" +
+        "_ O _ X _\n" +
+        " _ X O _\n" +
+        "  _ _ _", smallView.toString());
+  }
+
+  /*
+  @Test
+  public void testFullSmallBoard() {
+    Assert.assertEquals("  _ _ _\n" +
+        " _ X O _\n" +
+        "_ O _ X _\n" +
+        " _ X X _\n" +
+        "  _ X _", smallView.toString());
+  }
+   */
 }
