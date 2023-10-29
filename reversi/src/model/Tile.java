@@ -7,8 +7,8 @@ public class Tile implements ReversiTile {
   private final Coordinate coordinate;
   private PlayerColor contents;
 
-  public Tile(int r, int q) {
-    this.coordinate = new Coordinate(r, q);
+  public Tile(int q, int r) {
+    this.coordinate = new Coordinate(q, r);
     this.contents = null;
   }
 

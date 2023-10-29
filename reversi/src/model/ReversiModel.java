@@ -3,7 +3,7 @@ package model;
 /**
  * Represents the primary interface for playing a game of Reversi.
  */
-public interface ReversiModel {
+public interface ReversiModel extends PlayerActions {
   /**
    * Returns the state of the game.
    * @return A GameStatus based on the current state of the game.
@@ -30,4 +30,10 @@ public interface ReversiModel {
    * @throws IllegalArgumentException if the given coordinate is invalid.
    */
   public Tile getTileAt(Coordinate coordinate) throws IllegalArgumentException;
+
+  /**
+   * Returns the size of the board for this game of Reversi.
+   * @return the board size field.
+   */
+  public int getBoardSize();
 }

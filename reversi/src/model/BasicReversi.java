@@ -8,7 +8,7 @@ import java.util.Objects;
  * Holds the model for a game of Reversi.
  * Contains all fields and methods necessary for internal gameplay.
  */
-public class BasicReversi implements ReversiModel, PlayerActions {
+public class BasicReversi implements ReversiModel {
   //represents the size of the game board (the number of tiles in the longest row)
   private final int boardSize;
 
@@ -251,7 +251,7 @@ public class BasicReversi implements ReversiModel, PlayerActions {
 
     for (int r = 0; r < this.boardSize; r++) {
       for (int q = 0; q < this.boardSize; q++) {
-        if (this.board[r][q].getContents() == color) {
+        if (getTileAt(new Coordinate(q, r)).getContents() == color) {
           score++;
         }
       }
@@ -263,8 +263,13 @@ public class BasicReversi implements ReversiModel, PlayerActions {
   public Tile getTileAt(Coordinate coordinate) {
     try {
       return this.board[coordinate.q][coordinate.r];
-    } catch (IndexOutOfBoundsException e) { //TODO test to make sure this is correct exception
+    } catch (IndexOutOfBoundsException e) {
       throw new IllegalArgumentException("Coordinate is invalid.");
     }
+  }
+
+  @Override
+  public int getBoardSize() {
+    return this.boardSize;
   }
 }

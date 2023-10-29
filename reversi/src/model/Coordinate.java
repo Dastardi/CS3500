@@ -8,14 +8,14 @@ import java.util.Objects;
 public class Coordinate {
   public final int q;
   public final int r;
-  public final int s;
+  public final int s; //TODO delete field if never used
 
   /**
    * Constructs the coordinate. Creates the s value from the r and q values.
-   * @param r the x-value of the cube coordinate.
-   * @param q the y-value of the cube coordinate.
+   * @param q the x-value of the cube coordinate.
+   * @param r the y-value of the cube coordinate.
    */
-  public Coordinate(int r, int q) {
+  public Coordinate(int q, int r) {
     this.q = q;
     this.r = r;
     this.s = - q - r;
@@ -29,7 +29,12 @@ public class Coordinate {
    */
   @Override
   public boolean equals(Object other) {
-    Coordinate that = (Coordinate) other;
+    if (other == this) {
+      return true;
+    }
+    if (!(other instanceof Coordinate that)) {
+      return false;
+    }
     return this.q == that.q && this.r == that.r;
   }
 

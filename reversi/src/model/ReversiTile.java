@@ -34,8 +34,8 @@ public interface ReversiTile {
   public PlayerColor getContents();
 
   /**
-   *
-   * @return
+   * Returns the Coordinate object representing the position of this tile on the board.
+   * @return this tile's coordinate
    */
   public Coordinate getCoordinate();
 }
