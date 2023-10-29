@@ -24,7 +24,7 @@ public class ReversiModelTests {
   public void testSomeLegalMoves() {
     this.model.move(new Coordinate(5, 5));
   }
-  
+
   @Test
   public void testIllegalMoveToCenterAfterStart() {
     Assert.assertThrows(IllegalStateException.class, () -> this.model.move(new Coordinate(5, 5)));
@@ -44,19 +44,20 @@ public class ReversiModelTests {
   @Test
   public void testIllegalMoveInNarniaThrowsState() {
     Assert.assertThrows("Invalid move.",
-            IllegalStateException.class, () -> this.model.move(new Coordinate (10, 0)));
+        IllegalStateException.class, () -> this.model.move(new Coordinate(10, 0)));
   }
 
   @Test
   public void testMoveFlipsTiles() {
+    Assert.assertNull(this.model.getTileAt(new Coordinate(4, 7)).getContents());
+    //this is the first move, so this will be a black disc
     model.move(new Coordinate(4, 7));
     Assert.assertEquals(PlayerColor.BLACK, model.getTileAt(new Coordinate(4, 7)).getContents());
     Assert.assertEquals(PlayerColor.BLACK, model.getTileAt(new Coordinate(5, 6)).getContents());
+    Assert.assertEquals(PlayerColor.BLACK, model.getTileAt(new Coordinate(6, 5)).getContents());
   }
 
   //pass() tests
-
-
 
 
   //isGameOver() tests
@@ -97,9 +98,9 @@ public class ReversiModelTests {
   @Test
   public void testGetTileAtThrows() {
     Assert.assertThrows("Coordinate is invalid.", IllegalArgumentException.class,
-            () -> this.model.getTileAt(new Coordinate(0, 11)));
+        () -> this.model.getTileAt(new Coordinate(0, 11)));
     Assert.assertThrows("Coordinate is invalid.", IllegalArgumentException.class,
-            () -> this.model.getTileAt(new Coordinate(11, 0)));
+        () -> this.model.getTileAt(new Coordinate(11, 0)));
   }
 
   //getTileContentsTests()

@@ -34,15 +34,15 @@ public class TileTests {
   public void testFlipSimple() {
     this.tile1.placeDisc(PlayerColor.BLACK);
     Assert.assertEquals(this.tile1.getContents(), PlayerColor.BLACK);
-    this.tile1.flip(PlayerColor.WHITE);
+    this.tile1.flip();
     Assert.assertEquals(this.tile1.getContents(), PlayerColor.WHITE);
-    this.tile1.flip(PlayerColor.WHITE);
+    this.tile1.flip();
     Assert.assertEquals(PlayerColor.WHITE, this.tile1.getContents());
   }
 
   @Test
   public void testFlipOnEmptyTile() {
-    Assert.assertThrows(IllegalStateException.class, () -> this.tile1.flip(PlayerColor.WHITE));
+    Assert.assertThrows(IllegalStateException.class, () -> this.tile1.flip());
   }
 
   @Test

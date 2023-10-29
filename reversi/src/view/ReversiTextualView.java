@@ -1,4 +1,4 @@
-package textualView;
+package view;
 
 import model.Coordinate;
 import model.PlayerColor;
@@ -8,7 +8,9 @@ import model.Tile;
 
 import java.io.IOException;
 
-
+/**
+ * A textual representation, via String or Appendable, of a Reversi game.
+ */
 public class ReversiTextualView implements TextualView {
   private final ReversiModel model;
   private final Appendable appendable;

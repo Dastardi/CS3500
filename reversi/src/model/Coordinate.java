@@ -3,22 +3,20 @@ package model;
 import java.util.Objects;
 
 /**
- * A class to represent hexagonal cube coordinates in Reversi.
+ * A class to represent axial coordinates in Reversi.
  */
 public class Coordinate {
   public final int q;
   public final int r;
-  public final int s; //TODO delete field if never used
 
   /**
-   * Constructs the coordinate. Creates the s value from the r and q values.
-   * @param q the x-value of the cube coordinate.
-   * @param r the y-value of the cube coordinate.
+   * Constructs the coordinate.
+   * @param q the x-value of the axial coordinate.
+   * @param r the y-value of the axial coordinate.
    */
   public Coordinate(int q, int r) {
     this.q = q;
     this.r = r;
-    this.s = - q - r;
   }
 
   /**
@@ -32,9 +30,10 @@ public class Coordinate {
     if (other == this) {
       return true;
     }
-    if (!(other instanceof Coordinate that)) {
+    if (!(other instanceof Coordinate)) {
       return false;
     }
+    Coordinate that = (Coordinate) other;
     return this.q == that.q && this.r == that.r;
   }
 

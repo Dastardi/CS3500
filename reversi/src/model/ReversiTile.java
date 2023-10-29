@@ -14,11 +14,12 @@ public interface ReversiTile {
   public void placeDisc(PlayerColor color) throws IllegalStateException;
 
   /**
-   * Flips the tile from the current color to the given color.
-   * @param color the color to switch to.
+   * Flips the tile from the current color to the other color.
+   * Only works for a game with two players, but can be easily modified to
+   * a set color method that takes in the color to set to instead of flipping.
    * @throws IllegalStateException if this tile does not have a disc placed on it.
    */
-  public void flip(PlayerColor color) throws IllegalStateException;
+  public void flip() throws IllegalStateException;
 
   /**
    * Returns a boolean based on whether or not this tile is empty.

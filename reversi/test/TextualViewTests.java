@@ -1,11 +1,14 @@
 import model.BasicReversi;
-import model.Coordinate;
 import model.ReversiModel;
+import model.Coordinate;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import textualView.ReversiTextualView;
+import view.ReversiTextualView;
 
+/**
+ * Testing class for the implementation of a text-based view for a game of Reversi.
+ */
 public class TextualViewTests {
   ReversiModel model;
   ReversiModel smallModel;
@@ -17,6 +20,7 @@ public class TextualViewTests {
     this.smallModel = new BasicReversi(3);
     this.view = new ReversiTextualView(model);
   }
+
   @Test
   public void testBasicTextualView() {
     Assert.assertEquals("     _ _ _ _ _ _\n" +

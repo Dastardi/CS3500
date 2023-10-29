@@ -13,12 +13,11 @@ public class Tile implements ReversiTile {
   }
 
   @Override
-  public void flip(PlayerColor color) {
+  public void flip() {
     if (this.contents == null) {
-      throw new IllegalStateException("Cannot flip a non-existent disc.");
+      throw new IllegalStateException("Cannot flip a nonexistent disc.");
     }
-    //not necessary to do anything different if trying to flip to existing color
-    this.contents = color;
+    this.contents = contents == PlayerColor.BLACK ? PlayerColor.WHITE : PlayerColor.BLACK;
   }
 
   @Override
