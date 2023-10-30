@@ -174,26 +174,25 @@ public class BasicReversi implements ReversiModel {
     List<Tile> neighbors = new ArrayList<>();
 
     //tile to the right of center
-    addTileIfInBoard(neighbors,coordinate.q + 1, coordinate.r);
+    try { neighbors.add(board[coordinate.q + 1][coordinate.r]); }
+    catch (IndexOutOfBoundsException ignored) {}
     //tile to the bottom right of center
-    addTileIfInBoard(neighbors, coordinate.q, coordinate.r + 1);
+    try { neighbors.add(board[coordinate.q][coordinate.r + 1]); }
+    catch (IndexOutOfBoundsException ignored) {}
     //tile to the bottom left of center
-    addTileIfInBoard(neighbors, coordinate.q - 1, coordinate.r + 1);
+    try { neighbors.add(board[coordinate.q - 1][coordinate.r + 1]); }
+    catch (IndexOutOfBoundsException ignored) {}
     //tile to the left of center
-    addTileIfInBoard(neighbors, coordinate.q - 1, coordinate.r);
+    try { neighbors.add(board[coordinate.q - 1][coordinate.r]); }
+    catch (IndexOutOfBoundsException ignored) {}
     //tile to the top left of center
-    addTileIfInBoard(neighbors, coordinate.q, coordinate.r - 1);
+    try { neighbors.add(board[coordinate.q][coordinate.r - 1]); }
+    catch (IndexOutOfBoundsException ignored) {}
     //tile to the top right of center
-    addTileIfInBoard(neighbors, coordinate.q + 1, coordinate.r - 1);
+    try { neighbors.add(board[coordinate.q + 1][coordinate.r - 1]); }
+    catch (IndexOutOfBoundsException ignored) {}
 
     return neighbors;
-  }
-
-  //adds a tile to a given list of tiles if that tile is within the board's limits.
-  private void addTileIfInBoard(List<Tile> tileList, int q, int r) {
-    if (tileInBoard(q, r)) {
-      tileList.add(board[q][r]);
-    }
   }
 
   //returns whether the given coordinates correspond to a tile on the game board.
@@ -201,7 +200,7 @@ public class BasicReversi implements ReversiModel {
   //and bottom right which act as null placeholder values.
   private boolean tileInBoard(int q, int r) {
     if (q >= 0 && q < this.boardSize && r >= 0 && r < this.boardSize) {
-      return getTileAt(new Coordinate(q, r)).getContents() != null;
+      return getTileAt(new Coordinate(q, r)) != null;
     }
     return false;
   }
@@ -265,8 +264,9 @@ public class BasicReversi implements ReversiModel {
     //go through every index in the board (null or tile)
     for (int r = 0; r < this.boardSize; r++) {
       for (int q = 0; q < this.boardSize; q++) {
+        Tile tile = getTileAt(new Coordinate(q, r));
         //if it holds a disc belonging to the given player
-        if (getTileAt(new Coordinate(q, r)).getContents() == color) {
+        if (tile != null && tile.getContents() == color) {
           score++;
         }
       }

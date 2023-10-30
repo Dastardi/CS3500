@@ -60,17 +60,18 @@ public class TextualViewTests {
         " _ X O _\n" +
         "_ O _ X _\n" +
         " _ X O _\n" +
-        "  _ _ _", smallView.toString());
+        "  _ _ _\n", smallView.toString());
   }
 
-  /*
+
   @Test
-  public void testFullSmallBoard() {
+  public void testMoveOnSmallBoard() {
+    smallModel.move(new Coordinate(1,4));
     Assert.assertEquals("  _ _ _\n" +
         " _ X O _\n" +
         "_ O _ X _\n" +
         " _ X X _\n" +
-        "  _ X _", smallView.toString());
+        "  _ X _\n", smallView.toString());
   }
-   */
+
 }

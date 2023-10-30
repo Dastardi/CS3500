@@ -13,7 +13,7 @@ public class PackagePrivateTests {
 
   @Before
   public void init() {
-    model = new BasicReversi();
+    model = new BasicReversi(6);
     smallModel = new BasicReversi(3);
   }
 
