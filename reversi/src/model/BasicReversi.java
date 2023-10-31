@@ -21,10 +21,6 @@ public class BasicReversi implements ReversiModel {
   //INVARIANT: currentPlayerIndex is less than 2
   private int currentPlayerIndex;
 
-  //represents the current status of this game
-  //playing or over, in which case it's either a win or a tie
-  private GameStatus gameStatus;
-
   /**
    * Constructs a basic model object for playing a game of Reversi with 6 tiles on each side.
    */
@@ -52,7 +48,6 @@ public class BasicReversi implements ReversiModel {
     placeStartingTiles();
     //black moves first, and their i
     this.currentPlayerIndex = 0;
-    this.gameStatus = GameStatus.PLAYING;
   }
 
   //helps set up game state by filling the 2D array representing the game board
@@ -255,18 +250,24 @@ public class BasicReversi implements ReversiModel {
   }
 
   @Override
-  public PlayerColor getWinner() {
-    if (!isGameOver()) {
-      return null;
-    }
+  public PlayerColor getCurrentWinner() {
+    //to keep track of the current highest score of all players
     int highestScore = 0;
+    //to keep track of the winner
     PlayerColor winner = null;
     //go through all player colors
     for (PlayerColor color : PlayerColor.values()) {
+      int playerScore = getPlayerScore(color);
+
       //if this player's score is higher than the current highest
-      if (getPlayerScore(color) > highestScore) {
+      //if there is a tie, return null
+      if (playerScore == highestScore) {
+        winner = null;
+      }
+
+      if (playerScore > highestScore) {
         //set their score as the new highest score and make them the winner
-        highestScore = getPlayerScore(color);
+        highestScore = playerScore;
         winner = color;
       }
     }
@@ -300,13 +301,7 @@ public class BasicReversi implements ReversiModel {
 
   @Override
   public int getBoardSize() {
-    throwIfGameOver();
     return this.boardSize;
-  }
-
-  @Override
-  public GameStatus getGameStatus() {
-    return this.gameStatus;
   }
 
   //throws an exception if it is called once the game is over

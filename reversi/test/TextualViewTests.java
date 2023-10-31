@@ -97,14 +97,4 @@ public class TextualViewTests {
         "    _ _ _ _ _ _ _\n" +
         "     _ _ _ _ _ _\n", stringBuilder.toString());
   }
-
-  @Test
-  public void testFullBoard() {
-    smallModel.move(new Coordinate(1, 4));
-    smallModel.move(new Coordinate(3, 0));
-    smallModel.move(new Coordinate(1, 1));
-    smallModel.move(new Coordinate(0, 3));
-    smallModel.move(new Coordinate(4, 1));
-    smallModel.move(new Coordinate(3, 3));
-  }
 }

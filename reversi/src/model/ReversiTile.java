@@ -22,7 +22,7 @@ public interface ReversiTile {
   public void flip() throws IllegalStateException;
 
   /**
-   * Returns a boolean based on whether or not this tile is empty.
+   * Returns a boolean based on whether this tile is empty.
    * @return true iff this tile has no disc in it
    */
   public boolean isEmpty();
