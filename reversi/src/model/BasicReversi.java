@@ -87,7 +87,6 @@ public class BasicReversi implements ReversiModel {
         neighborsOfCenter.get(i).placeDisc(PlayerColor.WHITE);
       }
     }
-
   }
 
   @Override
