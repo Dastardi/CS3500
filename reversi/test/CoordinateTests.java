@@ -23,17 +23,16 @@ public class CoordinateTests {
 
   @Test
   public void testCoordinateEquals() {
-    Assert.assertTrue(coord1.equals(coord2));
-    Assert.assertTrue(coord2.equals(coord1));
-    Assert.assertFalse(coord3.equals(coord1));
-    Assert.assertFalse(coord1.equals(coord3));
-    Assert.assertFalse(coord1.equals(tile));
+    Assert.assertEquals(coord1, coord2);
+    Assert.assertEquals(coord2, coord1);
+    Assert.assertNotEquals(coord3, coord1);
+    Assert.assertNotEquals(coord1, coord3);
   }
 
   @Test
   public void testCoordinateHashCode() {
-    Assert.assertTrue(this.coord1.hashCode() == this.coord2.hashCode());
-    Assert.assertTrue(this.coord1.hashCode() != this.coord3.hashCode());
-    Assert.assertTrue(this.coord1.hashCode() != this.tile.hashCode());
+    Assert.assertEquals(this.coord1.hashCode(), this.coord2.hashCode());
+    Assert.assertNotEquals(this.coord1.hashCode(), this.coord3.hashCode());
+    Assert.assertNotEquals(this.coord1.hashCode(), this.tile.hashCode());
   }
 }

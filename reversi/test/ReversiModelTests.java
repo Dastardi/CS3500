@@ -1,13 +1,10 @@
-import model.BasicReversi;
-import model.Coordinate;
-import model.PlayerColor;
-import model.ReversiModel;
+import model.*;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
 /**
- * Tests the methods of the basic reversi model.
+ * Tests the methods of the basic Reversi model.
  */
 public class ReversiModelTests {
   ReversiModel model;
@@ -21,7 +18,6 @@ public class ReversiModelTests {
     this.tinyModel = new BasicReversi(2);
     this.smallModel = new BasicReversi(4);
     this.bigModel = new BasicReversi(10);
-
   }
 
   //move() tests
@@ -56,27 +52,79 @@ public class ReversiModelTests {
   public void testMoveFlipsTiles() {
     Assert.assertNull(this.model.getTileAt(new Coordinate(4, 7)).getContents());
     //this is the first move, so this will be a black disc
-    model.move(new Coordinate(4, 7));
-    Assert.assertEquals(PlayerColor.BLACK, model.getTileAt(new Coordinate(4, 7)).getContents());
-    Assert.assertEquals(PlayerColor.BLACK, model.getTileAt(new Coordinate(5, 6)).getContents());
-    Assert.assertEquals(PlayerColor.BLACK, model.getTileAt(new Coordinate(6, 5)).getContents());
+    this.model.move(new Coordinate(4, 7));
+    Assert.assertEquals(PlayerColor.BLACK, this.model.getTileAt(new Coordinate(4, 7)).getContents());
+    Assert.assertEquals(PlayerColor.BLACK, this.model.getTileAt(new Coordinate(5, 6)).getContents());
+    Assert.assertEquals(PlayerColor.BLACK, this.model.getTileAt(new Coordinate(6, 5)).getContents());
   }
 
+  @Test
+  public void testMoveThrowsIfGameOver() {
+    this.model.pass();
+    this.model.pass();
+    Assert.assertThrows(IllegalStateException.class, () -> this.model.move(new Coordinate(6, 6)));
+  }
+
+
+
   //pass() tests
+  @Test
+  public void testPass() {
+    Assert.assertEquals(PlayerColor.BLACK, this.model.getCurrentPlayer());
+    this.model.pass();
+    Assert.assertEquals(PlayerColor.WHITE, this.model.getCurrentPlayer());
+    this.model.move(new Coordinate(6, 6));
+    Assert.assertEquals(PlayerColor.BLACK, this.model.getCurrentPlayer());
+    this.model.pass();
+    Assert.assertEquals(PlayerColor.WHITE, this.model.getCurrentPlayer());
+    this.model.pass();
+    Assert.assertThrows(IllegalStateException.class, () -> this.model.getCurrentPlayer());
+  }
+
+  @Test
+  public void testPassThrowsIfGameOver() {
+    this.model.pass();
+    this.model.pass();
+    Assert.assertThrows(IllegalStateException.class, () -> this.model.pass());
+  }
+
 
 
   //isGameOver() tests
   @Test
-  public void testIsGameOver() {
-
+  public void testIsGameOverPassing() {
+    Assert.assertFalse(model.isGameOver());
+    model.pass();
+    model.pass();
+    Assert.assertTrue(model.isGameOver());
   }
+
+  @Test
+  public void testIsGameOverFullBoard() {
+    smallModel.move(new Coordinate(1, 4));
+    smallModel.move(new Coordinate(3, 0));
+    smallModel.move(new Coordinate(1, 1));
+    smallModel.move(new Coordinate(0, 3));
+    smallModel.move(new Coordinate(4, 1));
+  }
+
+
 
   //getWinner() tests
   @Test
-  public void testGetWinnerThrows() {
-
+  public void testGetWinnerNull() {
+    Assert.assertNull(model.getWinner());
+    model.move(new Coordinate(4, 7));
+    Assert.assertNull(model.getWinner());
   }
 
+  @Test
+  public void testGetWinnerWhenGameOver() {
+    model.move(new Coordinate(4, 7));
+    model.pass();
+    model.pass();
+    Assert.assertEquals(PlayerColor.BLACK, model.getWinner());
+  }
 
   //getPlayerScore() tests
   @Test
@@ -90,8 +138,9 @@ public class ReversiModelTests {
   @Test
   public void testGetScoreOnDevelopedBoard() {
     model.move(new Coordinate(4, 7));
-
   }
+
+
 
   //getTileAt() tests
   @Test
@@ -108,7 +157,9 @@ public class ReversiModelTests {
         () -> this.model.getTileAt(new Coordinate(11, 0)));
   }
 
-  //getTileContentsTests()
+
+
+  //getTileAt() tests
   @Test
   public void testTileAlignmentTilesExistButEmpty() {
     Assert.assertNull(this.model.getTileAt(new Coordinate(0, 10)).getContents());
@@ -170,5 +221,12 @@ public class ReversiModelTests {
   @Test
   public void testBigModelPlacementWorks() {
     Assert.assertEquals(PlayerColor.BLACK, bigModel.getTileAt(new Coordinate(10, 9)).getContents());
+  }
+
+  @Test
+  public void testGetTileContentsThrowsIfGameOver() {
+    this.model.pass();
+    this.model.pass();
+    Assert.assertThrows(IllegalStateException.class, () -> this.model.getTileAt(new Coordinate(5, 5)));
   }
 }

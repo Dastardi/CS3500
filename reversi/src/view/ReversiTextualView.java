@@ -10,8 +10,9 @@ import java.io.IOException;
 
 /**
  * A textual representation, via String or Appendable, of a Reversi game.
- * The easiest way to create a textual view of a game state is to call toString() on an existing model.
- * The render method will be used in coordination with the controller to make calls from the command line.
+ * The easiest way to create a textual view of a game state is to call
+ * toString() on an existing model. The render method will be used in coordination
+ * with the controller to make calls from the command line.
  */
 public class ReversiTextualView implements TextualView {
   private final ReversiModel model;

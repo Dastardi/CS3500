@@ -37,7 +37,7 @@ public class TileTests {
     this.tile1.flip();
     Assert.assertEquals(this.tile1.getContents(), PlayerColor.WHITE);
     this.tile1.flip();
-    Assert.assertEquals(PlayerColor.WHITE, this.tile1.getContents());
+    Assert.assertEquals(PlayerColor.BLACK, this.tile1.getContents());
   }
 
   @Test
@@ -55,7 +55,8 @@ public class TileTests {
   @Test
   public void testPlaceDiscOnOccupiedTile() {
     this.tile1.placeDisc(PlayerColor.BLACK);
-    Assert.assertThrows(IllegalStateException.class, () -> this.tile1.placeDisc(PlayerColor.BLACK));
+    Assert.assertThrows(IllegalStateException.class,
+        () -> this.tile1.placeDisc(PlayerColor.BLACK));
   }
 
   @Test
