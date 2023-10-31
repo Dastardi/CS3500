@@ -7,8 +7,8 @@ It is built to be playable both in textual form in the terminal and through clic
 
 The game should be playable by someone with minimal technical experience, and provide a fun and challenging diversion for anyone who likes a little strategy!
 
-### QUICK START
-- Give a short snippet of code (rather like an Examplar example) showing how a user might get started using this codebase
+### QUICK START 
+The codebase currently contains only a model and a view and is therefore not accessible by the user. There is no code that acts as an access point for a user to interact with the model other than internal testing.
 
 ### KEY COMPONENTS
 **Model** is where the majority of the current code is held, and contains the implementation and documentation of the model. The model hold the logic for running a game of Reversi - making the board, players taking turns, and performing operations on the board such as flipping tiles. 
