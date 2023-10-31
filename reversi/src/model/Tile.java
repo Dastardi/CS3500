@@ -7,7 +7,17 @@ public class Tile implements ReversiTile {
   private final Coordinate coordinate;
   private PlayerColor contents;
 
+  /**
+   * Constructs a Tile object that represents a hexagonal space on a hexagonal board.
+   * @param q the q-coordinate of this Tile
+   * @param r the r-coordinate of this Tile
+   * @throws IllegalArgumentException if either of the given values are negative
+   */
   public Tile(int q, int r) {
+    if (q < 0 || r < 0) {
+      throw new IllegalArgumentException("A tile in a game of Reversi cannot"
+              + "have a coordinate with values less than 0.");
+    }
     this.coordinate = new Coordinate(q, r);
     this.contents = null;
   }

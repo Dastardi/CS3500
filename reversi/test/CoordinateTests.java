@@ -22,6 +22,11 @@ public class CoordinateTests {
   }
 
   @Test
+  public void testConstructorThrowsOnNegativeValues() {
+    Assert.assertThrows(IllegalArgumentException.class, () -> new Coordinate(-1, -1));
+  }
+
+  @Test
   public void testCoordinateEquals() {
     Assert.assertEquals(coord1, coord2);
     Assert.assertEquals(coord2, coord1);

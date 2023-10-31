@@ -36,6 +36,10 @@ public class BasicReversi implements ReversiModel {
    * Initializes all class fields for the game.
    */
   public BasicReversi(int sideLength) {
+    if (sideLength < 3) {
+      throw new IllegalArgumentException("Minimum side length of 3 required"
+              + "for a playable game of Reversi.");
+    }
     //the size of the board holds the size of the longest row,
     //which is double each side length minus 1
     this.boardSize = (sideLength * 2) - 1;
@@ -116,7 +120,8 @@ public class BasicReversi implements ReversiModel {
     updatePlayer();
   }
 
-  //returns a list of all rows emanating out from a coordinate that would render a move there legal
+  //returns a list of all rows emanating out from a coordinate
+  //that would render a move there legal
   private List<List<Tile>> getValidRows(Coordinate coordinate, PlayerColor currentColor) {
     //initialize a variable to return at the end of the function
     List<List<Tile>> validRows = new ArrayList<>();

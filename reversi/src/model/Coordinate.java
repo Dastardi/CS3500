@@ -13,8 +13,13 @@ public class Coordinate {
    * Constructs the coordinate.
    * @param q the x-value of the axial coordinate.
    * @param r the y-value of the axial coordinate.
+   * @throws IllegalArgumentException if either of the given values are negative
    */
   public Coordinate(int q, int r) {
+    if (q < 0 || r < 0) {
+      throw new IllegalArgumentException("Coordinate values in a game of Reversi"
+              + "must be at least 0.");
+    }
     this.q = q;
     this.r = r;
   }
