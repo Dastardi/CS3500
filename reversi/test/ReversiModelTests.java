@@ -1,4 +1,7 @@
-import model.*;
+import model.BasicReversi;
+import model.Coordinate;
+import model.PlayerColor;
+import model.ReversiModel;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -54,19 +57,19 @@ public class ReversiModelTests {
   @Test
   public void testMoveOntoDiscThrowsState() {
     Assert.assertThrows(IllegalStateException.class,
-            () -> this.model.move(new Coordinate(4, 5)));
+        () -> this.model.move(new Coordinate(4, 5)));
     Assert.assertThrows(IllegalStateException.class,
-            () -> this.model.move(new Coordinate(5, 6)));
+        () -> this.model.move(new Coordinate(5, 6)));
   }
 
   @Test
   public void testMoveOutsideBoardThrowsArgument() {
     //within the array but outside the hexagonal board
     Assert.assertThrows(IllegalArgumentException.class,
-            () -> this.model.move(new Coordinate(0, 0)));
+        () -> this.model.move(new Coordinate(0, 0)));
     //outside the board entirely
     Assert.assertThrows(IllegalArgumentException.class,
-            () -> this.model.move(new Coordinate(20, 20)));
+        () -> this.model.move(new Coordinate(20, 20)));
   }
 
   @Test
@@ -109,7 +112,7 @@ public class ReversiModelTests {
             this.smallModel.getTileAt(new Coordinate(5, 2)).getContents());
     Assert.assertEquals(PlayerColor.BLACK,
             this.smallModel.getTileAt(new Coordinate(6, 1)).getContents());
-    }
+  }
 
   //pass() tests
   @Test
