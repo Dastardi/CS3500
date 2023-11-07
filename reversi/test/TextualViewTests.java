@@ -108,7 +108,7 @@ public class TextualViewTests {
     ReversiTextualView customAppendableView = new ReversiTextualView(this.model, stringBuilder);
     try {
       customAppendableView.render();
-    } catch(IOException e) {
+    } catch (IOException e) {
       throw new IllegalStateException("IO exception thrown.");
     }
     Assert.assertEquals("     _ _ _ _ _ _\n" +
