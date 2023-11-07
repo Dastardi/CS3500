@@ -68,3 +68,10 @@ Additionally, interfaces and implementations of Tile, Coordinate, and PlayerColo
 View contains the TextualView interface and ReversiTextualView, the implementation of the view. 
 
 The test directory contains separate test classes for each class in the src folder.
+
+## CHANGES FOR PART 2: 
+Task: explain what functionality was missing, and why, and how you chose to add it.
+
+Changes: 
+- Renamed interfaces, changed which one extended which
+- Added the isMoveLegal and currentPlayerHasLegalMoves methods

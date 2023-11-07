@@ -3,7 +3,7 @@ package view;
 import model.Coordinate;
 import model.PlayerColor;
 
-import model.ReversiModel;
+import model.ReadOnlyReversiModel;
 import model.Tile;
 
 import java.io.IOException;
@@ -16,15 +16,15 @@ import java.io.IOException;
  * with the controller to make calls from the command line.
  */
 public class ReversiTextualView implements TextualView {
-  private final ReversiModel model;
+  private final ReadOnlyReversiModel model;
   private final Appendable appendable;
 
-  public ReversiTextualView(ReversiModel model) {
+  public ReversiTextualView(ReadOnlyReversiModel model) {
     this.model = model;
     this.appendable = new StringBuilder();
   }
 
-  public ReversiTextualView(ReversiModel model, Appendable appendable) {
+  public ReversiTextualView(ReadOnlyReversiModel model, Appendable appendable) {
     this.model = model;
     this.appendable = appendable;
   }

@@ -8,8 +8,8 @@ import org.junit.Test;
  * Testing class for package-private implementation details of a model for a game of Reversi.
  */
 public class PackagePrivateTests {
-  ReversiModel model;
-  ReversiModel smallModel;
+  ReadOnlyReversiModel model;
+  ReadOnlyReversiModel smallModel;
 
   @Before
   public void init() {

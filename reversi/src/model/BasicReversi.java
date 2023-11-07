@@ -120,6 +120,32 @@ public class BasicReversi implements ReversiModel {
     updatePlayer();
   }
 
+  //TODO: ask TA about repetitive code and checking move legality externally
+  // i.e. is it bad to call this public method inside move()
+  public boolean isMoveLegal(Coordinate coordinate) {
+    if (!tileInBoard(coordinate.q, coordinate.r)) {
+      throw new IllegalArgumentException("Given coordinate out of bounds of board.");
+    }
+    PlayerColor currentColor = getCurrentPlayer();
+    List<List<Tile>> validRows = getValidRows(coordinate, currentColor);
+    return !validRows.isEmpty();
+  }
+
+  @Override
+  public boolean playerHasLegalMoves() {
+    boolean hasLegalMove = false;
+    for (Tile[] row : this.board) {
+      for (Tile tile : row) {
+        if (tile.isEmpty()) {
+          if (isMoveLegal(tile.getCoordinate())) {
+            hasLegalMove = true;
+          }
+        }
+      }
+    }
+    return hasLegalMove;
+  }
+
   //returns a list of all rows emanating out from a coordinate
   //that would render a move there legal
   private List<List<Tile>> getValidRows(Coordinate coordinate, PlayerColor currentColor) {
