@@ -1,7 +1,6 @@
 import model.BasicReversi;
 import model.ReversiModel;
-import view.ReversiFrame;
-import view.ViewFrame;
+import view.gui.ReversiFrame;
 
 public final class Reversi {
   public static void main(String[] args) {

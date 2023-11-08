@@ -1,4 +1,4 @@
-package view;
+package view.gui;
 
 public interface ViewPanel {
 }

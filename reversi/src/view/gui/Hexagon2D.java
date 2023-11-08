@@ -1,4 +1,4 @@
-package view;
+package view.gui;
 
 import java.awt.geom.Path2D;
 
@@ -9,17 +9,15 @@ public class Hexagon2D extends Path2D.Double {
   }
 
   private void createHexagon(double centerX, double centerY, double radius) {
-    //calculates the angle needed for each side - a circle has 2 * math.PI degrees,
-    //so dividing math.PI by three is dividing 360 by 6, resulting in 60 degrees.
+    // To make a pointy-topped hexagon, we start at 30 degrees, which is π/6 radians
     double angleStep = Math.PI / 3;
+    double startAngle = Math.PI / 6;
 
     //calculates the coordinates of each vertex - for each angle:
     for (int i = 0; i < 6; i++) {
-      //the angle is i times 60, giving us 60, 120, 180, 240, 300, or 360
-      double angle = i * angleStep;
-      //the angle x coordinate is radius far away from the center at the angle determined above
+      // Add the starting angle to rotate the hexagon for a pointy top
+      double angle = i * angleStep + startAngle;
       double x = centerX + radius * Math.cos(angle);
-      //the angle y coordinate is radius far away from the center at the angle determined above
       double y = centerY + radius * Math.sin(angle);
 
       //moves the pen to the first angle at 0 degrees (to the right), then draws six lines around

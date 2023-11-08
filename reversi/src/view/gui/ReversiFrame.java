@@ -1,21 +1,26 @@
-package view;
+package view.gui;
 
 import model.ReadOnlyReversiModel;
 
 import javax.swing.*;
 import java.awt.*;
 
-public class ReversiFrame extends JFrame implements ViewFrame {
+public class ReversiFrame extends JFrame implements ViewFrame, PanelEventListener {
   private final ReversiPanel panel;
-  private final int hexSize = 100;
 
   public ReversiFrame(ReadOnlyReversiModel model) {
     int boardSize = model.getBoardSize();
-    setPreferredSize(new Dimension(boardSize * hexSize, boardSize * hexSize));
+    setPreferredSize(new Dimension(760, 680));
     setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-    this.panel = new ReversiPanel(boardSize);
+    this.panel = new ReversiPanel(boardSize, true);
     add(this.panel);
     pack();
     setVisible(true); //TODO don't need this if it's in main?
+    setResizable(false);
+  }
+
+  @Override
+  public void tileClicked(int q, int r) {
+    System.out.println("In view: " + q + " " + r);
   }
 }

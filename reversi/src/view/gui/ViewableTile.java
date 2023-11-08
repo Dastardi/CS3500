@@ -1,16 +1,16 @@
-package view;
+package view.gui;
 
 import java.awt.*;
 import java.awt.geom.Point2D;
 import java.util.Objects;
 
 /**
- * add javadoc.
+ * add javadoc
  */
 public class ViewableTile {
   //x and y represent the position of the tile in the window in which it will be drawn
-  private final int x;
-  private final int y;
+  private final double x;
+  private final double y;
   //q and r represent the logical axial coordinates of the Tile object in the model
   //that this ViewableTile corresponds to
   private final int q;
@@ -19,7 +19,7 @@ public class ViewableTile {
   private final Hexagon2D hexagon;
 
   /**
-   * add javadoc.
+   * add javadoc
    * @param color
    * @param x
    * @param y
@@ -27,7 +27,7 @@ public class ViewableTile {
    * @param q
    * @param r
    */
-  public ViewableTile(Color color, int x, int y, int radius, int q, int r) {
+  public ViewableTile(Color color, double x, double y, double radius, int q, int r) {
     if (x < 0 || y < 0) {
       throw new IllegalArgumentException("Coordinates cannot be negative.");
     }
@@ -67,19 +67,19 @@ public class ViewableTile {
   }
 
   //TODO make interface and put all these getters in it but make sure they're necessary
-  public int getX() {
+  public double getX() {
     return this.x;
   }
 
-  public int getY() {
+  public double getY() {
     return this.y;
   }
 
-  public int getXCoordinate() {
+  public int getQ() {
     return this.q;
   }
 
-  public int getYCoordinate() {
+  public int getR() {
     return this.r;
   }
 }

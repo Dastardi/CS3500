@@ -23,6 +23,7 @@ public class BasicReversi implements ReversiModel {
 
   /**
    * Constructs a basic model object for playing a game of Reversi with 6 tiles on each side.
+   * Default constructor that calls a more robust constructor with the default side length.
    */
   public BasicReversi() {
     //the default side length for a game of Reversi is 6
@@ -34,6 +35,8 @@ public class BasicReversi implements ReversiModel {
    * Constructs a model object for playing a game of Reversi, given a side length.
    * Useful for testing to be able to set custom board size.
    * Initializes all class fields for the game.
+   * @param sideLength the custom side length
+   * @throws IllegalArgumentException if the given side length is less than 3
    */
   public BasicReversi(int sideLength) {
     if (sideLength < 3) {
@@ -52,6 +55,40 @@ public class BasicReversi implements ReversiModel {
     placeStartingTiles();
     //black moves first, and their i
     this.currentPlayerIndex = 0;
+  }
+
+  /**
+   * Constructs a model object for playing a game of Reversi, given a starting
+   * board for the game.
+   * @param givenBoard the board with which to start the game
+   */
+  public BasicReversi(Tile[][] givenBoard) {
+    if (givenBoard == null || givenBoard.length < 5) {
+      throw new IllegalArgumentException("Minimum side length of 3 required"
+          + "for a playable game of Reversi.");
+    }
+    this.boardSize = givenBoard.length;
+    this.board = copyBoard(givenBoard);
+    this.passCount = 0;
+    this.currentPlayerIndex = 0;
+  }
+
+  private Tile[][] copyBoard(Tile[][] givenBoard) {
+    int boardSize = givenBoard.length;
+    Tile[][] board = new Tile[boardSize][boardSize];
+    for (int r = 0; r < boardSize; r++) {
+      for (int q = 0; q < boardSize; q++) {
+        if (r + q > (boardSize / 2) * 3 || r + q < boardSize / 2) {
+          board[r][q] = null;
+        } else {
+          board[r][q] = new Tile(r, q);
+          if (!givenBoard[r][q].isEmpty()) {
+            board[r][q].placeDisc(givenBoard[r][q].getContents());
+          }
+        }
+      }
+    }
+    return board;
   }
 
   //helps set up game state by filling the 2D array representing the game board
@@ -125,8 +162,7 @@ public class BasicReversi implements ReversiModel {
     if (!tileInBoard(coordinate.q, coordinate.r)) {
       throw new IllegalArgumentException("Given coordinate out of bounds of board.");
     }
-    PlayerColor currentColor = getCurrentPlayer();
-    List<List<Tile>> validRows = getValidRows(coordinate, currentColor);
+    List<List<Tile>> validRows = getValidRows(coordinate, getCurrentPlayer());
     return !validRows.isEmpty();
   }
 
