@@ -3,7 +3,6 @@ package view.gui;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.awt.geom.AffineTransform;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -12,35 +11,58 @@ import javax.swing.JPanel;
 
 public class ReversiPanel extends JPanel implements ViewPanel, MouseListener {
   private final List<ViewableTile> tileList;
-  private final int radius = 40;
+  private final double radius;
+  private final double tileWidth;
+  private final double tileHeight;
+  private final int panelWidth; //TODO these might not be able to be resizable based on how resizing works
+  private final int panelHeight;
   private PanelEventListener listener; //TODO careful - not initialized in constructor; also, change to list later?
 
-  public ReversiPanel(int boardSize, boolean bingBong) {
-    setPreferredSize(new Dimension(boardSize * (int)Math.sqrt(3) * radius, 17 * radius));
-    setBackground(Color.GRAY);
+  public ReversiPanel(int boardSize) {
+    //setPreferredSize(new Dimension(boardSize * (int)Math.sqrt(3) * radius, 17 * radius));
+    this.radius = 40;
+    this.tileWidth = Math.sqrt(3) * this.radius;
+    this.tileHeight = 2 * this.radius;
+    this.panelWidth = 760; //TODO prob can't leave these hardcoded
+    this.panelHeight = 680;
+    setPreferredSize(new Dimension(this.panelWidth, this.panelHeight));
+    setBackground(Color.BLACK);
     //the panel needs to be able to take clicks, so it is a mouse listener
     addMouseListener(this);
+
     //TODO after making listeners a list, initialize it here
     //this.listeners = new ArrayList<>();
 
     this.tileList = new ArrayList<>();
-    this.tileList.add(new ViewableTile(Color.BLUE, 60 * Math.sqrt(3), 40.0, radius, 0, 5));
-    this.tileList.add(new ViewableTile(Color.BLUE, 5.5 * (Math.sqrt(3)/2) * 40, 340, radius, 5, 5));
+    int halfBoard = boardSize / 2;
 
-    //populate the tile list with tiles
-//    for (int r = 0; r < boardSize; r++) {
-//      for (int q = 0; q < boardSize; q++) {
-//        //if the coordinates are within the hexagonal board
-//        if (r + q <= (boardSize / 2) * 3 && r + q >= boardSize / 2) {
-//          ViewableTile tile = new ViewableTile(Color.BLUE, q * radius, r * radius, radius, q, r);
-//          this.tileList.add(tile);
-//        }
-//      }
-//    }
+    for (int row = 0; row >= -halfBoard; row--) {
+      for (int index = row; index <= halfBoard; index++) {
+        ViewableTile tile = new ViewableTile(Color.GRAY,
+            getCenter().width + (tileWidth * index) - (tileWidth * (halfBoard + row) / 2),
+            getCenter().height - radius * (1.5 * (halfBoard + row)),
+            radius,
+            halfBoard+ index,
+            -row);
+        tileList.add(tile);
 
-
+        if (row != -halfBoard) {
+            ViewableTile tile2 = new ViewableTile(Color.GRAY,
+                getCenter().width + (tileWidth * index) - (tileWidth * (halfBoard + row) / 2),
+                getCenter().height + radius * (1.5 * (halfBoard + row)),
+                radius,
+                index + Math.abs(row),
+                boardSize + row - 1);
+            tileList.add(tile2);
+        }
+      }
+    }
 
     //drawDiscs method call here to redraw each disc on the board on top of the tiles
+  }
+
+  private Dimension getCenter() {
+    return new Dimension(this.panelWidth / 2, this.panelHeight / 2);
   }
 
   @Override

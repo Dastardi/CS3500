@@ -41,9 +41,12 @@ public class ViewableTile {
   }
 
   public void draw(Graphics g) {
-    g.setColor(this.color);
     Graphics2D g2d = (Graphics2D) g;
+    g.setColor(Color.BLACK);
     g2d.draw(hexagon);
+    g.setColor(this.color);
+    g2d.fill(hexagon);
+    //TODO later consider separating drawing outline from filling
   }
 
   public void setColor(Color color) {
