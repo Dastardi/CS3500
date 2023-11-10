@@ -97,6 +97,7 @@ public class ReversiPanel extends JPanel implements ViewPanel, MouseListener {
   @Override
   public void paintComponent(Graphics g) {
     super.paintComponent(g);
+    //recalculate radius and tileWidth based on the frame
     for (ViewableTile tile : tileList) {
       tile.draw(g);
     }
@@ -119,6 +120,7 @@ public class ReversiPanel extends JPanel implements ViewPanel, MouseListener {
     this.listener.tileClicked(q, r);
   }
 
+  //TODO set all other tiles to the base color
   @Override
   public void mouseClicked(MouseEvent e) {
     Point pointClicked = e.getPoint();
