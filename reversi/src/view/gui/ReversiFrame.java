@@ -10,12 +10,12 @@ public class ReversiFrame extends JFrame implements ViewFrame, PanelEventListene
 
   public ReversiFrame(ReadOnlyReversiModel model) {
     int boardSize = model.getBoardSize();
-    setPreferredSize(new Dimension(760, 680));
+    //TODO come back to this - HAD TO CHANGE TO 710 FROM 680 TO FIT THE BOARD
+    setPreferredSize(new Dimension(760, 710));
     setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-    this.panel = new ReversiPanel(boardSize, true);
+    this.panel = new ReversiPanel(boardSize);
     add(this.panel);
     pack();
-    setVisible(true); //TODO don't need this if it's in main?
     setResizable(false);
   }
 

@@ -3,7 +3,6 @@ package view.gui;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.awt.geom.AffineTransform;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -12,40 +11,93 @@ import javax.swing.JPanel;
 
 public class ReversiPanel extends JPanel implements ViewPanel, MouseListener {
   private final List<ViewableTile> tileList;
-  private final int radius = 40;
+  private final double radius;
+  private final double tileWidth;
+  private final double tileHeight;
+  private final int panelWidth; //TODO these might not be able to be resizable based on how resizing works
+  private final int panelHeight;
   private PanelEventListener listener; //TODO careful - not initialized in constructor; also, change to list later?
 
-  public ReversiPanel(int boardSize, boolean bingBong) {
-    setPreferredSize(new Dimension(boardSize * (int)Math.sqrt(3) * radius, 17 * radius));
-    setBackground(Color.GRAY);
+  public ReversiPanel(int boardSize) {
+    //setPreferredSize(new Dimension(boardSize * (int)Math.sqrt(3) * radius, 17 * radius));
+    this.radius = 40;
+    this.tileWidth = Math.sqrt(3) * this.radius;
+    this.tileHeight = 2 * this.radius;
+    this.panelWidth = 760; //TODO prob can't leave these hardcoded
+    this.panelHeight = 680;
+    setPreferredSize(new Dimension(this.panelWidth, this.panelHeight));
+    setBackground(Color.BLACK);
     //the panel needs to be able to take clicks, so it is a mouse listener
     addMouseListener(this);
+
     //TODO after making listeners a list, initialize it here
     //this.listeners = new ArrayList<>();
 
     this.tileList = new ArrayList<>();
-    this.tileList.add(new ViewableTile(Color.BLUE, 60 * Math.sqrt(3), 40.0, radius, 0, 5));
-    this.tileList.add(new ViewableTile(Color.BLUE, 5.5 * (Math.sqrt(3)/2) * 40, 340, radius, 5, 5));
+    int halfBoard = boardSize / 2;
 
-    //populate the tile list with tiles
-//    for (int r = 0; r < boardSize; r++) {
-//      for (int q = 0; q < boardSize; q++) {
-//        //if the coordinates are within the hexagonal board
-//        if (r + q <= (boardSize / 2) * 3 && r + q >= boardSize / 2) {
-//          ViewableTile tile = new ViewableTile(Color.BLUE, q * radius, r * radius, radius, q, r);
-//          this.tileList.add(tile);
-//        }
-//      }
-//    }
+    //create and add the board to tileList.
+    //row moves from 0 to the negative board size, in order to get represent the full board
+    //row-by-row on a 0 index
+    for (int row = 0; row >= -halfBoard; row--) {
+      //index is based on row, and moves from the value of row to half the size of the board.
+      //this will always generate the correct amount of tiles for that row.
+      for (int index = row; index <= halfBoard; index++) {
+        //for adding the top rows, including the center row.
+        ViewableTile tile = new ViewableTile(Color.GRAY,
+            //based on the horizontal center of the board, offset by the correct amount based on
+            //the index, the tile width, and the row number.
+            getCenter().width + (tileWidth * index) - (tileWidth * (halfBoard + row) / 2),
+            //based on the vertical center of the board, offset by the correct amount based on
+            //the row number. As we don't need to do the offset calculations, this is a lot
+            //simpler than calculating x.
+            getCenter().height - radius * (1.5 * (halfBoard + row)),
+            //set the radius
+            radius,
+            //since q is offset to the right in the top half of the axial array,
+            //the range of values starts at its smallest at the top and increases
+            //as we go down. since index gets more negative over time, this does that.
+            halfBoard + index,
+            //r starts at 0 and goes up, whereas row starts at 0 and goes down.
+            -row);
+        tileList.add(tile);
 
-
+        //for adding the bottom rows - does not include the middle row, hence the if
+        if (row != -halfBoard) {
+            ViewableTile tile2 = new ViewableTile(Color.GRAY,
+                //same horizontal calculations as above.
+                getCenter().width + (tileWidth * index) - (tileWidth * (halfBoard + row) / 2),
+                //slightly different y - adds the calculation rather than subtracting it to place
+                //the row further down the frame, as (0,0) is in the top left.
+                getCenter().height + radius * (1.5 * (halfBoard + row)),
+                //set the radius
+                radius,
+                //since q is offset to the left in the bottom half of the axial array,
+                //the range of values must stay consistent on the left and increase
+                //as we go up. index and row are always going to be the same on the first
+                //run of the inner for loop, but as it continues index will increase and the
+                //offset from row will stay the same.
+                index + Math.abs(row),
+                //in this call, r has to start at boardSize-1 and go down - as the row loop
+                //continues, it will decrease over time, so adding it allows us to build from
+                //the bottom up.
+                boardSize + row - 1);
+            tileList.add(tile2);
+        }
+      }
+    }
 
     //drawDiscs method call here to redraw each disc on the board on top of the tiles
+  }
+
+  private Dimension getCenter() {
+    return new Dimension(this.panelWidth / 2, this.panelHeight / 2);
   }
 
   @Override
   public void paintComponent(Graphics g) {
     super.paintComponent(g);
+    //recalculate radius and tileWidth based on the frame
     for (ViewableTile tile : tileList) {
       tile.draw(g);
     }
@@ -68,6 +120,7 @@ public class ReversiPanel extends JPanel implements ViewPanel, MouseListener {
     this.listener.tileClicked(q, r);
   }
 
+  //TODO set all other tiles to the base color
   @Override
   public void mouseClicked(MouseEvent e) {
     Point pointClicked = e.getPoint();
