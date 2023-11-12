@@ -181,6 +181,21 @@ public class BasicReversi implements ReversiModel {
     return hasLegalMove;
   }
 
+  @Override
+  public int getMoveScore(Coordinate coordinate) {
+    if (!tileInBoard(coordinate.q, coordinate.r)) {
+      throw new IllegalArgumentException("Given coordinate out of bounds of board.");
+    }
+    int moveScore = 0;
+    List<List<Tile>> validRows = getValidRows(coordinate, getCurrentPlayer());
+    if (!validRows.isEmpty()) {
+      for (List<Tile> row : validRows) {
+        moveScore += row.size();
+      }
+    }
+    return moveScore;
+  }
+
   //returns a list of all rows emanating out from a coordinate
   //that would render a move there legal
   private List<List<Tile>> getValidRows(Coordinate coordinate, PlayerColor currentColor) {

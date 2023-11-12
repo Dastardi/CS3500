@@ -1,13 +1,19 @@
 package view.gui;
 
+import model.Coordinate;
+
 /**
  * add javadoc
  */
 public interface PanelEventListener {
   /**
    * add javadoc
-   * @param xCoord
-   * @param yCoord
+   * @param coordinate
    */
-  void tileClicked(int xCoord, int yCoord);
+  public boolean moveMadeAndWasValid(Coordinate coordinate);
+
+  /**
+   * add javadoc
+   */
+  public void passed();
 }

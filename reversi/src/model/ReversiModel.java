@@ -11,11 +11,11 @@ public interface ReversiModel extends ReadOnlyReversiModel {
    * @throws IllegalStateException if the chosen tile already has a disc in it,
    * if the move is illegal, or if the game is over.
    */
-  public void move(Coordinate coordinate) throws IllegalArgumentException, IllegalStateException;
+  void move(Coordinate coordinate) throws IllegalArgumentException, IllegalStateException;
 
   /**
    * Passes the current player's turn without placing a disc, skipping to the next player's turn.
    * @throws IllegalStateException if the game is over.
    */
-  public void pass() throws IllegalStateException;
+  void pass() throws IllegalStateException;
 }
