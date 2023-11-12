@@ -75,3 +75,44 @@ Task: explain what functionality was missing, and why, and how you chose to add 
 Changes: 
 - Renamed interfaces, changed which one extended which
 - Added the isMoveLegal and currentPlayerHasLegalMoves methods
+- We use enter to place a disc
+
+Note: do we want to explain board population here instead of in comments?
+//create and add the board to tileList.
+//row moves from 0 to the negative board size, in order to get represent the full board
+//row-by-row on a 0 index
+//index is based on row, and moves from the value of row to half the size of the board.
+//this will always generate the correct amount of tiles for that row.
+//for adding the top rows, including the center row.
+//based on the horizontal center of the board, offset by the correct amount based on
+//the index, the tile width, and the row number.
+//based on the vertical center of the board, offset by the correct amount based on
+//the row number. As we don't need to do the offset calculations, this is a lot
+//simpler than calculating x.
+//set the radius
+//since q is offset to the right in the top half of the axial array,
+//the range of values starts at its smallest at the top and increases
+//as we go down. since index gets more negative over time, this does that.
+//r starts at 0 and goes up, whereas row starts at 0 and goes down.
+
+//for adding the bottom rows - does not include the middle row, hence the if
+//same horizontal calculations as above.
+//slightly different y - adds the calculation rather than subtracting it to place
+//the row further down the frame, as (0,0) is in the top left.
+//set the radius
+//since q is offset to the left in the bottom half of the axial array,
+//the range of values must stay consistent on the left and increase
+//as we go up. index and row are always going to be the same on the first
+//run of the inner for loop, but as it continues index will increase and the
+//offset from row will stay the same.
+//in this call, r has to start at boardSize-1 and go down - as the row loop
+//continues, it will decrease over time, so adding it allows us to build from
+//the bottom up.
+
+
+## QUESTIONS
+Are we doing too much in our constructors? 
+
+Should we use transform or redraw tiles each time?
+
+How do we draw discs on our tiles?

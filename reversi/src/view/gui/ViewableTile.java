@@ -1,13 +1,15 @@
 package view.gui;
 
 import java.awt.*;
+import java.awt.geom.Path2D;
 import java.awt.geom.Point2D;
 import java.util.Objects;
 
 /**
- * add javadoc
+ * The implementation of a view tile for a Reversi GUI, to be arranged in a panel. Makes life
+ * easier in terms of placing discs, drawing the board, selecting tiles, and listening to inputs.
  */
-public class ViewableTile {
+public class ViewableTile implements ViewableReversiTile{
   //x and y represent the position of the tile in the window in which it will be drawn
   private final double x;
   private final double y;
@@ -15,17 +17,20 @@ public class ViewableTile {
   //that this ViewableTile corresponds to
   private final int q;
   private final int r;
+  private final double radius;
   private Color color;
+  private Color discColor;
   private final Hexagon2D hexagon;
+  private Path2D.Double disc;
 
   /**
-   * add javadoc
-   * @param color
-   * @param x
-   * @param y
-   * @param radius
-   * @param q
-   * @param r
+   * Constructs the ViewableTile from a number of inputs, described below.
+   * @param color the initial color of the tile.
+   * @param x the x coordinate of the center of the tile.
+   * @param y the y coordinate of the center of the tile.
+   * @param radius the radius of the tile, for drawing its hexagon and later its disc.
+   * @param q the q value of the tile in the axial coordinate array.
+   * @param r the r value of the tile in the axial coordinate array.
    */
   public ViewableTile(Color color, double x, double y, double radius, int q, int r) {
     if (x < 0 || y < 0) {
@@ -36,53 +41,53 @@ public class ViewableTile {
     this.y = y;
     this.q = q;
     this.r = r;
+    this.radius = radius;
 
     this.hexagon = new Hexagon2D(x, y, radius);
+    this.disc = new Circle2D(x, y, radius/2);
   }
 
+  @Override
   public void draw(Graphics g) {
     Graphics2D g2d = (Graphics2D) g;
     g.setColor(Color.BLACK);
     g2d.draw(hexagon);
     g.setColor(this.color);
     g2d.fill(hexagon);
-    //TODO later consider separating drawing outline from filling
+    if (discColor != null) {
+      g.setColor(discColor);
+      g2d.fill(disc);
+      System.out.println(g.getColor() + "-colored disc drawn!");
+    }
   }
 
+  @Override
+  public void setDisc(Color color) {
+    this.discColor = color;
+  }
+
+  @Override
   public void setColor(Color color) {
     this.color = Objects.requireNonNull(color);
   }
 
-  //we can invoke these! pressTile could change the color for us, for example
-  public void pressTile() {
-    //
+  @Override
+  public Color getColor() {
+    return this.color;
   }
 
-  //we can make it so that when we release a tile, for example,
-  //it knows what to do
-  public void releaseTile() {
-    //
-  }
-
-  public boolean containsPoint(Point2D point) {
-    return this.hexagon.contains(point);
-    //TODO confirm this works without contains() explicitly in Hexagon2D
-  }
-
-  //TODO make interface and put all these getters in it but make sure they're necessary
-  public double getX() {
-    return this.x;
-  }
-
-  public double getY() {
-    return this.y;
-  }
-
+  @Override
   public int getQ() {
     return this.q;
   }
 
+  @Override
   public int getR() {
     return this.r;
+  }
+
+  @Override
+  public boolean containsPoint(Point2D point) {
+    return this.hexagon.contains(point);
   }
 }

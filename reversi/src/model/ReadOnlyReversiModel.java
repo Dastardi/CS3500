@@ -12,7 +12,7 @@ public interface ReadOnlyReversiModel {
    * @return the color of the current player
    * @throws IllegalStateException if the game is over
    */
-  public PlayerColor getCurrentPlayer() throws IllegalStateException;
+  PlayerColor getCurrentPlayer() throws IllegalStateException;
 
   /**
    * Read-Only
@@ -20,7 +20,7 @@ public interface ReadOnlyReversiModel {
    * The game ends when two players pass in a row, or when the board is full.
    * @return true iff the game has ended
    */
-  public boolean isGameOver();
+  boolean isGameOver();
 
   /**
    * Read-Only
@@ -32,7 +32,7 @@ public interface ReadOnlyReversiModel {
    * If the players have the exact same score (same number of tiles on the board), returns null.
    * @return the PlayerColor of the player with more discs on the board, or null
    */
-  public PlayerColor getCurrentWinner();
+  PlayerColor getCurrentWinner();
 
   /**
    * Read-Only
@@ -41,7 +41,7 @@ public interface ReadOnlyReversiModel {
    * @param color the color of the player whose score the method is checking
    * @return the number of tiles the player with the given color has on the board
    */
-  public int getPlayerScore(PlayerColor color);
+  int getPlayerScore(PlayerColor color);
 
   /**
    * Read-Only
@@ -49,26 +49,33 @@ public interface ReadOnlyReversiModel {
    * @param coordinate the coordinate of the tile to check
    * @throws IllegalArgumentException if the given coordinate is invalid
    */
-  public Tile getTileAt(Coordinate coordinate) throws IllegalArgumentException;
+  Tile getTileAt(Coordinate coordinate) throws IllegalArgumentException;
 
   /**
    * Read-Only
    * Returns the size of the board for this game of Reversi.
    * @return the board size field
    */
-  public int getBoardSize();
+  int getBoardSize();
 
   /**
    * Determines if a move at a certain spot is legal.
    * @param coordinate the coordinate to check.
    * @return true iff the move is legal.
    */
-  public boolean isMoveLegal(Coordinate coordinate);
+  boolean isMoveLegal(Coordinate coordinate);
+
+  /**
+   *
+   * @param coordinate
+   * @return
+   */
+  int getMoveScore(Coordinate coordinate);
 
   /**
    * Determines if a player has any legal moves. This is important in reversi because if a player
    * is unable to move, the game should force them to pass.
    * @return true iff the player has at least one legal move.
    */
-  public boolean playerHasLegalMoves();
+  boolean playerHasLegalMoves();
 }

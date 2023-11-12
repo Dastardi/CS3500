@@ -19,16 +19,26 @@ public class ReversiTextualView implements TextualView {
   private final ReadOnlyReversiModel model;
   private final Appendable appendable;
 
+  /**
+   * constructs a textual view from a model, creating its own appendable.
+   * @param model the model to be displayed.
+   */
   public ReversiTextualView(ReadOnlyReversiModel model) {
     this.model = model;
     this.appendable = new StringBuilder();
   }
 
+  /**
+   * constructs a textual view from a model and a given appendable.
+   * @param model the model to be displayed.
+   * @param appendable the appendable to write to.
+   */
   public ReversiTextualView(ReadOnlyReversiModel model, Appendable appendable) {
     this.model = model;
     this.appendable = appendable;
   }
 
+  @Override
   public void render() throws IOException {
     this.appendable.append(this.toString());
   }

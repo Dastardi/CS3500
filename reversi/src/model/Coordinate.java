@@ -3,7 +3,11 @@ package model;
 import java.util.Objects;
 
 /**
- * A class to represent axial coordinates in Reversi.
+ * A class to represent axial coordinates in Reversi, using the system described at
+ * <a href="https://www.redblobgames.com/grids/hexagons/">this link</a>. Q and R are values that
+ * represent the index and row of the array. Within the array, the top left and bottom right
+ * corners are left empty, and then the list is transposed diagonally in order to form
+ * a hexagon shape.
  */
 public class Coordinate {
   public final int q;

@@ -10,5 +10,11 @@ public interface TextualView {
    * Writes the toString method to an appendable.
    * @throws IOException if writing throws an IOException.
    */
-  public void render() throws IOException;
+  void render() throws IOException;
+
+  /**
+   * Creates a string-based representation of the board of this view's model.
+   * @return a string representation of the view's model.
+   */
+  String toString();
 }

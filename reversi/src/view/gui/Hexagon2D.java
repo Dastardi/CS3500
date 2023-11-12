@@ -2,7 +2,15 @@ package view.gui;
 
 import java.awt.geom.Path2D;
 
+/**
+ * A class to represent a hexagon on a Reversi game board.
+ */
 public class Hexagon2D extends Path2D.Double {
+  /**
+   * Constructs the hexagon from the center using a passed radius value by calling the
+   * createHexagon method, which uses angle calculations to place and draw the correct paths
+   * from one vertex to another.
+   */
   public Hexagon2D(double centerX, double centerY, double radius) {
     super();
     createHexagon(centerX, centerY, radius);
