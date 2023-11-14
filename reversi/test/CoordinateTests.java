@@ -18,7 +18,7 @@ public class CoordinateTests {
     this.coord1 = new Coordinate(0, 0);
     this.coord2 = new Coordinate(0, 0);
     this.coord3 = new Coordinate(0, 1);
-    this.tile = new Tile(coord1.q, coord1.r);
+    this.tile = new Tile(coord1.getQ(), coord1.getR());
   }
 
   @Test
@@ -39,5 +39,12 @@ public class CoordinateTests {
     Assert.assertEquals(this.coord1.hashCode(), this.coord2.hashCode());
     Assert.assertNotEquals(this.coord1.hashCode(), this.coord3.hashCode());
     Assert.assertNotEquals(this.coord1.hashCode(), this.tile.hashCode());
+  }
+
+  @Test
+  public void testCoordinateString() {
+    StringBuilder sb = new StringBuilder();
+    sb.append("Coordinate 1: " + coord1);
+    Assert.assertEquals("", sb.toString());
   }
 }

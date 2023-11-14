@@ -32,7 +32,8 @@ public class ReversiFrame extends JFrame implements PanelEventListener {
 
   @Override
   public boolean moveMadeAndWasValid(Coordinate coordinate) {
-    System.out.println("Hello I am the frame and you're trying to move here: " + coordinate.q + " " + coordinate.r);
+    System.out.println("Hello I am the frame and you're trying to move here: "
+        + coordinate.getQ() + " " + coordinate.getR());
     //todo stub method - fix this
     return true; //todo this should only be true if the controller says the model says the move is valid
   }

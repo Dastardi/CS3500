@@ -4,8 +4,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Holds the model for a game of Reversi.
- * Contains all fields and methods necessary for internal gameplay.
+ * Holds the model for a game of Reversi. In Reversi, two players (white and black) place discs
+ * on a board with the goal of flipping the opponent's tiles to their color. A player can flip
+ * an opponent's tiles if she traps a line of their tiles in a sandwich of her tiles.
+ * Players have two options on their turn: make a legal move, or pass. A move is legal if it will
+ * flip at least one enemy tile. Passing places no tiles for the turn, and lets the oppponent
+ * go. If both players pass in sequence, the game ends. The game also ends when the board is full.
+ * At the end of the game, the player with the most tiles on the board wins.
+ * The BasicReversi class contains all fields and methods necessary for internal gameplay.
  */
 public class BasicReversi implements ReversiModel {
   //represents the size of the game board (the number of tiles in the longest row)
@@ -130,7 +136,7 @@ public class BasicReversi implements ReversiModel {
   public void move(Coordinate coordinate) {
     throwIfGameOver();
     //cannot make a move to a coordinate that is not a part of the board
-    if (!tileInBoard(coordinate.q, coordinate.r)) {
+    if (!tileInBoard(coordinate.getQ(), coordinate.getR())) {
       throw new IllegalArgumentException("Given coordinate out of bounds of board.");
     }
     //get the current player and increment the player index
@@ -159,7 +165,7 @@ public class BasicReversi implements ReversiModel {
   //TODO: ask TA about repetitive code and checking move legality externally
   // i.e. is it bad to call this public method inside move()
   public boolean isMoveLegal(Coordinate coordinate) {
-    if (!tileInBoard(coordinate.q, coordinate.r)) {
+    if (!tileInBoard(coordinate.getQ(), coordinate.getR())) {
       throw new IllegalArgumentException("Given coordinate out of bounds of board.");
     }
     List<List<Tile>> validRows = getValidRows(coordinate, getCurrentPlayer());
@@ -183,7 +189,7 @@ public class BasicReversi implements ReversiModel {
 
   @Override
   public int getMoveScore(Coordinate coordinate) {
-    if (!tileInBoard(coordinate.q, coordinate.r)) {
+    if (!tileInBoard(coordinate.getQ(), coordinate.getR())) {
       throw new IllegalArgumentException("Given coordinate out of bounds of board.");
     }
     int moveScore = 0;
@@ -214,7 +220,7 @@ public class BasicReversi implements ReversiModel {
         //get the next tile in the row
         Tile nextTile = getNextInRow(getTileAt(coordinate), neighbor);
         //while the next row is the opposite color, keep iterating and adding to the row
-        while (nextTile != null && nextTile.getContents() != currentColor) {
+        while (nextTile != null && !nextTile.isEmpty() && nextTile.getContents() != currentColor) {
           row.add(nextTile);
           nextTile = getNextInRow(neighbor, nextTile);
         }
@@ -240,10 +246,10 @@ public class BasicReversi implements ReversiModel {
   // to the board to get the next tile along the row
   private Tile getNextInRow(Tile tile, Tile neighbor) {
     //get the changes in axial coordinates for finding the next tile in the sequence
-    int deltaQ = neighbor.getCoordinate().q - tile.getCoordinate().q;
-    int deltaR = neighbor.getCoordinate().r - tile.getCoordinate().r;
-    int nextTileQ = neighbor.getCoordinate().q + deltaQ;
-    int nextTileR = neighbor.getCoordinate().r + deltaR;
+    int deltaQ = neighbor.getCoordinate().getQ() - tile.getCoordinate().getQ();
+    int deltaR = neighbor.getCoordinate().getR() - tile.getCoordinate().getR();
+    int nextTileQ = neighbor.getCoordinate().getQ() + deltaQ;
+    int nextTileR = neighbor.getCoordinate().getR() + deltaR;
     //make sure this tile exists in the board before trying to access it
     //to avoid index out of bounds exceptions
     if (tileInBoard(nextTileQ, nextTileR)) {
@@ -258,17 +264,17 @@ public class BasicReversi implements ReversiModel {
     List<Tile> neighbors = new ArrayList<>();
 
     //tile to the right of center
-    addTileIfInBoard(neighbors, coordinate.q + 1, coordinate.r);
+    addTileIfInBoard(neighbors, coordinate.getQ() + 1, coordinate.getR());
     //tile to the bottom right of center
-    addTileIfInBoard(neighbors, coordinate.q, coordinate.r + 1);
+    addTileIfInBoard(neighbors, coordinate.getQ(), coordinate.getR() + 1);
     //tile to the bottom left of center
-    addTileIfInBoard(neighbors, coordinate.q - 1, coordinate.r + 1);
+    addTileIfInBoard(neighbors, coordinate.getQ() - 1, coordinate.getR() + 1);
     //tile to the left of center
-    addTileIfInBoard(neighbors, coordinate.q - 1, coordinate.r);
+    addTileIfInBoard(neighbors, coordinate.getQ() - 1, coordinate.getR());
     //tile to the top left of center
-    addTileIfInBoard(neighbors, coordinate.q , coordinate.r - 1);
+    addTileIfInBoard(neighbors, coordinate.getQ() , coordinate.getR() - 1);
     //tile to the top right of center
-    addTileIfInBoard(neighbors, coordinate.q + 1, coordinate.r - 1);
+    addTileIfInBoard(neighbors, coordinate.getQ() + 1, coordinate.getR() - 1);
 
     return neighbors;
   }
@@ -374,7 +380,7 @@ public class BasicReversi implements ReversiModel {
   @Override
   public Tile getTileAt(Coordinate coordinate) {
     try {
-      return this.board[coordinate.q][coordinate.r];
+      return this.board[coordinate.getQ()][coordinate.getR()];
     } catch (IndexOutOfBoundsException e) {
       throw new IllegalArgumentException("Coordinate is invalid.");
     }

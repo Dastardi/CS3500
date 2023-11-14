@@ -76,6 +76,10 @@ Changes:
 - Renamed interfaces, changed which one extended which
 - Added the isMoveLegal and currentPlayerHasLegalMoves methods
 - We use enter to place a disc
+- Added an isEmpty check to getValidRows for edge cases
+
+### EXTRA CREDIT:
+- TODO
 
 Note: do we want to explain board population here instead of in comments?
 //create and add the board to tileList.

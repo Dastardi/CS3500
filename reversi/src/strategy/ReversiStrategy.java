@@ -4,6 +4,7 @@ import model.Coordinate;
 import model.ReadOnlyReversiModel;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Represents a strategy for a game of Reversi, either human or AI.
@@ -14,5 +15,5 @@ public interface ReversiStrategy {
    * @param model
    * @return
    */
-  Coordinate chooseMove(ReadOnlyReversiModel model);
+  Optional<Coordinate> chooseMove(ReadOnlyReversiModel model);
 }

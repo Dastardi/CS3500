@@ -8,7 +8,7 @@ import java.util.Objects;
 
 /**
  * Represents a composite strategy allowing for nesting of various different strategies.
- * When asked to return a move, it prioritizes the first strategy, then tries the second if the
+ * When asked to return a move, it prioritizes the first strategy, then tries the rest if the
  * first has no viable options.
  */
 public class CompositeStrategy implements ReversiStrategy {
@@ -27,10 +27,10 @@ public class CompositeStrategy implements ReversiStrategy {
 
   @Override
   public Coordinate chooseMove(ReadOnlyReversiModel model) { //todo just make sure this works
-    List<ScoredMove> firstStrategyBestMoves = null;
-    if (!firstStrategyBestMoves.isEmpty()) {
-      //return firstStrategyBestMoves;
+    Coordinate firstStrategyBestMove = first.chooseMove(model);
+    if (firstStrategyBestMove != null) {
+      return firstStrategyBestMove;
     }
-    return new Coordinate(1,1);
+    return rest.chooseMove(model);
   }
 }

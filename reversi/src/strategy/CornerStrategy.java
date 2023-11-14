@@ -3,15 +3,17 @@ package strategy;
 import model.Coordinate;
 import model.ReadOnlyReversiModel;
 
+import javax.swing.text.html.Option;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * a strategy that captures the most advantageous corner
  */
 public class CornerStrategy implements ReversiStrategy {
   @Override
-  public Coordinate chooseMove(ReadOnlyReversiModel model) {
+  public Optional<Coordinate> chooseMove(ReadOnlyReversiModel model) {
     int boardSize = model.getBoardSize();
     int halfBoard = boardSize / 2;
     int topScore = 0;
@@ -34,10 +36,8 @@ public class CornerStrategy implements ReversiStrategy {
         }
       }
     }
-    return breakTies(bestMoves);
-  }
-
-  private Coordinate breakTies(List<Coordinate> moves) {
-    return moves.get(0); //todo fix
+    if (bestMoves.isEmpty()) {
+      return Optional.empty();
+    } else return Optional.of(bestMoves.get(0));
   }
 }
