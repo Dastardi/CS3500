@@ -1,6 +1,8 @@
 package view.gui;
 
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.geom.Path2D;
 import java.awt.geom.Point2D;
 import java.util.Objects;
@@ -10,18 +12,14 @@ import java.util.Objects;
  * easier in terms of placing discs, drawing the board, selecting tiles, and listening to inputs.
  */
 public class ViewableTile implements ViewableReversiTile{
-  //x and y represent the position of the tile in the window in which it will be drawn
-  private final double x;
-  private final double y;
   //q and r represent the logical axial coordinates of the Tile object in the model
   //that this ViewableTile corresponds to
   private final int q;
   private final int r;
-  private final double radius;
   private Color color;
   private Color discColor;
   private final Hexagon2D hexagon;
-  private Path2D.Double disc;
+  private final Path2D.Double disc;
 
   /**
    * Constructs the ViewableTile from a number of inputs, described below.
@@ -37,11 +35,8 @@ public class ViewableTile implements ViewableReversiTile{
       throw new IllegalArgumentException("Coordinates cannot be negative.");
     }
     this.color = Objects.requireNonNull(color);
-    this.x = x;
-    this.y = y;
     this.q = q;
     this.r = r;
-    this.radius = radius;
 
     this.hexagon = new Hexagon2D(x, y, radius);
     this.disc = new Circle2D(x, y, radius/2);

@@ -10,8 +10,8 @@ import java.util.Objects;
  * a hexagon shape.
  */
 public class Coordinate {
-  public final int q;
-  public final int r;
+  private final int q;
+  private final int r;
 
   /**
    * Constructs the coordinate.
@@ -53,5 +53,18 @@ public class Coordinate {
   @Override
   public int hashCode() {
     return Objects.hash(q, r);
+  }
+
+  @Override
+  public String toString() {
+    return this.q + ", " + this.r;
+  }
+
+  public int getQ() {
+    return this.q;
+  }
+
+  public int getR() {
+    return this.r;
   }
 }
