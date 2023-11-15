@@ -3,21 +3,28 @@ package strategy;
 import model.Coordinate;
 import model.ReadOnlyReversiModel;
 
-import javax.swing.text.html.Option;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
+import java.util.Objects;
 
 /**
- * a strategy that captures the most advantageous corner
+ * A strategy that captures the most advantageous corner.
  */
 public class CornerStrategy implements ReversiStrategy {
+  ReadOnlyReversiModel model;
+
+  /**
+   * Constructs the CornerStrategy using the given model.
+   * @param model the model of the game that this strategy is playing.
+   */
+  public CornerStrategy(ReadOnlyReversiModel model) {
+    this.model = Objects.requireNonNull(model);
+  }
+
   @Override
-  public Optional<Coordinate> chooseMove(ReadOnlyReversiModel model) {
-    int boardSize = model.getBoardSize();
+  public List<Coordinate> chooseMove(List<Coordinate> moveList) {
+    int boardSize = this.model.getBoardSize();
     int halfBoard = boardSize / 2;
     int topScore = 0;
-    List<Coordinate> bestMoves = new ArrayList<>();
 
     for (int r = 0; r < boardSize; r += halfBoard) {
       for (int q = 0; q < boardSize; q += halfBoard) {
@@ -27,17 +34,15 @@ public class CornerStrategy implements ReversiStrategy {
             int moveScore = model.getMoveScore(coordinate);
             if (moveScore > topScore) {
               topScore = moveScore;
-              bestMoves.clear();
-              bestMoves.add(coordinate);
+              moveList.clear();
+              moveList.add(coordinate);
             } else if (moveScore == topScore) {
-              bestMoves.add(coordinate);
+              moveList.add(coordinate);
             }
           }
         }
       }
     }
-    if (bestMoves.isEmpty()) {
-      return Optional.empty();
-    } else return Optional.of(bestMoves.get(0));
+    return moveList;
   }
 }

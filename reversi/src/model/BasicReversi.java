@@ -4,12 +4,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Holds the model for a game of Reversi. In Reversi, two players (white and black) place discs
- * on a board with the goal of flipping the opponent's tiles to their color. A player can flip
- * an opponent's tiles if she traps a line of their tiles in a sandwich of her tiles.
- * Players have two options on their turn: make a legal move, or pass. A move is legal if it will
- * flip at least one enemy tile. Passing places no tiles for the turn, and lets the oppponent
- * go. If both players pass in sequence, the game ends. The game also ends when the board is full.
+ * Holds the model for a game of Reversi.
+ * In Reversi, two players, each represented by a color (white or black),
+ * place discs on a board with the goal of flipping the opponent's tiles to their color.
+ * A player can flip an opponent's tiles if she traps a line of their tiles in a sandwich
+ * of her tiles. Players have two options on their turn: make a legal move, or pass.
+ * A move is legal if it will flip at least one enemy tile.
+ * Passing places no tiles for the turn, and lets the opponent go.
+ * If both players pass in sequence, the game ends. The game also ends when the board is full.
  * At the end of the game, the player with the most tiles on the board wins.
  * The BasicReversi class contains all fields and methods necessary for internal gameplay.
  */
@@ -29,6 +31,8 @@ public class BasicReversi implements ReversiModel {
 
   /**
    * Constructs a basic model object for playing a game of Reversi with 6 tiles on each side.
+   * This will result in a board that has a longest center row length of 11,
+   * which is the standard board size.
    * Default constructor that calls a more robust constructor with the default side length.
    */
   public BasicReversi() {
@@ -39,12 +43,14 @@ public class BasicReversi implements ReversiModel {
 
   /**
    * Constructs a model object for playing a game of Reversi, given a side length.
-   * Useful for testing to be able to set custom board size.
+   * Useful for testing to be able to set custom board size, or if the user
+   * wants a different size board.
    * Initializes all class fields for the game.
    * @param sideLength the custom side length
    * @throws IllegalArgumentException if the given side length is less than 3
    */
   public BasicReversi(int sideLength) {
+    //side lengths of less than 3 result in an invalid/unplayable board
     if (sideLength < 3) {
       throw new IllegalArgumentException("Minimum side length of 3 required"
               + "for a playable game of Reversi.");
@@ -66,6 +72,9 @@ public class BasicReversi implements ReversiModel {
   /**
    * Constructs a model object for playing a game of Reversi, given a starting
    * board for the game.
+   * Helpful for testing to initialize a board under chosen conditions.
+   * Could theoretically allow a user to provide starting conditions for a game,
+   * though that is not currently implemented.
    * @param givenBoard the board with which to start the game
    */
   public BasicReversi(Tile[][] givenBoard) {
@@ -79,6 +88,9 @@ public class BasicReversi implements ReversiModel {
     this.currentPlayerIndex = 0;
   }
 
+  //constructs a deep copy of a Reversi board
+  //takes in a given board, made to be used with the constructor that does the same,
+  //and returns a deep copy of the board (same data, new reference)
   private Tile[][] copyBoard(Tile[][] givenBoard) {
     int boardSize = givenBoard.length;
     Tile[][] board = new Tile[boardSize][boardSize];
@@ -162,8 +174,7 @@ public class BasicReversi implements ReversiModel {
     updatePlayer();
   }
 
-  //TODO: ask TA about repetitive code and checking move legality externally
-  // i.e. is it bad to call this public method inside move()
+  @Override
   public boolean isMoveLegal(Coordinate coordinate) {
     if (!tileInBoard(coordinate.getQ(), coordinate.getR())) {
       throw new IllegalArgumentException("Given coordinate out of bounds of board.");
@@ -233,7 +244,8 @@ public class BasicReversi implements ReversiModel {
     return validRows;
   }
 
-  //flips all the discs in each of the given rows.
+  //flips all the discs in each of the given rows
+  //uses each tile's flip() method, which will flip a black tile to white and vice versa
   private void flipDiscs(List<List<Tile>> validRows) {
     for (List<Tile> row : validRows) {
       for (Tile tile : row) {

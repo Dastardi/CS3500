@@ -1,15 +1,18 @@
 package model;
 
 /**
- * Represents the actions that a player can take in Reversi.
- * These methods are implemented in a model for the game.
+ * Represents the actions that a player can make in Reversi.
+ * A player's only actions are making a move and passing their turn.
+ * These methods are implemented in a model for the game,
+ * as extensions of basic observational functionality held in the main model.
+ * This interface provides the functionality for interacting with the model.
  */
 public interface ReversiModel extends ReadOnlyReversiModel {
   /**
    * Makes a move in a game of Reversi by placing a disc of the given color in the provided space.
    * @throws IllegalArgumentException if the given coordinate is not on the game board.
    * @throws IllegalStateException if the chosen tile already has a disc in it,
-   * if the move is illegal, or if the game is over.
+   *     if the move is illegal, or if the game is over.
    */
   void move(Coordinate coordinate) throws IllegalArgumentException, IllegalStateException;
 

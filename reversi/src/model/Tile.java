@@ -2,6 +2,10 @@ package model;
 
 /**
  * Represents a Tile in a hexagonal board for a game of Reversi.
+ * A Tile is a hexagonal shape that makes up the larger hexagon that is the board.
+ * A Tile is the space where a disc, which represents a "piece" in the game, can be played.
+ * Tile objects contain information about what, if anything, is placed on them.
+ * They also know their own position within the board, represented by an axial coordinate system.
  */
 public class Tile implements ReversiTile {
   private final Coordinate coordinate;

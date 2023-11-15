@@ -1,16 +1,13 @@
-import model.Coordinate;
+import model.BasicReversi;
 import model.PlayerColor;
-import model.ReversiModel;
-import model.Tile;
-
-import java.util.Objects;
+import model.Coordinate;
 
 /**
  * Mock version of a Reversi model to help test the controller.
  * Contains stub implementations of all methods and uses a log
  * to return the inputs being passed to each method in the model.
  */
-public class MockReversiModel implements ReversiModel {
+public class MockReversiModel extends BasicReversi {
   protected final StringBuilder log;
 
   /**
@@ -18,65 +15,42 @@ public class MockReversiModel implements ReversiModel {
    * @param log the StringBuilder to append our validation messages to.
    */
   public MockReversiModel(StringBuilder log) {
-    this.log = Objects.requireNonNull(log);
-  }
-
-  @Override
-  public PlayerColor getCurrentPlayer() throws IllegalStateException {
-    return null;
-  }
-
-  @Override
-  public boolean isGameOver() {
-    return false;
-  }
-
-  @Override
-  public PlayerColor getCurrentWinner() {
-    return null;
+    super();
+    if (log == null) {
+      throw new IllegalArgumentException("Passed log cannot be null!");
+    }
+    this.log = log;
   }
 
   @Override
   public int getPlayerScore(PlayerColor color) {
-    log.append("Getting score for the " + color + " player.");
-    return 0;
-  }
-
-  @Override
-  public Tile getTileAt(Coordinate coordinate) throws IllegalArgumentException {
-    log.append("Getting tile at coordinate: " + coordinate);
-    return null;
-  }
-
-  @Override
-  public int getBoardSize() {
-    return 0;
+    if (log != null) {
+      log.append("Getting score for the " + color + " player.\n");
+    }
+    return super.getPlayerScore(color);
   }
 
   @Override
   public boolean isMoveLegal(Coordinate coordinate) {
-    log.append("Checking that move at " + coordinate + " is legal.");
-    return false;
+    if (log != null) {
+      log.append("Checking that move at " + coordinate + " is legal.\n");
+    }
+    return super.isMoveLegal(coordinate);
   }
 
   @Override
   public int getMoveScore(Coordinate coordinate) {
-    log.append("Getting score at " + coordinate);
-    return 0;
-  }
-
-  @Override
-  public boolean playerHasLegalMoves() {
-    return false;
+    if (log != null) {
+      log.append("Getting score at " + coordinate + "\n");
+    }
+    return super.getMoveScore(coordinate);
   }
 
   @Override
   public void move(Coordinate coordinate) throws IllegalArgumentException, IllegalStateException {
-    log.append("Making a move to " + coordinate);
-  }
-
-  @Override
-  public void pass() throws IllegalStateException {
-    //stub
+    if (log != null) {
+      log.append("Making a move to " + coordinate + "\n");
+    }
+    super.move(coordinate);
   }
 }

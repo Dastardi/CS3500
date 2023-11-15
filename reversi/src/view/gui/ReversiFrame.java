@@ -3,43 +3,60 @@ package view.gui;
 import model.Coordinate;
 import model.ReadOnlyReversiModel;
 
-import javax.swing.*;
-import java.awt.*;
+import javax.swing.JFrame;
+import javax.swing.WindowConstants;
+
+import java.awt.BorderLayout;
 
 /**
- * The frame of the GUI for a reversi game. The frame is a container for the panel,
- * which does the majority of the heavy lifting when it comes to actually
- * displaying the game.
+ * The frame, otherwise called the window, of the GUI for a reversi game.
+ * The frame constitutes the view, though it is effectively a wrapper for the panel.
+ * The panel does the work of displaying the board and directly interacting with the user.
+ * The frame's job is to construct and accurately display the panel, as well as to
+ * pass information from user input, via the panel, to the controller.
+ * Note for this hw06: there is currently no controller in the code, so there is a disconnect
+ * between the view and the model. Once the controller is implemented, it will be a listener
+ * of this view.
  */
 public class ReversiFrame extends JFrame implements PanelEventListener {
-  private final ReversiPanel panel;
-  private final int boardSize;
-
   /**
-   * Constructs the frame of the GUI.
-   * @param model the read-only model to be created in the view
+   * Constructs the frame of the graphical user interface (GUI).
+   * Uses a read-only version of the model because the view is not allowed to change
+   * the model directly or interact with it other than observing its state.
+   * @param model the read-only version of the model to be displayed in the view
    */
   public ReversiFrame(ReadOnlyReversiModel model) {
-    this.boardSize = model.getBoardSize();
     setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-    this.panel = new ReversiPanel(this.boardSize);
-    //make the frame able to listen to the panel
-    this.panel.addPanelListener(this);
-    add(this.panel, BorderLayout.CENTER);
+    ReversiPanel panel = new ReversiPanel(model.getBoardSize());
+    //the frame is a listener of the panel, allowing it to get user interaction information
+    panel.addPanelListener(this);
+    //the panel is the only object in this frame, therefore it is placed in the center
+    //of a simple border layout
+    add(panel, BorderLayout.CENTER);
     setResizable(false);
     pack();
   }
 
   @Override
   public boolean moveMadeAndWasValid(Coordinate coordinate) {
-    System.out.println("Hello I am the frame and you're trying to move here: "
-        + coordinate.getQ() + " " + coordinate.getR());
-    //todo stub method - fix this
-    return true; //todo this should only be true if the controller says the model says the move is valid
+    //see PanelEventListener interface
+
+    //this method is currently a stub
+    //when we add a controller to this code, this method will pass information
+    //from the panel through here and through to the controller.
+    //the controller, in turn, will pass information back (from the model)
+    //about whether the move is valid so that the view knows whether it is okay
+    //to display the requested move
+    //this method should only return true if the controller says the model says the move is valid
+    return true;
   }
 
   @Override
   public void passed() {
-    System.out.println("Hello I am the frame and the user passed"); //todo stub method - fix this
+    //see PanelEventListener interface
+
+    //this method is currently a stub
+    //when we add a controller to this code, this method will pass information
+    //from the panel through here and through to the controller
   }
 }

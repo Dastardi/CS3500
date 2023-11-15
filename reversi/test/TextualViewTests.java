@@ -1,4 +1,7 @@
-import model.*;
+import model.PlayerColor;
+import model.BasicReversi;
+import model.ReversiModel;
+import model.Coordinate;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;

@@ -1,7 +1,6 @@
 package strategy;
 
 import model.Coordinate;
-import model.ReadOnlyReversiModel;
 
 import java.util.List;
 import java.util.Objects;
@@ -26,11 +25,8 @@ public class CompositeStrategy implements ReversiStrategy {
   }
 
   @Override
-  public Coordinate chooseMove(ReadOnlyReversiModel model) { //todo just make sure this works
-    Coordinate firstStrategyBestMove = first.chooseMove(model);
-    if (firstStrategyBestMove != null) {
-      return firstStrategyBestMove;
-    }
-    return rest.chooseMove(model);
+  public List<Coordinate> chooseMove(List<Coordinate> moveList) {
+    List<Coordinate> firstStrategyMoveList = first.chooseMove(moveList);
+    return rest.chooseMove(firstStrategyMoveList);
   }
 }

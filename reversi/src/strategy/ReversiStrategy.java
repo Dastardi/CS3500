@@ -1,19 +1,17 @@
 package strategy;
 
 import model.Coordinate;
-import model.ReadOnlyReversiModel;
 
 import java.util.List;
-import java.util.Optional;
 
 /**
  * Represents a strategy for a game of Reversi, either human or AI.
  */
 public interface ReversiStrategy {
   /**
-   * Returns a list of potential moves
-   * @param model
-   * @return
+   * Returns a list of potential move locations.
+   * @param moveList the list of moves which this will operate on.
+   * @return a list of coordinates that represent the possible moves this strategy suggests.
    */
-  Optional<Coordinate> chooseMove(ReadOnlyReversiModel model);
+  List<Coordinate> chooseMove(List<Coordinate> moveList);
 }

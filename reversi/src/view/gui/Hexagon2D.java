@@ -16,6 +16,10 @@ public class Hexagon2D extends Path2D.Double {
     createHexagon(centerX, centerY, radius);
   }
 
+  //creates a hexagon from the center by finding the point at 30 degrees right and down
+  //one radius distance away and then finding points at increments of 60 degrees, drawing
+  //a line between each point. Once complete it returns the full hexagon for later use
+  //in the GUI panel.
   private void createHexagon(double centerX, double centerY, double radius) {
     // To make a pointy-topped hexagon, we start at 30 degrees, which is π/6 radians
     double angleStep = Math.PI / 3;

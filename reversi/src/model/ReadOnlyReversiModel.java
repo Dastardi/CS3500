@@ -7,7 +7,6 @@ package model;
 public interface ReadOnlyReversiModel {
 
   /**
-   * Read-Only
    * Gets the color of the player that is making the current turn.
    * @return the color of the current player
    * @throws IllegalStateException if the game is over
@@ -15,7 +14,6 @@ public interface ReadOnlyReversiModel {
   PlayerColor getCurrentPlayer() throws IllegalStateException;
 
   /**
-   * Read-Only
    * Returns a boolean based on the state of the game.
    * The game ends when two players pass in a row, or when the board is full.
    * @return true iff the game has ended
@@ -23,7 +21,6 @@ public interface ReadOnlyReversiModel {
   boolean isGameOver();
 
   /**
-   * Read-Only
    * Returns the color of the player that has the highest score when the method is called.
    * Highest score refers to highest number of discs of that color on the board,
    * as given by {@link ReadOnlyReversiModel#getPlayerScore}.
@@ -35,7 +32,6 @@ public interface ReadOnlyReversiModel {
   PlayerColor getCurrentWinner();
 
   /**
-   * Read-Only
    * Returns the score of the given player where the score represents
    * the number of discs with the given player's tile that are currently on the board.
    * @param color the color of the player whose score the method is checking
@@ -44,7 +40,6 @@ public interface ReadOnlyReversiModel {
   int getPlayerScore(PlayerColor color);
 
   /**
-   * Read-Only
    * Returns the Tile at the given coordinate.
    * @param coordinate the coordinate of the tile to check
    * @throws IllegalArgumentException if the given coordinate is invalid
@@ -52,7 +47,6 @@ public interface ReadOnlyReversiModel {
   Tile getTileAt(Coordinate coordinate) throws IllegalArgumentException;
 
   /**
-   * Read-Only
    * Returns the size of the board for this game of Reversi.
    * @return the board size field
    */
@@ -66,15 +60,17 @@ public interface ReadOnlyReversiModel {
   boolean isMoveLegal(Coordinate coordinate);
 
   /**
-   *
-   * @param coordinate
-   * @return
+   * Gets the score of a potential move. Is able to determine the number of tiles that would
+   * be flipped by a move, and returns that value.
+   * @param coordinate the coordinate to check the score for.
+   * @return an integer value representing the number of tiles that would be flipped by that move.
    */
   int getMoveScore(Coordinate coordinate);
 
   /**
    * Determines if a player has any legal moves. This is important in reversi because if a player
    * is unable to move, the game should force them to pass.
+   * Note: Not currently accessed but could be helpful for future use, so we're keeping it for now.
    * @return true iff the player has at least one legal move.
    */
   boolean playerHasLegalMoves();
