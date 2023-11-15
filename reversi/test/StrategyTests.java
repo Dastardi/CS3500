@@ -190,7 +190,6 @@ public class StrategyTests {
     assertTrue(log.toString().contains("Getting score at 6, 6"));
     assertTrue(log.toString().contains("Getting score at 4, 7"));
     assertEquals(new Coordinate(6,3), mockMaxCapture.chooseMove(new ArrayList<>()).get(0));
-    assertEquals("", log.toString());
   }
 
   //liar mock alters the validity check to ensure that the strategy follows the model in

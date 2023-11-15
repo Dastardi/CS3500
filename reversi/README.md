@@ -10,9 +10,13 @@ The code is designed to be modular and extendable for custom functionalities and
 The game should be playable by someone with minimal technical experience, and provide a fun and challenging diversion for anyone who likes a little strategy!
 
 ### QUICK START 
-To display and interact with the board, navigate to the Reversi file and run the main() method. This will create a new window in which a reversi board will be displayed.
+To display and interact with the board, navigate to the Reversi file and run the main() method. 
+This will create a new window in which a reversi board will be displayed.
+You can use your mouse to select and deselect tiles, hit ENTER to place a disc, press SPACE to pass your turn, and press Q to quit.
 
-Without a controller, the game can't actually be played according to the rules. That being said, you can still enjoy clicking around and placing tiles! As we are still in a testing phase of the game, W and B can place tiles colored white and black, so have fun with it.
+Without a controller, the game can't actually be played according to the rules - that means that hitting enter will always place a black disc regardless of turn order, so passing doesn't do much. 
+That being said, as we are still in an early phase of the game and want to be able to easily create boards, W and B can place white and black discs and R can remove a tile's disc, so have fun clicking around!
+These methods will be removed once the controller is implemented, so have no fear of players being able to cheat when playing the game - these are methods solely for testing purposes.
 
 ### KEY COMPONENTS
 **Model** is where the majority of the current code is held, and contains the implementation and documentation of the model. 
@@ -118,7 +122,7 @@ Tile
 - Improved documentation.
 
 ### EXTRA CREDIT:
-- TODO
+- We implemented two of the three extra credit strategies, AvoidCornerAdjacentStrategy and CornerCaptureStrategy. You can check them out in the strategy package and see the tests showing their difference from our base maximum capture strategy in test.StrategyTests.
 
 ### GUI DESIGN CHOICES
 <b>How the board is created:</b>
