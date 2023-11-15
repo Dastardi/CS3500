@@ -55,15 +55,30 @@ public class Coordinate {
     return Objects.hash(q, r);
   }
 
+  //a Coordinate's toString is represented by its q and r values, separated by a comma
+
+  /**
+   * Overrides Object's toString method.
+   * A Coordinate's toString is represented by its q and r values, separated by a comma.
+   * @return the string representation of this Coordinate
+   */
   @Override
   public String toString() {
     return this.q + ", " + this.r;
   }
 
+  /**
+   * Returns the q value, the first part of an axial coordinate system, of this Coordinate.
+   * @return this Coordinate's q value
+   */
   public int getQ() {
     return this.q;
   }
 
+  /**
+   * Returns the r value, the second part of an axial coordinate system, of this Coordinate.
+   * @return this Coordinate's r value
+   */
   public int getR() {
     return this.r;
   }

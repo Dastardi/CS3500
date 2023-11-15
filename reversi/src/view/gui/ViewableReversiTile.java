@@ -1,34 +1,32 @@
 package view.gui;
 
-import java.awt.*;
+import java.awt.Graphics;
+import java.awt.Color;
 import java.awt.geom.Point2D;
 
 /**
  * The interface for a viewable tile in a game of Reversi's visual representation.
- * A ViewableTile holds in its fields a number of important pieces of information -
- * x and y represent its center coordinates, q and r represent its position in the axial
- * coordinate array, radius represents the hexagon size, color represents the current color
- * of the hexagon, and discColor represents the color of the disc currently in this tile (if
- * there is one). The hexagon and disc fields inform the tile of what to draw when it is
- * asked to display itself.
+ * Tiles implementing this interface are made to assist the panel in the display of the game,
+ * therefore they have the ability to draw themselves, draw the discs on them,
+ * change their color, and provide information about their location and state.
  */
 public interface ViewableReversiTile {
   /**
    * Draws this tile using the hexagon and disc fields. Because it holds all the values it
-   * needs within itself, drawing a tile is easy! We just have to pass in a Graphics object
-   * and we're off to the races.
+   * needs within itself, drawing a tile is easy - it only needs a Graphics object.
    * @param g we have to pass in Graphics in order to draw things
    */
   void draw(Graphics g);
 
   /**
-   * sets the color of this tile's reversi disc.
+   * Sets a disc on this tile.
    * @param color the color of the disc to be drawn.
    */
   void setDisc(Color color);
 
   /**
-   * Sets the color of this tile's hexagon to a given color. Used to highlight tiles when clicked.
+   * Sets the color of this tile's hexagon to a given color.
+   * Used to highlight tiles when clicked.
    * @param color the color to change to.
    */
   void setColor(Color color);
@@ -52,7 +50,7 @@ public interface ViewableReversiTile {
   int getR();
 
   /**
-   * A boolean to determine whether a clicked point was within this tile.
+   * Determines whether a clicked point was within this tile.
    * @param point a Point2D object representing a spot on the panel.
    * @return true iff this tile's hexagon contains the given point.
    */

@@ -19,26 +19,45 @@ import java.util.Map;
 import javax.swing.JPanel;
 
 /**
- * The GUI panel for a game of Reversi, which is held in the frame. Does the majority of the work
- * to actually draw a game of reversi, including player selection for easier gameplay.
+ * The panel of a graphical user interface (GUI) for a game of Reversi.
+ * The panel is held inside the frame. This panel does the majority of the work
+ * to visually draw and display the game.
+ * The panel implements MouseListener and KeyListener to be able to take user input
+ * in the form of clicks and key presses in order for the user to interact with the model.
+ * Uses ViewableTile objects to represent each tile and to reduce panel workload,
+ * as each tile contains its personal drawing information.
  */
 public class ReversiPanel extends JPanel implements ViewPanel, MouseListener, KeyListener {
+  //represents all the tiles to be displayed
+  //effectively the GUI counterpart of the board in the model
   private HashMap<Coordinate, ViewableTile> tileList;
+  //represents the radius of each hexagonal tile
+  //the radius is the distance from the center to a corner
   private final double radius;
+  //represents the width of each hexagonal tile
+  //width is measured from the center of one straight edge
+  //to the center of the opposite straight edge
   private final double tileWidth;
+  //holds all listeners to this panel, which handle moves and passes
   private final List<PanelEventListener> listeners;
+  //when not selected, all tiles are gray
   private final Color baseColor = Color.GRAY;
+  //when selected (via mouse click), tiles are cyan
   private final Color clickedColor = Color.CYAN;
+  //the panel behind the board is black
   private final Color backgroundColor = Color.BLACK;
+  //represents the tile that is selected at any given time, if one exists
   private ViewableTile selectedTile;
 
   /**
-   * Constructs the Reversi panel. Uses a set radius to perform the calculations for the size
-   * of the panel (which the frame uses to size itself around it). It also adds the correct
-   * amount of tiles in a hexagonal arrangement and sets up listeners for the panel. Lastly,
-   * the constructor draws the six starting tiles at the center of the board in order to
-   * create the conditions necessary to play a game of Reversi.
-   * @param boardSize the size of the model's board.
+   * Constructs the Reversi panel.
+   * Uses a set radius to perform the calculations for the size of the panel
+   * (which the frame uses to size itself around it). See note in README file regarding radius.
+   * Adds the correct amount of tiles in a hexagonal arrangement.
+   * Adds itself as a MouseListener and KeyListener to be able to take mouse and key input.
+   * Lastly, draws the six tiles around the center of the board
+   * that are always displayed at the start of a game of Reversi.
+   * @param boardSize the size of the model's board
    */
   public ReversiPanel(int boardSize) {
     //set up the panel
@@ -50,7 +69,9 @@ public class ReversiPanel extends JPanel implements ViewPanel, MouseListener, Ke
     setBackground(backgroundColor);
 
     //the panel needs to be able to take clicks, so it is a mouse listener
+    //the panel needs to be able to take key presses, so it is a key listener
     addMouseListener(this);
+    //must be focusable in order to take key presses
     setFocusable(true);
     addKeyListener(this);
     this.listeners = new ArrayList<>();
@@ -62,7 +83,7 @@ public class ReversiPanel extends JPanel implements ViewPanel, MouseListener, Ke
     drawStartingDiscs(boardSize);
   }
 
-  //adds all the board tiles to tileList.
+  //adds all the board tiles to tileList
   private void setTilePositions(int boardSize) {
     int halfBoard = boardSize / 2;
     for (int row = 0; row >= -halfBoard; row--) {
@@ -74,7 +95,8 @@ public class ReversiPanel extends JPanel implements ViewPanel, MouseListener, Ke
         tileList.put(new Coordinate(tile.getQ(), tile.getR()), tile);
         if (row != -halfBoard) {
           ViewableTile tile2 = new ViewableTile(baseColor,
-              getCenter(boardSize).width + (tileWidth * index) - (tileWidth * (halfBoard + row) / 2),
+              getCenter(boardSize).width + (tileWidth * index)
+                  - (tileWidth * (halfBoard + row) / 2),
               getCenter(boardSize).height + radius * (1.5 * (halfBoard + row)),
               radius,index + Math.abs(row),boardSize + row - 1);
           tileList.put(new Coordinate(tile2.getQ(), tile2.getR()), tile2);
@@ -127,12 +149,22 @@ public class ReversiPanel extends JPanel implements ViewPanel, MouseListener, Ke
     //iterate through the hashmap entries
     for (Map.Entry<Coordinate, ViewableTile> pair : tileList.entrySet()) {
       ViewableTile tile = pair.getValue();
+      //each ViewableTile has its own draw method and can draw itself correctly
       tile.draw(g);
     }
   }
 
-  //go through all listeners of this panel and notify each of them that the tile
-  // at the provided coordinates was clicked
+  /**
+   * Notifies all listeners to this panel that a move was made at the given coordinates.
+   * Since the view should not place a tile or otherwise make any changes to itself
+   * without the model approving those changes, this method returns a boolean so that
+   * information can flow from model to controller to view to panel about whether
+   * the move the user attempted to make is a valid move and should show on the panel.
+   * This method works in conjunction with the moveMadeAndWasValid method in the frame,
+   * and both will work in conjunction with the equivalent move listening method
+   * in the controller once the controller is implemented.
+   * @param coordinate the coordinate of the tile the user indicated a move to
+   */
   private boolean notifyMoveMadeAndCheckValidity(Coordinate coordinate) {
     boolean moveIsValid = false;
     for (PanelEventListener listener : listeners) {
@@ -145,7 +177,11 @@ public class ReversiPanel extends JPanel implements ViewPanel, MouseListener, Ke
     return moveIsValid;
   }
 
-  //todo add comment
+  /**
+   * Notifies all listeners to this panel that the user is passing their turn.
+   * A pass is always a valid move, as long as the game is in progress,
+   * therefore no information must be passed regarding validity.
+   */
   private void notifyPassed() {
     for (PanelEventListener listener : listeners) {
       listener.passed();
@@ -164,20 +200,25 @@ public class ReversiPanel extends JPanel implements ViewPanel, MouseListener, Ke
   public void mouseClicked(MouseEvent e) {
     Point pointClicked = e.getPoint();
     boolean tileClicked = false;
-
+    //for each tile in the tileList
     for (Map.Entry<Coordinate, ViewableTile> pair : tileList.entrySet()) {
       ViewableTile tile = pair.getValue();
+      //if this is the tile the click happened in
       if (tile.containsPoint(pointClicked)) {
         tileClicked = true;
+        //if the tile is not currently selected, it becomes the selected tile and changes color
         if (tile.getColor() == this.baseColor) {
           setAllTilesToBase();
           tile.setColor(this.clickedColor);
           this.selectedTile = tile;
-          System.out.println("Tile Coordinates: " + tile.getQ() + ", " + tile.getR());
-        } else {
+        }
+        //else, i.e. if the clicked tile is already selected, all tiles are reset to base color
+        //and there is no currently selected tile
+        else {
           setAllTilesToBase();
           this.selectedTile = null;
         }
+        //once the clicked tile has been found, there's no need to continue the loop
         break;
       }
     }
@@ -201,68 +242,67 @@ public class ReversiPanel extends JPanel implements ViewPanel, MouseListener, Ke
   public void keyPressed(KeyEvent e) {
     //enter key = make move on currently selected tile
     if (e.getKeyCode() == KeyEvent.VK_ENTER) {
-      System.out.println("enter key pressed"); //todo keep to check method calls, delete when done
       if (this.selectedTile != null) {
-        if(notifyMoveMadeAndCheckValidity(new Coordinate(this.selectedTile.getQ(), this.selectedTile.getR()))) {
+        if (notifyMoveMadeAndCheckValidity(new Coordinate(this.selectedTile.getQ(),
+            this.selectedTile.getR()))) {
           this.selectedTile.setDisc(Color.BLACK);
         }
         repaint();
       }
     }
-
+    //space bar = pass
+    if (e.getKeyCode() == KeyEvent.VK_SPACE) {
+      notifyPassed();
+    }
+    //q key = quit game (and close frame)
+    if (e.getKeyCode() == KeyEvent.VK_Q) {
+      System.exit(0);
+    }
+    //IMPORTANT: this conditional will be deleted once a controller is implemented
+    //currently provides a way to manually place a white tile for viewing/testing purposes
     if (e.getKeyCode() == KeyEvent.VK_W) {
       if (this.selectedTile != null) {
-          this.selectedTile.setDisc(Color.WHITE);
+        this.selectedTile.setDisc(Color.WHITE);
         repaint();
       }
     }
-
+    //IMPORTANT: this conditional will be deleted once a controller is implemented
+    //currently provides a way to manually place a black tile for viewing/testing purposes
     if (e.getKeyCode() == KeyEvent.VK_B) {
       if (this.selectedTile != null) {
         this.selectedTile.setDisc(Color.BLACK);
         repaint();
       }
     }
-
-    //space bar = pass
-    if (e.getKeyCode() == KeyEvent.VK_SPACE) {
-      System.out.println("space bar pressed"); //todo keep to check method calls, delete when done
-      notifyPassed();
-    }
-    //q key = quit game
-    if (e.getKeyCode() == KeyEvent.VK_Q) {
-      System.out.println("q key pressed"); //todo keep to check method calls, delete when done
-      System.exit(0);
-    }
   }
 
   @Override
   public void mousePressed(MouseEvent e) {
-    //unused stub
+    //unused stub; required override
   }
 
   @Override
   public void mouseReleased(MouseEvent e) {
-    //unused stub
+    //unused stub; required override
   }
 
   @Override
   public void mouseEntered(MouseEvent e) {
-    //unused stub
+    //unused stub; required override
   }
 
   @Override
   public void mouseExited(MouseEvent e) {
-    //unused stub
+    //unused stub; required override
   }
 
   @Override
   public void keyTyped(KeyEvent e) {
-    //unused stub
+    //unused stub; required override
   }
 
   @Override
   public void keyReleased(KeyEvent e) {
-    //unused stub
+    //unused stub; required override
   }
 }

@@ -118,7 +118,7 @@ Tile
 - Improved documentation.
 
 ### EXTRA CREDIT:
-- We have both the CornerCaptureStrategy and AvoidCornerAdjacentStrategy in our strategy package. We also test them thoroughly in StrategyTests. Check them out!
+- TODO
 
 ### GUI DESIGN CHOICES
 <b>How the board is created:</b>
