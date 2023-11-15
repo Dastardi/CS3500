@@ -250,27 +250,40 @@ public class ReversiPanel extends JPanel implements ViewPanel, MouseListener, Ke
         repaint();
       }
     }
+
     //space bar = pass
     if (e.getKeyCode() == KeyEvent.VK_SPACE) {
       notifyPassed();
     }
+
     //q key = quit game (and close frame)
     if (e.getKeyCode() == KeyEvent.VK_Q) {
       System.exit(0);
     }
+
     //IMPORTANT: this conditional will be deleted once a controller is implemented
-    //currently provides a way to manually place a white tile for viewing/testing purposes
+    //currently provides a way to manually place a white disc for viewing/testing purposes
     if (e.getKeyCode() == KeyEvent.VK_W) {
       if (this.selectedTile != null) {
         this.selectedTile.setDisc(Color.WHITE);
         repaint();
       }
     }
+
     //IMPORTANT: this conditional will be deleted once a controller is implemented
-    //currently provides a way to manually place a black tile for viewing/testing purposes
+    //currently provides a way to manually place a black disc for viewing/testing purposes
     if (e.getKeyCode() == KeyEvent.VK_B) {
       if (this.selectedTile != null) {
         this.selectedTile.setDisc(Color.BLACK);
+        repaint();
+      }
+    }
+
+    //IMPORTANT: this conditional will be deleted once a controller is implemented
+    //currently provides a way to manually remove a disc for viewing/testing purposes
+    if (e.getKeyCode() == KeyEvent.VK_R) {
+      if (this.selectedTile != null) {
+        this.selectedTile.setDisc(null);
         repaint();
       }
     }
