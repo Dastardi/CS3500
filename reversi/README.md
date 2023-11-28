@@ -156,3 +156,6 @@ The latter does not draw the center row, hence the if statement.
 <b>Other:</b>
 - We hard code a specific radius value right now, but the goal is that a user will be able to pass in a desired radius size through command line arguments in order to customize the size of the board.
 This means that the board size will be highly customizable, and makes our calculations easier!
+
+## CHANGES FOR PART 3
+

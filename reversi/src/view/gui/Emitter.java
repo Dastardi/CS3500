@@ -5,10 +5,10 @@ package view.gui;
  * constructor are private, but objects (specifically, the frame) need to be able to add
  * themselves as listeners to the panel.
  */
-public interface ViewPanel {
+public interface Emitter {
   /**
-   * Adds a listener to the panel. Primarily used to connect the frame to the panel.
-   * @param listener the listener to add to the panel
+   * Adds a listener. Primarily used to connect the frame to the panel.
+   * @param listener the listener to add
    */
-  void addPanelListener(PanelEventListener listener);
+  void addListener(ViewEventListener listener);
 }

@@ -1,3 +1,7 @@
+import controller.EasyAIPlayer;
+import controller.HumanPlayer;
+import controller.Player;
+import controller.ReversiController;
 import model.BasicReversi;
 import model.ReversiModel;
 import view.gui.ReversiFrame;
@@ -11,22 +15,21 @@ public final class Reversi {
    * hexagon radius size using args.
    * @param args command line arguments for the GUI to use.
    */
+//  public static void main(String[] args) {
+//    ReversiModel model = new BasicReversi();
+//    ReversiFrame view = new ReversiFrame(model);
+//    view.setVisible(true);
+//  }
+
+
   public static void main(String[] args) {
     ReversiModel model = new BasicReversi();
-    ReversiFrame view = new ReversiFrame(model);
-    view.setVisible(true);
+    ReversiFrame viewPlayer1 = new ReversiFrame(model);
+    ReversiFrame viewPlayer2 = new ReversiFrame(model);
+    Player player1 = new HumanPlayer(model);
+    Player player2 = new HumanPlayer(model);
+    ReversiController controller1 = new ReversiController(model, player1, viewPlayer1);
+    ReversiController controller2 = new ReversiController(model, player2, viewPlayer2);
+    model.startGame();
   }
-
-  /*
-    public static void mainTwo(String[] args) {
-      ReversiModel model = new BasicReversi();
-      ReversiFrame viewPlayer1 = new YourView(model);
-      ReversiFrame viewPlayer2 = new YourView(model);
-      Player player1 = new HumanPlayer(model);
-      Player player2 = new HumanPlayer(model);
-      Controller controller1 = new ReversiController(model, player1, viewPlayer1);
-      Controller controller2 = new ReversiController(model, player2, viewPlayer2);
-      model.startGame();
-    }
-  */
 }
