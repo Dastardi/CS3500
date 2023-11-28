@@ -1,5 +1,8 @@
 package model;
 
+import controller.ModelEventListener;
+import controller.ReversiController;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,6 +31,9 @@ public class BasicReversi implements ReversiModel {
   //represents the index in the PlayerColor enum of the player whose turn it is
   //INVARIANT: currentPlayerIndex is less than 2
   private int currentPlayerIndex;
+
+  //holds the two controllers which listen to the model
+  private final List<ModelEventListener> listeners;
 
   /**
    * Constructs a basic model object for playing a game of Reversi with 6 tiles on each side.
@@ -67,6 +73,7 @@ public class BasicReversi implements ReversiModel {
     placeStartingTiles();
     //black moves first, and their i
     this.currentPlayerIndex = 0;
+    this.listeners = new ArrayList<>();
   }
 
   /**
@@ -86,6 +93,7 @@ public class BasicReversi implements ReversiModel {
     this.board = copyBoard(givenBoard);
     this.passCount = 0;
     this.currentPlayerIndex = 0;
+    this.listeners = new ArrayList<>();
   }
 
   //constructs a deep copy of a Reversi board
@@ -107,6 +115,11 @@ public class BasicReversi implements ReversiModel {
       }
     }
     return board;
+  }
+
+  @Override
+  public Tile[][] getBoard() {
+    return this.board; //todo CHANGE
   }
 
   //helps set up game state by filling the 2D array representing the game board
@@ -172,6 +185,9 @@ public class BasicReversi implements ReversiModel {
 
     //update the player color
     updatePlayer();
+
+    //notify all listeners that a move has been made
+    notifyTurn();
   }
 
   @Override
@@ -315,6 +331,8 @@ public class BasicReversi implements ReversiModel {
     updatePlayer();
     //after every pass, the most recent action was a pass so pass count increments
     this.passCount++;
+    //notify all listeners of the model that a turn has been taken
+    notifyTurn();
   }
 
   @Override
@@ -407,6 +425,34 @@ public class BasicReversi implements ReversiModel {
   private void throwIfGameOver() {
     if (isGameOver()) {
       throw new IllegalStateException("The game is over.");
+    }
+  }
+
+  @Override
+  public void startGame() {
+    boolean playerOneFound = false;
+
+    for(ModelEventListener listener : listeners) {
+      listener.initializeGame();
+      if (listener instanceof ReversiController && !playerOneFound) {
+        listener.updateTurn();
+        playerOneFound = true;
+      }
+    }
+  }
+
+  @Override
+  public void addListener(ModelEventListener listener) {
+    if (listener == null) {
+      throw new IllegalArgumentException("Cannot provide a null listener to the model.");
+    }
+    this.listeners.add(listener);
+  }
+
+  @Override
+  public void notifyTurn() {
+    for (ModelEventListener listener : listeners) {
+      listener.updateTurn();
     }
   }
 }

@@ -3,12 +3,12 @@ package view.gui;
 import model.Coordinate;
 
 /**
- * A PanelEventListener provides the capability for objects to listen to the ReversiPanel
+ * A ReversiEventListener provides the capability for objects to listen to the ReversiPanel
  * (or any such class that notifies its listeners about moves and passes).
  * Implementing a custom interface eliminates the need for classes such as EventListener,
  * which could be swing dependent, and could result in too much coupling on technologies
  * our code may not always want to rely on.
- * An object that is a PanelEventListener will receive information from the panel when a user
+ * An object that is a ReversiEventListener will receive information from the panel when a user
  * who is interacting with the panel indicates that they want to either move or pass.
  * Listeners of the panel do not need to care about what causes these events to occur;
  * they only care that they have happened so that they can respond.
@@ -17,7 +17,7 @@ import model.Coordinate;
  * to the ViewEventListener class that listens to the view.
  * This is how information will pass from panel to view to controller to model and back.
  */
-public interface PanelEventListener {
+public interface ViewEventListener {
   /**
    * Listens to the panel and receives notifications that a move was made at the given coordinates.
    * In turn, notifies all listeners to the view (or other object implementing this interface),
@@ -31,7 +31,7 @@ public interface PanelEventListener {
    * in the controller once the controller is implemented.
    * @param coordinate the coordinate of the tile the user indicated a move to
    */
-  boolean moveMadeAndWasValid(Coordinate coordinate);
+  String moveMade(Coordinate coordinate);
 
   /**
    * Listens to the panel and receives notifications that the user has passed their turn.

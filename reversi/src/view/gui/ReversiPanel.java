@@ -1,6 +1,10 @@
 package view.gui;
 
+import model.BasicReversi;
 import model.Coordinate;
+import model.ReadOnlyReversiModel;
+import model.Tile;
+import view.text.ReversiTextualView;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -17,6 +21,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.swing.JPanel;
+import javax.swing.JOptionPane;
 
 /**
  * The panel of a graphical user interface (GUI) for a game of Reversi.
@@ -27,7 +32,9 @@ import javax.swing.JPanel;
  * Uses ViewableTile objects to represent each tile and to reduce panel workload,
  * as each tile contains its personal drawing information.
  */
-public class ReversiPanel extends JPanel implements ViewPanel, MouseListener, KeyListener {
+public class ReversiPanel extends JPanel implements Emitter, MouseListener, KeyListener {
+  //represents the model of the Reversi game played and displayed on this panel
+  private final ReadOnlyReversiModel model;
   //represents all the tiles to be displayed
   //effectively the GUI counterpart of the board in the model
   private HashMap<Coordinate, ViewableTile> tileList;
@@ -39,7 +46,7 @@ public class ReversiPanel extends JPanel implements ViewPanel, MouseListener, Ke
   //to the center of the opposite straight edge
   private final double tileWidth;
   //holds all listeners to this panel, which handle moves and passes
-  private final List<PanelEventListener> listeners;
+  private final List<ViewEventListener> listeners;
   //when not selected, all tiles are gray
   private final Color baseColor = Color.GRAY;
   //when selected (via mouse click), tiles are cyan
@@ -57,9 +64,11 @@ public class ReversiPanel extends JPanel implements ViewPanel, MouseListener, Ke
    * Adds itself as a MouseListener and KeyListener to be able to take mouse and key input.
    * Lastly, draws the six tiles around the center of the board
    * that are always displayed at the start of a game of Reversi.
-   * @param boardSize the size of the model's board
+   * @param model the Reversi game model to be displayed on the panel
    */
-  public ReversiPanel(int boardSize) {
+  public ReversiPanel(ReadOnlyReversiModel model) {
+    this.model = model;
+    int boardSize = this.model.getBoardSize();
     //set up the panel
     this.radius = 40;
     int frameWidth = (int)(Math.sqrt(3) * boardSize * radius);
@@ -146,6 +155,28 @@ public class ReversiPanel extends JPanel implements ViewPanel, MouseListener, Ke
   @Override
   public void paintComponent(Graphics g) {
     super.paintComponent(g);
+    Tile[][] board = model.getBoard();
+
+    for (Tile[] row : board) {
+      for (Tile tile : row) {
+        if (tile==null || tile.isEmpty()) {
+          break;
+        }
+        ViewableTile viewTile = tileList.get(tile.getCoordinate());
+        switch (tile.getContents()) {
+          case BLACK:
+            viewTile.setDisc(Color.BLACK);
+            break;
+          case WHITE:
+            viewTile.setDisc(Color.WHITE);
+            break;
+          default:
+            viewTile.setDisc(null);
+            break;
+        }
+      }
+    }
+
     //iterate through the hashmap entries
     for (Map.Entry<Coordinate, ViewableTile> pair : tileList.entrySet()) {
       ViewableTile tile = pair.getValue();
@@ -155,7 +186,7 @@ public class ReversiPanel extends JPanel implements ViewPanel, MouseListener, Ke
   }
 
   /**
-   * Notifies all listeners to this panel that a move was made at the given coordinates.
+   * Notifies the first listener of this panel that a move was made at the given coordinates.
    * Since the view should not place a tile or otherwise make any changes to itself
    * without the model approving those changes, this method returns a boolean so that
    * information can flow from model to controller to view to panel about whether
@@ -165,31 +196,21 @@ public class ReversiPanel extends JPanel implements ViewPanel, MouseListener, Ke
    * in the controller once the controller is implemented.
    * @param coordinate the coordinate of the tile the user indicated a move to
    */
-  private boolean notifyMoveMadeAndCheckValidity(Coordinate coordinate) {
-    boolean moveIsValid = false;
-    for (PanelEventListener listener : listeners) {
-      //notify listeners that the move was made
-      //and simultaneously ask if the move was valid
-      if (listener.moveMadeAndWasValid(coordinate)) {
-        moveIsValid = true;
-      }
-    }
-    return moveIsValid;
+  private String notifyMoveMade(Coordinate coordinate) {
+    return listeners.get(0).moveMade(coordinate);
   }
 
   /**
-   * Notifies all listeners to this panel that the user is passing their turn.
+   * Notifies the listener to this panel that the user is passing their turn.
    * A pass is always a valid move, as long as the game is in progress,
    * therefore no information must be passed regarding validity.
    */
   private void notifyPassed() {
-    for (PanelEventListener listener : listeners) {
-      listener.passed();
-    }
+      listeners.get(0).passed();
   }
 
   @Override
-  public void addPanelListener(PanelEventListener listener) {
+  public void addListener(ViewEventListener listener) {
     if (listener == null) {
       throw new IllegalArgumentException("Cannot provide a null listener to the panel.");
     }
@@ -243,49 +264,28 @@ public class ReversiPanel extends JPanel implements ViewPanel, MouseListener, Ke
     //enter key = make move on currently selected tile
     if (e.getKeyCode() == KeyEvent.VK_ENTER) {
       if (this.selectedTile != null) {
-        if (notifyMoveMadeAndCheckValidity(new Coordinate(this.selectedTile.getQ(),
-            this.selectedTile.getR()))) {
-          this.selectedTile.setDisc(Color.BLACK);
+        String moveMessage = notifyMoveMade(new Coordinate(this.selectedTile.getQ(),
+            this.selectedTile.getR()));
+        if (!moveMessage.equals("valid")) {
+          JOptionPane.showMessageDialog(this, moveMessage);
         }
+        //todo have repainting happen after being notified by model
         repaint();
       }
     }
 
     //space bar = pass
     if (e.getKeyCode() == KeyEvent.VK_SPACE) {
-      notifyPassed();
+      if (JOptionPane.showConfirmDialog(this, "Pass your turn?")==0) {
+        System.out.println("Passed!");
+        notifyPassed();
+      } else System.out.println("Not passed.");
     }
 
     //q key = quit game (and close frame)
     if (e.getKeyCode() == KeyEvent.VK_Q) {
+      JOptionPane.showMessageDialog(this, "Game quit.");
       System.exit(0);
-    }
-
-    //IMPORTANT: this conditional will be deleted once a controller is implemented
-    //currently provides a way to manually place a white disc for viewing/testing purposes
-    if (e.getKeyCode() == KeyEvent.VK_W) {
-      if (this.selectedTile != null) {
-        this.selectedTile.setDisc(Color.WHITE);
-        repaint();
-      }
-    }
-
-    //IMPORTANT: this conditional will be deleted once a controller is implemented
-    //currently provides a way to manually place a black disc for viewing/testing purposes
-    if (e.getKeyCode() == KeyEvent.VK_B) {
-      if (this.selectedTile != null) {
-        this.selectedTile.setDisc(Color.BLACK);
-        repaint();
-      }
-    }
-
-    //IMPORTANT: this conditional will be deleted once a controller is implemented
-    //currently provides a way to manually remove a disc for viewing/testing purposes
-    if (e.getKeyCode() == KeyEvent.VK_R) {
-      if (this.selectedTile != null) {
-        this.selectedTile.setDisc(null);
-        repaint();
-      }
     }
   }
 

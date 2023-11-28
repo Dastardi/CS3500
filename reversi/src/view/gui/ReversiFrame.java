@@ -1,12 +1,14 @@
 package view.gui;
 
+import controller.ModelEventListener;
 import model.Coordinate;
 import model.ReadOnlyReversiModel;
 
-import javax.swing.JFrame;
-import javax.swing.WindowConstants;
+import javax.swing.*;
 
 import java.awt.BorderLayout;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * The frame, otherwise called the window, of the GUI for a reversi game.
@@ -18,7 +20,11 @@ import java.awt.BorderLayout;
  * between the view and the model. Once the controller is implemented, it will be a listener
  * of this view.
  */
-public class ReversiFrame extends JFrame implements PanelEventListener {
+public class ReversiFrame extends JFrame implements ReversiView, ViewEventListener, Emitter, ModelEventListener {
+  //holds all listeners to this panel, which handle moves and passes
+  private final List<ViewEventListener> listeners;
+  private final ReversiPanel panel;
+
   /**
    * Constructs the frame of the graphical user interface (GUI).
    * Uses a read-only version of the model because the view is not allowed to change
@@ -27,18 +33,28 @@ public class ReversiFrame extends JFrame implements PanelEventListener {
    */
   public ReversiFrame(ReadOnlyReversiModel model) {
     setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-    ReversiPanel panel = new ReversiPanel(model.getBoardSize());
+    this.panel = new ReversiPanel(model);
     //the frame is a listener of the panel, allowing it to get user interaction information
-    panel.addPanelListener(this);
+    this.panel.addListener(this);
+    //model.addListener(this); //TODO
+    this.listeners = new ArrayList<>();
     //the panel is the only object in this frame, therefore it is placed in the center
     //of a simple border layout
-    add(panel, BorderLayout.CENTER);
+    add(this.panel, BorderLayout.CENTER);
     setResizable(false);
     pack();
   }
 
   @Override
-  public boolean moveMadeAndWasValid(Coordinate coordinate) {
+  public void addListener(ViewEventListener listener) {
+    if (listener == null) {
+      throw new IllegalArgumentException("Cannot provide a null listener to the frame.");
+    }
+    this.listeners.add(listener);
+  }
+
+  @Override
+  public String moveMade(Coordinate coordinate) {
     //see PanelEventListener interface
 
     //this method is currently a stub
@@ -48,7 +64,7 @@ public class ReversiFrame extends JFrame implements PanelEventListener {
     //about whether the move is valid so that the view knows whether it is okay
     //to display the requested move
     //this method should only return true if the controller says the model says the move is valid
-    return true;
+    return listeners.get(0).moveMade(coordinate);
   }
 
   @Override
@@ -58,5 +74,21 @@ public class ReversiFrame extends JFrame implements PanelEventListener {
     //this method is currently a stub
     //when we add a controller to this code, this method will pass information
     //from the panel through here and through to the controller
+    listeners.get(0).passed();
+  }
+
+  @Override
+  public void displayPopup(String messageToDisplay) {
+    JOptionPane.showMessageDialog(this, messageToDisplay);
+  }
+
+  @Override
+  public void updateTurn() {
+    this.panel.repaint();
+  }
+
+  @Override
+  public void initializeGame() {
+    //stub implementation
   }
 }

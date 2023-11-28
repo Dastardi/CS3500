@@ -21,4 +21,9 @@ public interface ReversiModel extends ReadOnlyReversiModel {
    * @throws IllegalStateException if the game is over.
    */
   void pass() throws IllegalStateException;
+
+  /**
+   *
+   */
+  void startGame();
 }

@@ -1,3 +1,4 @@
+import controller.*;
 import model.BasicReversi;
 import model.ReversiModel;
 import view.gui.ReversiFrame;
@@ -13,7 +14,28 @@ public final class Reversi {
    */
   public static void main(String[] args) {
     ReversiModel model = new BasicReversi();
-    ReversiFrame view = new ReversiFrame(model);
-    view.setVisible(true);
+    ReversiFrame viewPlayer1 = new ReversiFrame(model);
+    ReversiFrame viewPlayer2 = new ReversiFrame(model);
+    Player player1 = setPlayer(args[0], model);
+    Player player2 = setPlayer(args[1], model);
+    ReversiController controller1 = new ReversiController(model, player1, viewPlayer1);
+    ReversiController controller2 = new ReversiController(model, player2, viewPlayer2);
+    model.startGame();
+  }
+
+  //TODO can this be static?
+  private static Player setPlayer(String arg, ReversiModel model) {
+    switch (arg) {
+      case "human":
+        return new HumanPlayer();
+      case "easy":
+        return new EasyAIPlayer(model);
+      case "hard":
+        return new HardAIPlayer(model);
+      default:
+        System.out.println("The three available players are human, easy, and hard.");
+        //the controller ensures the game cannot start with a null player
+        return null;
+    }
   }
 }

@@ -4,8 +4,7 @@ package model;
  * Represents the primary interface for playing a game of Reversi.
  * Holds all methods necessary for internal gameplay.
  */
-public interface ReadOnlyReversiModel {
-
+public interface ReadOnlyReversiModel extends TurnTaker {
   /**
    * Gets the color of the player that is making the current turn.
    * @return the color of the current player
@@ -66,6 +65,14 @@ public interface ReadOnlyReversiModel {
    * @return an integer value representing the number of tiles that would be flipped by that move.
    */
   int getMoveScore(Coordinate coordinate);
+
+  /**
+   * Returns a copy of the board stored in the model. Uses the private helper copyBoard()
+   * to construct a deep copy of the model's board, which it then returns.
+   * This copy, like the field, is a 2D array of Tile objects.
+   * @return a copy of the board
+   */
+  Tile[][] getBoard();
 
   /**
    * Determines if a player has any legal moves. This is important in reversi because if a player
