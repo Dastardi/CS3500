@@ -16,4 +16,17 @@ public final class Reversi {
     ReversiFrame view = new ReversiFrame(model);
     view.setVisible(true);
   }
+
+  /*
+    public static void mainTwo(String[] args) {
+      ReversiModel model = new BasicReversi();
+      ReversiFrame viewPlayer1 = new YourView(model);
+      ReversiFrame viewPlayer2 = new YourView(model);
+      Player player1 = new HumanPlayer(model);
+      Player player2 = new HumanPlayer(model);
+      Controller controller1 = new ReversiController(model, player1, viewPlayer1);
+      Controller controller2 = new ReversiController(model, player2, viewPlayer2);
+      model.startGame();
+    }
+  */
 }
