@@ -40,11 +40,4 @@ public class CoordinateTests {
     Assert.assertNotEquals(this.coord1.hashCode(), this.coord3.hashCode());
     Assert.assertNotEquals(this.coord1.hashCode(), this.tile.hashCode());
   }
-
-  @Test
-  public void testCoordinateString() {
-    StringBuilder sb = new StringBuilder();
-    sb.append("Coordinate 1: " + coord1);
-    Assert.assertEquals("", sb.toString());
-  }
 }

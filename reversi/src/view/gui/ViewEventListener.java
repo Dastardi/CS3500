@@ -31,7 +31,7 @@ public interface ViewEventListener {
    * in the controller once the controller is implemented.
    * @param coordinate the coordinate of the tile the user indicated a move to
    */
-  String moveMadeAndWasValid(Coordinate coordinate);
+  String moveMade(Coordinate coordinate);
 
   /**
    * Listens to the panel and receives notifications that the user has passed their turn.

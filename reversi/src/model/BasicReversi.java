@@ -1,6 +1,7 @@
 package model;
 
 import controller.ModelEventListener;
+import controller.ReversiController;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -95,14 +96,6 @@ public class BasicReversi implements ReversiModel {
     this.listeners = new ArrayList<>();
   }
 
-  @Override
-  public void startGame() {
-    for(ModelEventListener listener : listeners) {
-      listener.initializeGame();
-    }
-    listeners.get(0).updateTurn();
-  }
-
   //constructs a deep copy of a Reversi board
   //takes in a given board, made to be used with the constructor that does the same,
   //and returns a deep copy of the board (same data, new reference)
@@ -122,6 +115,11 @@ public class BasicReversi implements ReversiModel {
       }
     }
     return board;
+  }
+
+  @Override
+  public Tile[][] getBoard() {
+    return this.board; //todo CHANGE
   }
 
   //helps set up game state by filling the 2D array representing the game board
@@ -431,14 +429,30 @@ public class BasicReversi implements ReversiModel {
   }
 
   @Override
-  public void notifyTurn() {
-    for (ModelEventListener listener : listeners) {
-      listener.updateTurn();
+  public void startGame() {
+    boolean playerOneFound = false;
+
+    for(ModelEventListener listener : listeners) {
+      listener.initializeGame();
+      if (listener instanceof ReversiController && !playerOneFound) {
+        listener.updateTurn();
+        playerOneFound = true;
+      }
     }
   }
 
   @Override
   public void addListener(ModelEventListener listener) {
+    if (listener == null) {
+      throw new IllegalArgumentException("Cannot provide a null listener to the model.");
+    }
     this.listeners.add(listener);
+  }
+
+  @Override
+  public void notifyTurn() {
+    for (ModelEventListener listener : listeners) {
+      listener.updateTurn();
+    }
   }
 }

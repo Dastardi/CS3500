@@ -5,34 +5,36 @@ import model.ReversiModel;
 import view.gui.ViewEventListener;
 import view.gui.ReversiFrame;
 
-import javax.swing.*;
-
-public class ReversiController implements IReversiController, ViewEventListener, ModelEventListener {
+public class ReversiController implements ViewEventListener, ModelEventListener {
   private final ReversiModel model;
   private final Player player;
   private final ReversiFrame view;
   private boolean myTurn;
 
   public ReversiController(ReversiModel model, Player player, ReversiFrame view) {
-    if (model == null || player == null || view == null) {
-      throw new IllegalArgumentException("All inputs to controller must be non-null.");
+    if (model == null || view == null) {
+      throw new IllegalArgumentException("Model and view inputs to controller must be non-null.");
+    }
+    this.view = view;
+    if (player == null) {
+      this.view.displayPopup("You cannot have a null player. LOL!");
+      System.exit(0);
     }
     this.model = model;
     this.player = player;
-    this.view = view;
     //add this controller as a listener to the view and model
     this.view.addListener(this);
     this.model.addListener(this);
-    myTurn = false;
+    this.myTurn = false;
   }
 
   @Override
-  public String moveMadeAndWasValid(Coordinate coordinate) {
-    if (!myTurn) {
-      return "not your turn!";
+  public String moveMade(Coordinate coordinate) {
+    if (!this.myTurn) {
+      return "It is not your turn :(";
     }
     try {
-      model.move(coordinate);
+      this.model.move(coordinate);
       return "valid";
     } catch(Exception e) {
       return e.getMessage();
@@ -41,30 +43,34 @@ public class ReversiController implements IReversiController, ViewEventListener,
 
   @Override
   public void passed() {
-    model.pass();
+    this.model.pass();
   }
 
   @Override
   public void initializeGame() {
-    view.setVisible(true);
+    this.view.setVisible(true);
   }
 
   @Override
   public void updateTurn() {
-    myTurn = !myTurn;
-    if (myTurn) {
-      JOptionPane.showMessageDialog(null, "It's your turn!");
+    this.myTurn = !this.myTurn;
+    if (this.myTurn) {
+      this.view.displayPopup("It's your turn!");
+      AIMove();
     }
-    AIMove();
+    //AIMove(); //todo
   }
 
   private void AIMove() {
-    MoveType type = player.move().getFirst();
-    Coordinate coordinate = player.move().getSecond();
-    if (type.equals(MoveType.VALID)) {
-      model.move(coordinate);
-    } else if (type.equals(MoveType.INVALID)) {
-      model.pass();
+    Pair<MoveType, Coordinate> pair = player.move();
+    MoveType type = pair.getFirst();
+    Coordinate coordinate = pair.getSecond();
+    if (type.equals(MoveType.HUMAN)) {
+      return;
+    } else if (type.equals(MoveType.VALID)) {
+      this.model.move(coordinate);
+    } else if (type.equals(MoveType.NOVALID)) {
+      this.model.pass();
     }
   }
 }

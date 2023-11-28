@@ -10,8 +10,8 @@ import java.util.List;
 public class MediumAIPlayer implements Player {
   private final ReversiStrategy strategy;
   public MediumAIPlayer(ReversiModel model) {
-    this.strategy = new CompositeStrategy(new CornerStrategy(model),
-        new CompositeStrategy(new MaxCaptureStrategy(model),
+    this.strategy = new CompositeStrategy(new MaxCaptureStrategy(model),
+        new CompositeStrategy(new AvoidCornerAdjacentStrategy(model),
             new UpperLeftMostStrategy()));
   }
 
@@ -19,7 +19,7 @@ public class MediumAIPlayer implements Player {
   public Pair<MoveType, Coordinate> move() {
     List<Coordinate> moveList = strategy.chooseMove(new ArrayList<>());
     if (moveList.isEmpty()) {
-      return new Pair<>(MoveType.INVALID, null);
+      return new Pair<>(MoveType.NOVALID, null);
     } else return new Pair<>(MoveType.VALID, moveList.get(0));
   }
 }

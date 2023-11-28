@@ -1,13 +1,11 @@
 package controller;
 
 import model.Coordinate;
-import model.ReversiModel;
 
+/**
+ * A representation of a human Reversi player.
+ */
 public class HumanPlayer implements Player {
-  public HumanPlayer(ReversiModel model) {
-
-  }
-
   @Override
   public Pair<MoveType, Coordinate> move() {
     return new Pair<>(MoveType.HUMAN, null);

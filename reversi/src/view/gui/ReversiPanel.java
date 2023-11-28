@@ -1,6 +1,10 @@
 package view.gui;
 
+import model.BasicReversi;
 import model.Coordinate;
+import model.ReadOnlyReversiModel;
+import model.Tile;
+import view.text.ReversiTextualView;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -16,7 +20,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.swing.*;
+import javax.swing.JPanel;
+import javax.swing.JOptionPane;
 
 /**
  * The panel of a graphical user interface (GUI) for a game of Reversi.
@@ -28,6 +33,8 @@ import javax.swing.*;
  * as each tile contains its personal drawing information.
  */
 public class ReversiPanel extends JPanel implements Emitter, MouseListener, KeyListener {
+  //represents the model of the Reversi game played and displayed on this panel
+  private final ReadOnlyReversiModel model;
   //represents all the tiles to be displayed
   //effectively the GUI counterpart of the board in the model
   private HashMap<Coordinate, ViewableTile> tileList;
@@ -57,9 +64,11 @@ public class ReversiPanel extends JPanel implements Emitter, MouseListener, KeyL
    * Adds itself as a MouseListener and KeyListener to be able to take mouse and key input.
    * Lastly, draws the six tiles around the center of the board
    * that are always displayed at the start of a game of Reversi.
-   * @param boardSize the size of the model's board
+   * @param model the Reversi game model to be displayed on the panel
    */
-  public ReversiPanel(int boardSize) {
+  public ReversiPanel(ReadOnlyReversiModel model) {
+    this.model = model;
+    int boardSize = this.model.getBoardSize();
     //set up the panel
     this.radius = 40;
     int frameWidth = (int)(Math.sqrt(3) * boardSize * radius);
@@ -146,6 +155,28 @@ public class ReversiPanel extends JPanel implements Emitter, MouseListener, KeyL
   @Override
   public void paintComponent(Graphics g) {
     super.paintComponent(g);
+    Tile[][] board = model.getBoard();
+
+    for (Tile[] row : board) {
+      for (Tile tile : row) {
+        if (tile==null || tile.isEmpty()) {
+          break;
+        }
+        ViewableTile viewTile = tileList.get(tile.getCoordinate());
+        switch (tile.getContents()) {
+          case BLACK:
+            viewTile.setDisc(Color.BLACK);
+            break;
+          case WHITE:
+            viewTile.setDisc(Color.WHITE);
+            break;
+          default:
+            viewTile.setDisc(null);
+            break;
+        }
+      }
+    }
+
     //iterate through the hashmap entries
     for (Map.Entry<Coordinate, ViewableTile> pair : tileList.entrySet()) {
       ViewableTile tile = pair.getValue();
@@ -165,8 +196,8 @@ public class ReversiPanel extends JPanel implements Emitter, MouseListener, KeyL
    * in the controller once the controller is implemented.
    * @param coordinate the coordinate of the tile the user indicated a move to
    */
-  private String notifyMoveMadeAndCheckValidity(Coordinate coordinate) {
-    return listeners.get(0).moveMadeAndWasValid(coordinate);
+  private String notifyMoveMade(Coordinate coordinate) {
+    return listeners.get(0).moveMade(coordinate);
   }
 
   /**
@@ -233,24 +264,27 @@ public class ReversiPanel extends JPanel implements Emitter, MouseListener, KeyL
     //enter key = make move on currently selected tile
     if (e.getKeyCode() == KeyEvent.VK_ENTER) {
       if (this.selectedTile != null) {
-        String moveMessage = notifyMoveMadeAndCheckValidity(new Coordinate(this.selectedTile.getQ(),
+        String moveMessage = notifyMoveMade(new Coordinate(this.selectedTile.getQ(),
             this.selectedTile.getR()));
-        if (moveMessage.equals("valid")) {
-          this.selectedTile.setDisc(Color.BLACK); //todo
-        } else {
-          JOptionPane.showMessageDialog(null, moveMessage);
+        if (!moveMessage.equals("valid")) {
+          JOptionPane.showMessageDialog(this, moveMessage);
         }
+        //todo have repainting happen after being notified by model
         repaint();
       }
     }
 
     //space bar = pass
     if (e.getKeyCode() == KeyEvent.VK_SPACE) {
-      notifyPassed();
+      if (JOptionPane.showConfirmDialog(this, "Pass your turn?")==0) {
+        System.out.println("Passed!");
+        notifyPassed();
+      } else System.out.println("Not passed.");
     }
 
     //q key = quit game (and close frame)
     if (e.getKeyCode() == KeyEvent.VK_Q) {
+      JOptionPane.showMessageDialog(this, "Game quit.");
       System.exit(0);
     }
   }
