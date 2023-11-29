@@ -430,13 +430,17 @@ public class BasicReversi implements ReversiModel {
 
   @Override
   public void startGame() {
-    boolean playerOneFound = false;
-
     for(ModelEventListener listener : listeners) {
       listener.initializeGame();
-      if (listener instanceof ReversiController && !playerOneFound) {
+    }
+    activateFirstTurn();
+  }
+
+  private void activateFirstTurn() {
+    for(ModelEventListener listener : listeners) {
+      if (listener instanceof ReversiController) {
         listener.updateTurn();
-        playerOneFound = true;
+        return;
       }
     }
   }

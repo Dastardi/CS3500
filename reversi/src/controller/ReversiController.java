@@ -17,7 +17,7 @@ public class ReversiController implements ViewEventListener, ModelEventListener 
     }
     this.view = view;
     if (player == null) {
-      this.view.displayPopup("You cannot have a null player. LOL!");
+      this.view.displayPopup("You provided an invalid player. LOL!");
       System.exit(0);
     }
     this.model = model;
@@ -56,9 +56,7 @@ public class ReversiController implements ViewEventListener, ModelEventListener 
     this.myTurn = !this.myTurn;
     if (this.myTurn) {
       this.view.displayPopup("It's your turn!");
-      AIMove();
     }
-    //AIMove(); //todo
   }
 
   private void AIMove() {

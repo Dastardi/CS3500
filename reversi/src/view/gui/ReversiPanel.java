@@ -1,10 +1,9 @@
 package view.gui;
 
-import model.BasicReversi;
+import controller.ModelEventListener;
 import model.Coordinate;
 import model.ReadOnlyReversiModel;
 import model.Tile;
-import view.text.ReversiTextualView;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -32,7 +31,7 @@ import javax.swing.JOptionPane;
  * Uses ViewableTile objects to represent each tile and to reduce panel workload,
  * as each tile contains its personal drawing information.
  */
-public class ReversiPanel extends JPanel implements Emitter, MouseListener, KeyListener {
+public class ReversiPanel extends JPanel implements Emitter, MouseListener, KeyListener, ModelEventListener {
   //represents the model of the Reversi game played and displayed on this panel
   private final ReadOnlyReversiModel model;
   //represents all the tiles to be displayed
@@ -84,7 +83,8 @@ public class ReversiPanel extends JPanel implements Emitter, MouseListener, KeyL
     setFocusable(true);
     addKeyListener(this);
     this.listeners = new ArrayList<>();
-
+    //add this as a listener to the model for repainting
+    model.addListener(this);
     //set up the tiles and starting discs
     this.tileList = new HashMap<Coordinate, ViewableTile>();
     setTilePositions(boardSize);
@@ -166,13 +166,10 @@ public class ReversiPanel extends JPanel implements Emitter, MouseListener, KeyL
         switch (tile.getContents()) {
           case BLACK:
             viewTile.setDisc(Color.BLACK);
-            break;
           case WHITE:
             viewTile.setDisc(Color.WHITE);
-            break;
           default:
             viewTile.setDisc(null);
-            break;
         }
       }
     }
@@ -317,5 +314,16 @@ public class ReversiPanel extends JPanel implements Emitter, MouseListener, KeyL
   @Override
   public void keyReleased(KeyEvent e) {
     //unused stub; required override
+  }
+
+  @Override
+  public void initializeGame() {
+    //unused stub; required override
+  }
+
+  @Override
+  public void updateTurn() {
+    System.out.println("UpdateTurn called, repaint initiated.");
+    repaint();
   }
 }
