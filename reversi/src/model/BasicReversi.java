@@ -359,6 +359,7 @@ public class BasicReversi implements ReversiModel {
         //only iterate over tiles that are actually on the board (skip null values in the array)
         if (tileInBoard(q, r) && getTileAt(new Coordinate(r, q)).isEmpty()) {
           boardFull = false;
+          break;
         }
       }
     }
@@ -366,6 +367,7 @@ public class BasicReversi implements ReversiModel {
     return this.passCount >= 2 || boardFull;
   }
 
+  /*
   @Override
   public PlayerColor getCurrentWinner() {
     //to keep track of the current highest score of all players
@@ -386,6 +388,33 @@ public class BasicReversi implements ReversiModel {
         //set their score as the new highest score and make them the winner
         highestScore = playerScore;
         winner = color;
+      }
+    }
+    return winner;
+  }
+
+   */
+
+  @Override
+  public int getCurrentWinner() {
+    //to keep track of the current highest score of all players
+    int highestScore = 0;
+    //to keep track of the winner
+    int winner = 2;
+    //go through all player colors
+    for (PlayerColor color : PlayerColor.values()) {
+      int playerScore = getPlayerScore(color);
+
+      //if this player's score is higher than the current highest
+      //if there is a tie, return null
+      if (playerScore == highestScore) {
+        winner = 2;
+      }
+
+      if (playerScore > highestScore) {
+        //set their score as the new highest score and make them the winner
+        highestScore = playerScore;
+        winner = color.ordinal();
       }
     }
     return winner;

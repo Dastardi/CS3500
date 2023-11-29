@@ -4,13 +4,20 @@ import model.Coordinate;
 import model.ReversiModel;
 import view.gui.ViewEventListener;
 import view.gui.ReversiFrame;
+import view.text.ReversiTextualView;
 
+/**
+ * TODO WRITE A JAVADOC HERE!!!!!!!!!!!!!!!!
+ */
 public class ReversiController implements ViewEventListener, ModelEventListener {
   private final ReversiModel model;
   private final Player player;
   private final ReversiFrame view;
   private boolean myTurn;
 
+  /**
+   * TODO WRITE A JAVADOC HERE!!!!!!!!!!!!!!!!
+   */
   public ReversiController(ReversiModel model, Player player, ReversiFrame view) {
     if (model == null || view == null) {
       throw new IllegalArgumentException("Model and view inputs to controller must be non-null.");
@@ -53,22 +60,56 @@ public class ReversiController implements ViewEventListener, ModelEventListener 
 
   @Override
   public void updateTurn() {
+    if (this.model.isGameOver()) {
+      this.handleGameOver();
+      return;
+    }
     this.myTurn = !this.myTurn;
     if (this.myTurn) {
       this.view.displayPopup("It's your turn!");
+      System.out.println(new ReversiTextualView(model));
+      checkTurn();
     }
   }
 
-  private void AIMove() {
+  private void checkTurn() {
+    if (!myTurn) {
+      return;
+    }
     Pair<MoveType, Coordinate> pair = player.move();
     MoveType type = pair.getFirst();
     Coordinate coordinate = pair.getSecond();
     if (type.equals(MoveType.HUMAN)) {
       return;
-    } else if (type.equals(MoveType.VALID)) {
+    }
+    if (type.equals(MoveType.VALID)) {
       this.model.move(coordinate);
-    } else if (type.equals(MoveType.NOVALID)) {
+    }
+    if (type.equals(MoveType.NOVALID)) {
       this.model.pass();
     }
+  }
+
+  //if the game is over, this method is called to ensure that the correct message is sent
+  //and that the window is closed. using the integer return value of getCurrentWinner(),
+  //we can determine who won and inform both players accordingly. Closes the windows
+  //independently of one another using dispose so that both players are notified that
+  //the game is over.
+  private void handleGameOver() {
+    switch (model.getCurrentWinner()) {
+      case 0:
+        this.view.displayPopup("Game ended!\n" +
+            "Winner: Black");
+        break;
+      case 1:
+        this.view.displayPopup("Game ended!\n" +
+            "Winner: White");
+        break;
+      case 2:
+        this.view.displayPopup("Game ended in a tie!");
+        break;
+    }
+
+    this.view.dispose();
   }
 }

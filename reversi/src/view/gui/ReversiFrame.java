@@ -7,6 +7,7 @@ import model.ReadOnlyReversiModel;
 import javax.swing.*;
 
 import java.awt.BorderLayout;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -79,7 +80,8 @@ public class ReversiFrame extends JFrame implements ReversiView, ViewEventListen
 
   @Override
   public void displayPopup(String messageToDisplay) {
-    JOptionPane.showMessageDialog(this, messageToDisplay);
+    JOptionPane.showMessageDialog(this, messageToDisplay,
+        "Game Status", JOptionPane.INFORMATION_MESSAGE);
   }
 
   @Override

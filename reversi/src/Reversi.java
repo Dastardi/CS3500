@@ -1,18 +1,27 @@
-import controller.*;
+import controller.EasyAIPlayer;
+import controller.HardAIPlayer;
+import controller.HumanPlayer;
+import controller.Player;
+import controller.ReversiController;
 import model.BasicReversi;
 import model.ReversiModel;
 import view.gui.ReversiFrame;
 
 /**
  * Runs a game of reversi via a GUI.
+ * TODO ADD MORE TO THIS BECAUSE RIGHT NOW IT IS LAME!!!!!!!!!!!!!!!!
  */
 public final class Reversi {
   /**
-   * Runs the game using command line arguments - a user will be able to set the
-   * hexagon radius size using args.
+   * Runs the game using command line arguments.
+   * TODO ADD MORE TO THIS BECAUSE IT IS ALSO LAME!!!!!!!!!!!!!!!!!!
    * @param args command line arguments for the GUI to use.
    */
   public static void main(String[] args) {
+    if (args.length < 2) {
+      System.out.println("Must provide at least two player types.");
+      return;
+    }
     ReversiModel model = new BasicReversi();
     ReversiFrame viewPlayer1 = new ReversiFrame(model);
     ReversiFrame viewPlayer2 = new ReversiFrame(model);
@@ -24,6 +33,10 @@ public final class Reversi {
   }
 
   //TODO can this be static?
+  //helps the main method construct the game by parsing
+  //a given argument for the requested game type
+  //takes in a string and the model and constructs a player object, using the model if necessary,
+  //as indicated by the provided string
   private static Player setPlayer(String arg, ReversiModel model) {
     switch (arg) {
       case "human":
