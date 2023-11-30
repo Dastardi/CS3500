@@ -7,7 +7,12 @@ import view.gui.ReversiFrame;
 import view.text.ReversiTextualView;
 
 /**
- * TODO WRITE A JAVADOC HERE!!!!!!!!!!!!!!!!
+ * A controller for a player to interact with the model and view in a game of Reversi.
+ * There is a controller for each player, and a unique view for each controller.
+ * The controller facilitates between human players (who interact with the view) and
+ * the model, as well as AI players (who interface directly with the controller) the view
+ * and model in order to ensure that the game is represented correctly in the view as
+ * dictated by the model.
  */
 public class ReversiController implements ViewEventListener, ModelEventListener {
   private final ReversiModel model;
@@ -16,7 +21,12 @@ public class ReversiController implements ViewEventListener, ModelEventListener 
   private boolean myTurn;
 
   /**
-   * TODO WRITE A JAVADOC HERE!!!!!!!!!!!!!!!!
+   * Constructs a controller. Inputs must be non-null - if the view or model is null,
+   * an exception is thrown and the game is prevented from starting. If a player is
+   * null, we want to enable the other player to see what went wrong, and so we give them
+   * a message using the view before quitting.
+   * When it constructs itself, the controller must add itself as a listener to both the
+   * model and its respective view.
    */
   public ReversiController(ReversiModel model, Player player, ReversiFrame view) {
     if (model == null || view == null) {
@@ -67,11 +77,16 @@ public class ReversiController implements ViewEventListener, ModelEventListener 
     this.myTurn = !this.myTurn;
     if (this.myTurn) {
       this.view.displayPopup("It's your turn!");
-      System.out.println(new ReversiTextualView(model));
       checkTurn();
     }
   }
 
+  //contains turn-taking logic for human and AI players.
+  //if the player is a human, the controller should just sit and wait for the human to interact
+  //with the view, and so the method simply returns if it detects that its player is a human on
+  //its turn. If the player is an AI, it needs to either move or pass. To do so, we check the Pair
+  //to see whether the AI has found a valid move. If it has, the model moves there.
+  //otherwise, it passes.
   private void checkTurn() {
     if (!myTurn) {
       return;
@@ -98,18 +113,15 @@ public class ReversiController implements ViewEventListener, ModelEventListener 
   private void handleGameOver() {
     switch (model.getCurrentWinner()) {
       case 0:
-        this.view.displayPopup("Game ended!\n" +
-            "Winner: Black");
+        this.view.displayPopup("Game ended!\nWinner: Black");
         break;
       case 1:
-        this.view.displayPopup("Game ended!\n" +
-            "Winner: White");
+        this.view.displayPopup("Game ended!\nWinner: White");
         break;
       case 2:
         this.view.displayPopup("Game ended in a tie!");
         break;
     }
-
     this.view.dispose();
   }
 }

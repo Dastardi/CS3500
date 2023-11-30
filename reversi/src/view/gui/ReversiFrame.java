@@ -4,7 +4,10 @@ import controller.ModelEventListener;
 import model.Coordinate;
 import model.ReadOnlyReversiModel;
 
-import javax.swing.*;
+import javax.swing.JFrame;
+import javax.swing.ImageIcon;
+import javax.swing.JOptionPane;
+import javax.swing.WindowConstants;
 
 import java.awt.BorderLayout;
 import java.net.URL;
@@ -55,7 +58,7 @@ public class ReversiFrame extends JFrame implements ReversiView, ViewEventListen
   }
 
   @Override
-  public String moveMade(Coordinate coordinate) {
+  public String moveMade(Coordinate coordinate) { //todo
     //see PanelEventListener interface
 
     //this method is currently a stub
@@ -69,7 +72,7 @@ public class ReversiFrame extends JFrame implements ReversiView, ViewEventListen
   }
 
   @Override
-  public void passed() {
+  public void passed() { //todo
     //see PanelEventListener interface
 
     //this method is currently a stub
@@ -78,16 +81,47 @@ public class ReversiFrame extends JFrame implements ReversiView, ViewEventListen
     listeners.get(0).passed();
   }
 
+  //we decided to have some fun with it and add some images to our popups. this is by no means
+  //the most efficient way to do this - we briefly considered making an alternate constructor to
+  //pass in images - but seeing as it's all in the name of having a good time we hope it's
+  //not a problem :)
   @Override
   public void displayPopup(String messageToDisplay) {
-    if (messageToDisplay.equals("It's your turn!")) {
-      URL thumbImageUrl = getClass().getResource("thumb.png");
-      ImageIcon thumbIcon = new ImageIcon(thumbImageUrl);
-      JOptionPane.showMessageDialog(this, messageToDisplay,
-          "Game Status", JOptionPane.INFORMATION_MESSAGE, thumbIcon);
-    } else {
-      JOptionPane.showMessageDialog(this, messageToDisplay,
-          "Game Status", JOptionPane.INFORMATION_MESSAGE);
+    switch (messageToDisplay) {
+      case "It's your turn!":
+        URL thumbImageUrl = getClass().getResource("./img/thumb.png");
+        ImageIcon thumbIcon = new ImageIcon(thumbImageUrl);
+        JOptionPane.showMessageDialog(this, messageToDisplay,
+            "Game Status", JOptionPane.INFORMATION_MESSAGE, thumbIcon);
+        break;
+      case "You provided an invalid player. LOL!":
+        URL koalaImageURL = getClass().getResource("./img/koala.png");
+        ImageIcon koalaIcon = new ImageIcon(koalaImageURL);
+        JOptionPane.showMessageDialog(this, messageToDisplay,
+            "Game Status", JOptionPane.INFORMATION_MESSAGE, koalaIcon);
+        break;
+      case "Game ended!\nWinner: Black":
+        URL blackBearImageURL = getClass().getResource("./img/blackbear.png");
+        ImageIcon blackBearIcon = new ImageIcon(blackBearImageURL);
+        JOptionPane.showMessageDialog(this, messageToDisplay,
+            "Game Status", JOptionPane.INFORMATION_MESSAGE, blackBearIcon);
+        break;
+      case "Game ended!\nWinner: White":
+        URL polarImageIcon = getClass().getResource("./img/polar.png");
+        ImageIcon polarIcon = new ImageIcon(polarImageIcon);
+        JOptionPane.showMessageDialog(this, messageToDisplay,
+            "Game Status", JOptionPane.INFORMATION_MESSAGE, polarIcon);
+        break;
+      case "Game ended in a tie!":
+        URL penguinImageIcon = getClass().getResource("./img/penguins.png");
+        ImageIcon penguinIcon = new ImageIcon(penguinImageIcon);
+        JOptionPane.showMessageDialog(this, messageToDisplay,
+            "Game Status", JOptionPane.INFORMATION_MESSAGE, penguinIcon);
+        break;
+      default:
+        JOptionPane.showMessageDialog(this, messageToDisplay,
+            "Game Status", JOptionPane.INFORMATION_MESSAGE);
+        break;
     }
   }
 
