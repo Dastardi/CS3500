@@ -2,6 +2,7 @@ package view.gui;
 
 import controller.ModelEventListener;
 import model.Coordinate;
+import model.PlayerColor;
 import model.ReadOnlyReversiModel;
 import model.Tile;
 
@@ -14,13 +15,13 @@ import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.swing.JPanel;
-import javax.swing.JOptionPane;
+import javax.swing.*;
 
 /**
  * The panel of a graphical user interface (GUI) for a game of Reversi.
@@ -31,12 +32,13 @@ import javax.swing.JOptionPane;
  * Uses ViewableTile objects to represent each tile and to reduce panel workload,
  * as each tile contains its personal drawing information.
  */
-public class ReversiPanel extends JPanel implements Emitter, MouseListener, KeyListener, ModelEventListener {
+public class ReversiPanel extends JPanel
+    implements Emitter, MouseListener, KeyListener, ModelEventListener {
   //represents the model of the Reversi game played and displayed on this panel
   private final ReadOnlyReversiModel model;
   //represents all the tiles to be displayed
   //effectively the GUI counterpart of the board in the model
-  private HashMap<Coordinate, ViewableTile> tileList;
+  private final HashMap<Coordinate, ViewableTile> tileList;
   //represents the radius of each hexagonal tile
   //the radius is the distance from the center to a corner
   private final double radius;
@@ -156,29 +158,23 @@ public class ReversiPanel extends JPanel implements Emitter, MouseListener, KeyL
   public void paintComponent(Graphics g) {
     super.paintComponent(g);
     Tile[][] board = model.getBoard();
-
+    //TODO WRITE COMMENTS TO EXPLAIN THIS METHOD BECAUSE IT DOES A LOT OF COMPLICATED STUFF
     for (Tile[] row : board) {
       for (Tile tile : row) {
-        if (tile==null || tile.isEmpty()) {
-          break;
-        }
-        ViewableTile viewTile = tileList.get(tile.getCoordinate());
-        switch (tile.getContents()) {
-          case BLACK:
-            viewTile.setDisc(Color.BLACK);
-          case WHITE:
-            viewTile.setDisc(Color.WHITE);
-          default:
-            viewTile.setDisc(null);
+        if (tile != null) {
+          ViewableTile viewTile = tileList.get(tile.getCoordinate());
+          if (!tile.isEmpty()) {
+            PlayerColor tileContents = tile.getContents();
+            if (tileContents == PlayerColor.BLACK) {
+              viewTile.setDisc(Color.BLACK);
+            }
+            else if (tileContents == PlayerColor.WHITE) {
+              viewTile.setDisc(Color.WHITE);
+            }
+          }
+          viewTile.draw(g);
         }
       }
-    }
-
-    //iterate through the hashmap entries
-    for (Map.Entry<Coordinate, ViewableTile> pair : tileList.entrySet()) {
-      ViewableTile tile = pair.getValue();
-      //each ViewableTile has its own draw method and can draw itself correctly
-      tile.draw(g);
     }
   }
 
@@ -224,6 +220,7 @@ public class ReversiPanel extends JPanel implements Emitter, MouseListener, KeyL
       //if this is the tile the click happened in
       if (tile.containsPoint(pointClicked)) {
         tileClicked = true;
+        System.out.println("q: " + tile.getQ() + ", r: " + tile.getR());
         //if the tile is not currently selected, it becomes the selected tile and changes color
         if (tile.getColor() == this.baseColor) {
           setAllTilesToBase();
@@ -264,25 +261,42 @@ public class ReversiPanel extends JPanel implements Emitter, MouseListener, KeyL
         String moveMessage = notifyMoveMade(new Coordinate(this.selectedTile.getQ(),
             this.selectedTile.getR()));
         if (!moveMessage.equals("valid")) {
-          JOptionPane.showMessageDialog(this, moveMessage);
+          URL catImageUrl = getClass().getResource("cat.png");
+          ImageIcon catIcon = new ImageIcon(catImageUrl);
+          JOptionPane.showMessageDialog(this, moveMessage,
+              "Game Status", JOptionPane.INFORMATION_MESSAGE, catIcon);
         }
-        //todo have repainting happen after being notified by model
-        repaint();
       }
     }
 
     //space bar = pass
     if (e.getKeyCode() == KeyEvent.VK_SPACE) {
-      if (JOptionPane.showConfirmDialog(this, "Pass your turn?")==0) {
-        System.out.println("Passed!");
+      URL oranguImageURL = getClass().getResource("orangutan.png");
+      ImageIcon oranguImage = new ImageIcon(oranguImageURL);
+      int passed = JOptionPane.showConfirmDialog(this, "Pass your turn?",
+          "Game Status", JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE, oranguImage);
+      if (passed == 0) {
         notifyPassed();
-      } else System.out.println("Not passed.");
+      }
     }
 
-    //q key = quit game (and close frame)
+    //q key = quit game (and close both frames)
     if (e.getKeyCode() == KeyEvent.VK_Q) {
-      JOptionPane.showMessageDialog(this, "Game quit.");
-      System.exit(0);
+      URL dawgImageURL = getClass().getResource("dawg.png");
+      ImageIcon dawgImage = new ImageIcon(dawgImageURL);
+      int quit = JOptionPane.showConfirmDialog(this, "Quit the game?",
+          "Game Status", JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE, dawgImage);
+      if (quit == 0) {
+        JOptionPane.showMessageDialog(this, "Game quit.",
+            "Game Status", JOptionPane.INFORMATION_MESSAGE);
+        System.exit(0);
+      }
+    }
+
+    //h key - basic help method, tells you if you have any valid moves
+    if (e.getKeyCode() == KeyEvent.VK_H) {
+      JOptionPane.showMessageDialog(this, "It is " + model.playerHasLegalMoves()
+          + " that you have a legal move.", "Game Status", JOptionPane.INFORMATION_MESSAGE);
     }
   }
 
@@ -324,6 +338,6 @@ public class ReversiPanel extends JPanel implements Emitter, MouseListener, KeyL
   @Override
   public void updateTurn() {
     System.out.println("UpdateTurn called, repaint initiated.");
-    repaint();
+    this.paintComponent(getGraphics());
   }
 }
