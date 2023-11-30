@@ -1,8 +1,7 @@
-# CS3500 Reversi 
-
-### OVERVIEW
-This is a codebase for playing a game of Reversi (or Othello) on a hexagonal board rather than the traditional square. 
-The code supports both human vs human and human vs computer play (as well as supervised computer vs computer play). 
+# CS3500 Reversi
+## OVERVIEW
+This is a codebase for playing a game of Reversi, or Othello, on a hexagonal board rather than the traditional square. 
+The code supports both human vs human and human vs computer play, as well as supervised computer vs computer play. 
 
 It is playable both in textual form in the terminal and through clicking via a GUI. 
 The code is designed to be modular and extendable for custom functionalities and rules alterations. 
@@ -15,7 +14,8 @@ This will create a new Swing window in which the reversi board will be displayed
 Alternatively, with a .jar file, navigate to the location of the file in the command line and type "java -jar JARNAME.jar ____ ____", where ____ represents one of "human", "easy", "medium", or "hard". 
 Human will open a spot for a human to click the board, and the other three will be AIs of varying difficulty. 
 
-You can use your mouse to select and deselect tiles, hit ENTER to place a disc in a selected tile, press SPACE to pass your turn, and press Q to quit. If you're ever not sure of whether you're able to make a move, pressing H will give you a hint!
+You can use your mouse to select and deselect tiles, hit ENTER to place a disc in a selected tile, press SPACE to pass your turn, and press Q to quit. 
+If you're ever not sure of whether you're able to make a move, pressing H will let you know if you have moves available!
 You will need to acknowledge that it's the AI's turn each time it runs, as a way of slowing down the pace of the game when AI is involved - it felt too snappy. 
 
 ### KEY COMPONENTS

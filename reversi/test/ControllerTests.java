@@ -13,28 +13,31 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+/**
+ * Test class for all controller functionality.
+ */
 public class ControllerTests {
   ReversiModel model;
-  Player humanPlayer;
-  Player AIPlayer;
+  Player playerHuman;
+  Player playerAI;
   ReversiFrame view;
   ReversiController controller;
 
   @Before
   public void init() {
     model = new BasicReversi();
-    humanPlayer = new HumanPlayer();
-    AIPlayer = new EasyAIPlayer(model);
+    playerHuman = new HumanPlayer();
+    playerAI = new EasyAIPlayer(model);
     view = new ReversiFrame(model);
-    controller = new ReversiController(model, humanPlayer, view);
+    controller = new ReversiController(model, playerHuman, view);
   }
 
   @Test
   public void testConstructorThrowing() {
     Assert.assertThrows(IllegalArgumentException.class,
-        () -> new ReversiController(null, humanPlayer, view));
+        () -> new ReversiController(null, playerHuman, view));
     Assert.assertThrows(IllegalArgumentException.class,
-        () -> new ReversiController(model, humanPlayer, null));
+        () -> new ReversiController(model, playerHuman, null));
   }
 
   @Test
@@ -49,38 +52,38 @@ public class ControllerTests {
         controller.moveMade(new Coordinate(0, 0)));
   }
 
-  @Test
-  public void testPassed() {
+//  @Test
+//  public void testPassed() {
+//
+//  }
 
-  }
+//  @Test
+//  public void testUpdateTurnEndsGame() {
+//
+//  }
 
-  @Test
-  public void testUpdateTurnEndsGame() {
+//  @Test
+//  public void testUpdateTurnCallsCheckTurn() {
+//
+//  }
 
-  }
+//  @Test
+//  public void testHumanCheckTurnReturns() {
+//
+//  }
 
-  @Test
-  public void testUpdateTurnCallsCheckTurn() {
+//  @Test
+//  public void testAICheckTurnMoves() {
+//
+//  }
 
-  }
+//  @Test
+//  public void testAICheckTurnPasses() {
+//
+//  }
 
-  @Test
-  public void testHumanCheckTurnReturns() {
-
-  }
-
-  @Test
-  public void testAICheckTurnMoves() {
-
-  }
-
-  @Test
-  public void testAICheckTurnPasses() {
-
-  }
-
-  @Test
-  public void testHandleGameOver() {
-
-  }
+//  @Test
+//  public void testHandleGameOver() {
+//
+//  }
 }
