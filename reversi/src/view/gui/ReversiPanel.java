@@ -1,6 +1,7 @@
 package view.gui;
 
 import controller.ModelEventListener;
+import controller.ViewEventListener;
 import model.Coordinate;
 import model.PlayerColor;
 import model.ReadOnlyReversiModel;
@@ -210,7 +211,7 @@ public class ReversiPanel extends JPanel
    * therefore no information must be passed regarding validity.
    */
   private void notifyPassed() {
-      listeners.get(0).passed();
+    listeners.get(0).passed();
   }
 
   @Override

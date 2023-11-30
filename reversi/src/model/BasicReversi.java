@@ -463,7 +463,7 @@ public class BasicReversi implements ReversiModel {
 
   @Override
   public void startGame() {
-    for(ModelEventListener listener : listeners) {
+    for (ModelEventListener listener : listeners) {
       listener.initializeGame();
     }
     activateFirstTurn();
@@ -473,7 +473,7 @@ public class BasicReversi implements ReversiModel {
   //we do it this way because we have both views and controllers in our listeners, and due to
   //the way they add each other it's finicky to try and do a consistent get from the list.
   private void activateFirstTurn() {
-    for(ModelEventListener listener : listeners) {
+    for (ModelEventListener listener : listeners) {
       if (listener instanceof ReversiController) {
         listener.updateTurn();
         return;

@@ -2,9 +2,7 @@ package controller;
 
 import model.Coordinate;
 import model.ReversiModel;
-import view.gui.ViewEventListener;
 import view.gui.ReversiFrame;
-import view.text.ReversiTextualView;
 
 /**
  * A controller for a player to interact with the model and view in a game of Reversi.
@@ -53,7 +51,7 @@ public class ReversiController implements ViewEventListener, ModelEventListener 
     try {
       this.model.move(coordinate);
       return "valid";
-    } catch(Exception e) {
+    } catch (Exception e) {
       return e.getMessage();
     }
   }
@@ -121,6 +119,8 @@ public class ReversiController implements ViewEventListener, ModelEventListener 
       case 2:
         this.view.displayPopup("Game ended in a tie!");
         break;
+      default:
+        //getCurrentWinner always returns one of 0, 1, or 2.
     }
     this.view.dispose();
   }

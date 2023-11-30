@@ -20,7 +20,8 @@ public class EasyAIPlayer implements Player {
    * @param model the model from which the strategy reads.
    */
   public EasyAIPlayer(ReversiModel model) {
-    this.strategy = new CompositeStrategy(new MaxCaptureStrategy(model), new UpperLeftMostStrategy());
+    this.strategy = new CompositeStrategy(new MaxCaptureStrategy(model),
+        new UpperLeftMostStrategy());
   }
 
   @Override
@@ -28,6 +29,8 @@ public class EasyAIPlayer implements Player {
     List<Coordinate> moveList = strategy.chooseMove(new ArrayList<>());
     if (moveList.isEmpty()) {
       return new Pair<>(MoveType.NOVALID, null);
-    } else return new Pair<>(MoveType.VALID, moveList.get(0));
+    } else {
+      return new Pair<>(MoveType.VALID, moveList.get(0));
+    }
   }
 }

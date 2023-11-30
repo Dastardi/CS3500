@@ -34,6 +34,8 @@ public class HardAIPlayer implements Player {
     List<Coordinate> moveList = strategy.chooseMove(new ArrayList<>());
     if (moveList.isEmpty()) {
       return new Pair<>(MoveType.NOVALID, null);
-    } else return new Pair<>(MoveType.VALID, moveList.get(0));
+    } else {
+      return new Pair<>(MoveType.VALID, moveList.get(0));
+    }
   }
 }

@@ -1,5 +1,7 @@
 package view.gui;
 
+import controller.ViewEventListener;
+
 /**
  * A representation of the panel used to display a game of Reversi. Most methods other than the
  * constructor are private, but objects (specifically, the frame) need to be able to add

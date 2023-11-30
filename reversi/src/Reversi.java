@@ -37,14 +37,17 @@ public final class Reversi {
   //necessary, as indicated by the provided string
   private static Player setPlayer(String arg, ReversiModel model) {
     //the controller ensures the game cannot start with a null player
-    return switch (arg) {
-      case "human" -> new HumanPlayer();
-      case "easy" -> new EasyAIPlayer(model);
-      case "hard" -> new HardAIPlayer(model);
-      default -> {
+    switch (arg) {
+      case "human":
+        return new HumanPlayer();
+      case "easy":
+        return new EasyAIPlayer(model);
+      case "hard":
+        return new HardAIPlayer(model);
+      default:
         System.out.println("The three available players are human, easy, and hard.");
-        yield null;
-      }
-    };
+        //the controller ensures the game cannot start with a null player
+        return null;
+    }
   }
 }
