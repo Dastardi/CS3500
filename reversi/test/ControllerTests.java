@@ -13,28 +13,31 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+/**
+ * Test class for all controller functionality.
+ */
 public class ControllerTests {
   ReversiModel model;
-  Player humanPlayer;
-  Player AIPlayer;
+  Player playerHuman;
+  Player playerAI;
   ReversiFrame view;
   ReversiController controller;
 
   @Before
   public void init() {
     model = new BasicReversi();
-    humanPlayer = new HumanPlayer();
-    AIPlayer = new EasyAIPlayer(model);
+    playerHuman = new HumanPlayer();
+    playerAI = new EasyAIPlayer(model);
     view = new ReversiFrame(model);
-    controller = new ReversiController(model, humanPlayer, view);
+    controller = new ReversiController(model, playerHuman, view);
   }
 
   @Test
   public void testConstructorThrowing() {
     Assert.assertThrows(IllegalArgumentException.class,
-        () -> new ReversiController(null, humanPlayer, view));
+        () -> new ReversiController(null, playerHuman, view));
     Assert.assertThrows(IllegalArgumentException.class,
-        () -> new ReversiController(model, humanPlayer, null));
+        () -> new ReversiController(model, playerHuman, null));
   }
 
   @Test
