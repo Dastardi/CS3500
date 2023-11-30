@@ -17,6 +17,11 @@ import java.util.List;
  */
 public class MediumAIPlayer implements Player {
   private final ReversiStrategy strategy;
+
+  /**
+   * Constructs the AI and its composite strategy.
+   * @param model the model from which the strategy reads.
+   */
   public MediumAIPlayer(ReversiModel model) {
     this.strategy = new CompositeStrategy(new MaxCaptureStrategy(model),
         new CompositeStrategy(new AvoidCornerAdjacentStrategy(model),
@@ -28,6 +33,8 @@ public class MediumAIPlayer implements Player {
     List<Coordinate> moveList = strategy.chooseMove(new ArrayList<>());
     if (moveList.isEmpty()) {
       return new Pair<>(MoveType.NOVALID, null);
-    } else return new Pair<>(MoveType.VALID, moveList.get(0));
+    } else {
+      return new Pair<>(MoveType.VALID, moveList.get(0));
+    }
   }
 }

@@ -1,6 +1,7 @@
 package view.gui;
 
 import controller.ModelEventListener;
+import controller.ViewEventListener;
 import model.Coordinate;
 import model.ReadOnlyReversiModel;
 
@@ -24,7 +25,8 @@ import java.util.List;
  * between the view and the model. Once the controller is implemented, it will be a listener
  * of this view.
  */
-public class ReversiFrame extends JFrame implements ReversiView, ViewEventListener, Emitter, ModelEventListener {
+public class ReversiFrame extends JFrame
+    implements ReversiView, ViewEventListener, Emitter, ModelEventListener {
   //holds all listeners to this panel, which handle moves and passes
   private final List<ViewEventListener> listeners;
   private final ReversiPanel panel;

@@ -2,27 +2,36 @@
 
 ### OVERVIEW
 This is a codebase for playing a game of Reversi (or Othello) on a hexagonal board rather than the traditional square. 
-The code is designed to support both human vs human and human vs computer play. 
+The code supports both human vs human and human vs computer play (as well as supervised computer vs computer play). 
 
-It is built to be playable both in textual form in the terminal and through clicking via a GUI. 
-The code is designed to be modular and extendable for custom functionalities and rules alterations, and provides options such as variable board size for a more interesting experience as well as ease of testing and implementation. 
+It is playable both in textual form in the terminal and through clicking via a GUI. 
+The code is designed to be modular and extendable for custom functionalities and rules alterations. 
 
-The game should be playable by someone with minimal technical experience, and provide a fun and challenging diversion for anyone who likes a little strategy!
+The game is playable by someone with minimal technical experience, and provides a fun and challenging diversion for anyone who likes a little strategy game!
 
 ### QUICK START 
-To display and interact with the board, navigate to the Reversi file and run the main() method. 
-This will create a new window in which a reversi board will be displayed.
-You can use your mouse to select and deselect tiles, hit ENTER to place a disc, press SPACE to pass your turn, and press Q to quit.
+In IntelliJ, to display and interact with the board, navigate to the Reversi file and run the main() method. 
+This will create a new Swing window in which the reversi board will be displayed.
+Alternatively, with a .jar file, navigate to the location of the file in the command line and type "java -jar JARNAME.jar ____ ____", where ____ represents one of "human", "easy", "medium", or "hard". 
+Human will open a spot for a human to click the board, and the other three will be AIs of varying difficulty. 
 
-Without a controller, the game can't actually be played according to the rules - that means that hitting enter will always place a black disc regardless of turn order, so passing doesn't do much. 
-That being said, as we are still in an early phase of the game and want to be able to easily create boards, W and B can place white and black discs and R can remove a tile's disc, so have fun clicking around!
-These methods will be removed once the controller is implemented, so have no fear of players being able to cheat when playing the game - these are methods solely for testing purposes.
+You can use your mouse to select and deselect tiles, hit ENTER to place a disc in a selected tile, press SPACE to pass your turn, and press Q to quit. If you're ever not sure of whether you're able to make a move, pressing H will give you a hint!
+You will need to acknowledge that it's the AI's turn each time it runs, as a way of slowing down the pace of the game when AI is involved - it felt too snappy. 
 
 ### KEY COMPONENTS
-**Model** is where the majority of the current code is held, and contains the implementation and documentation of the model. 
+**Model** contains the implementation and documentation of the model. 
 The model holds the logic for running a game of Reversi - making the board, players taking turns, and performing operations on the board such as flipping tiles. 
 It's organized into two interfaces - PlayerActions and ReversiModel -  which are both implemented by a model class, BasicReversi.
 PlayerActions is extended by ReversiModel in order to ensure that a ReversiModel always has access to the moves required to play the game.
+
+**Controller** contains the controller implementation as well as the interface and classes which enable players (both human and AI) to be created.
+Alongside the controller come two Listener interfaces, ModelEventListener and ViewEventListener. 
+These interfaces are what enable communication between our model, controllers, and views. 
+The ReversiController class implements both of these.  
+
+**Strategy** contains the implementation of the strategies that the AI players use. 
+Individual strategies take in and output sorted lists of Coordinates that represent potential moves, and can be chained together using CompositeStrategies. 
+The final results of the CompositeStrategy (or the individual strategy) can be submitted to a Player, which understands that the first item in the list is the most preferred move for the strategy it's employing. 
 
 **View** contains the gui and text packages, which represent a GUI visual representation and a textual representation of a game of Reversi.
 
@@ -69,17 +78,28 @@ GetPlayerScore(PlayerColor) returns the score (number of tiles on the board) of 
 GetTileAt(Coordinate) returns the board space of the given coordinate. <br>
 GetBoardSize is a getter for the private final boardSize variable which we use for a number of our calculations when looking at the Tile array.
 
+In the controller, the most important assets are the Pair class, which allows for easy communication between a player and its controller, and the Listener interfaces which enable communication between the controller and the model/view. 
+
+In the GUI view, the most important subcomponents are ViewableTiles, the custom Path2D classes Hexagon2D and Circle2D, as well as the Frame->Panel structure. 
+
+ViewableTiles are GUI representations of the Tiles held in the model. When one is constructed, it creates a hexagon and a circle using Hexagon2D and Circle2D (see below), and holds them internally to act as its border and the border of its disc, if it ever gets one.
+The ViewableTile knows how to draw itself, and always draws the hexagon before the circle, which means that there is no possibility of a disc being covered accidentally. 
+ViewableTiles also hold information about their state, such as their logical coordinate and their physical coordinate, which makes them easy to interface with for the rest of the view. 
+
+Hexagon2D and Circle2D are simple function objects which create versions of their respective shapes for ViewableTiles to hold. 
+Both of them are drawn from the center of the shape rather than the top left, as is standard, because the physical coordinates of our ViewableTile objects are also held at the center. 
+This makes drawing these custom objects easy for the ViewableTile!
+
 ### SOURCE ORGANIZATION
 The code is held in the cs3500.reversi folder, which is split into src (source code of the model) and test (a test directory for validating classes and methods). 
 Src has four parts: controller, model, strategy, and view. 
 
-Controller currently contains only the ViewEventListener, which is not implemented,
-but will be implemented when a controller is added in (presumably) the next assignment.
+Controller contains the interfaces for Player and both Listeners, as well as the implementation of all four kinds of Player, Pair and MoveType, and the Controller itself.
 
 Model contains the PlayerActions and ReversiModel interface, both of which dictate the methods in the BasicReversi class. 
 Additionally, interfaces and implementations of Tile, Coordinate, and PlayerColor are held in this directory. 
 
-Strategy contains the implementation of our AI strategies, as well as the HumanPlayer class, which will pass information from the view to the controller.
+Strategy contains the implementation of our AI strategies, as well as the HumanPlayer class, which pass information from the view to the controller.
 
 View contains two packages: gui and text.
 <br>GUI contains the ViewPanel, ViewableReversiTile, and PanelEventListener interface.
