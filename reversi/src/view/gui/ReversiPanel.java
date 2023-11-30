@@ -21,7 +21,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.swing.*;
+import javax.swing.JPanel;
+import javax.swing.ImageIcon;
+import javax.swing.JOptionPane;
 
 /**
  * The panel of a graphical user interface (GUI) for a game of Reversi.
@@ -154,15 +156,23 @@ public class ReversiPanel extends JPanel
     return new Dimension(frameWidth / 2, frameHeight / 2);
   }
 
+  //we customized paintComponent in order to ensure that we draw the board correctly
+  //whenever a change is made.
   @Override
   public void paintComponent(Graphics g) {
     super.paintComponent(g);
     Tile[][] board = model.getBoard();
-    //TODO WRITE COMMENTS TO EXPLAIN THIS METHOD BECAUSE IT DOES A LOT OF COMPLICATED STUFF
+    //we iterate over the model's board, because going the other way created issues with
+    //trying to fetch before the board was populated with tiles.
     for (Tile[] row : board) {
+      //for every tile in the board, we first do a null check to avoid the pitfalls of our
+      //2d array axial system, which has null values in the top left and bottom right.
       for (Tile tile : row) {
+        //once we know it's not null, we get the matching viewable tile.
         if (tile != null) {
           ViewableTile viewTile = tileList.get(tile.getCoordinate());
+          //we check the contents of the BOARD tile and use a pair of if statements to
+          //change the VIEW tile accordingly.
           if (!tile.isEmpty()) {
             PlayerColor tileContents = tile.getContents();
             if (tileContents == PlayerColor.BLACK) {
@@ -172,6 +182,7 @@ public class ReversiPanel extends JPanel
               viewTile.setDisc(Color.WHITE);
             }
           }
+          //finally, we tell the view tile to draw itself.
           viewTile.draw(g);
         }
       }
@@ -220,7 +231,7 @@ public class ReversiPanel extends JPanel
       //if this is the tile the click happened in
       if (tile.containsPoint(pointClicked)) {
         tileClicked = true;
-        System.out.println("q: " + tile.getQ() + ", r: " + tile.getR());
+        System.out.println("Clicked tile coordinates: " + tile.getQ() + ", " + tile.getR());
         //if the tile is not currently selected, it becomes the selected tile and changes color
         if (tile.getColor() == this.baseColor) {
           setAllTilesToBase();
@@ -301,6 +312,11 @@ public class ReversiPanel extends JPanel
   }
 
   @Override
+  public void updateTurn() {
+    this.paintComponent(getGraphics());
+  }
+
+  @Override
   public void mousePressed(MouseEvent e) {
     //unused stub; required override
   }
@@ -333,11 +349,5 @@ public class ReversiPanel extends JPanel
   @Override
   public void initializeGame() {
     //unused stub; required override
-  }
-
-  @Override
-  public void updateTurn() {
-    System.out.println("UpdateTurn called, repaint initiated.");
-    this.paintComponent(getGraphics());
   }
 }

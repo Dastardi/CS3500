@@ -469,6 +469,9 @@ public class BasicReversi implements ReversiModel {
     activateFirstTurn();
   }
 
+  //finds the first controller in the listener list and activates it as the black player.
+  //we do it this way because we have both views and controllers in our listeners, and due to
+  //the way they add each other it's finicky to try and do a consistent get from the list.
   private void activateFirstTurn() {
     for(ModelEventListener listener : listeners) {
       if (listener instanceof ReversiController) {

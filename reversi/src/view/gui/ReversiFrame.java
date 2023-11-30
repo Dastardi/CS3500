@@ -4,7 +4,10 @@ import controller.ModelEventListener;
 import model.Coordinate;
 import model.ReadOnlyReversiModel;
 
-import javax.swing.*;
+import javax.swing.JFrame;
+import javax.swing.ImageIcon;
+import javax.swing.JOptionPane;
+import javax.swing.WindowConstants;
 
 import java.awt.BorderLayout;
 import java.net.URL;
@@ -55,7 +58,7 @@ public class ReversiFrame extends JFrame implements ReversiView, ViewEventListen
   }
 
   @Override
-  public String moveMade(Coordinate coordinate) {
+  public String moveMade(Coordinate coordinate) { //todo
     //see PanelEventListener interface
 
     //this method is currently a stub
@@ -69,7 +72,7 @@ public class ReversiFrame extends JFrame implements ReversiView, ViewEventListen
   }
 
   @Override
-  public void passed() {
+  public void passed() { //todo
     //see PanelEventListener interface
 
     //this method is currently a stub
@@ -78,6 +81,10 @@ public class ReversiFrame extends JFrame implements ReversiView, ViewEventListen
     listeners.get(0).passed();
   }
 
+  //we decided to have some fun with it and add some images to our popups. this is by no means
+  //the most efficient way to do this - we briefly considered making an alternate constructor to
+  //pass in images - but seeing as it's all in the name of having a good time we hope it's
+  //not a problem :)
   @Override
   public void displayPopup(String messageToDisplay) {
     switch (messageToDisplay) {

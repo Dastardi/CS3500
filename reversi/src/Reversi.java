@@ -8,13 +8,13 @@ import model.ReversiModel;
 import view.gui.ReversiFrame;
 
 /**
- * Runs a game of reversi via a GUI.
- * TODO ADD MORE TO THIS BECAUSE RIGHT NOW IT IS LAME!!!!!!!!!!!!!!!!
+ * Runs a two-player game of hexagonal reversi with full GUI and AI capabilities.
  */
 public final class Reversi {
   /**
-   * Runs the game using command line arguments.
-   * TODO ADD MORE TO THIS BECAUSE IT IS ALSO LAME!!!!!!!!!!!!!!!!!!
+   * Runs the game using command line arguments. Sets up a model, then two each of views,
+   * players, and controllers according to the args. Does not allow less than two players,
+   * and any text after the first two players will be ignored.
    * @param args command line arguments for the GUI to use.
    */
   public static void main(String[] args) {
@@ -32,23 +32,19 @@ public final class Reversi {
     model.startGame();
   }
 
-  //TODO can this be static?
-  //helps the main method construct the game by parsing
-  //a given argument for the requested game type
-  //takes in a string and the model and constructs a player object, using the model if necessary,
-  //as indicated by the provided string
+  //helps the main method construct the game by parsing a given argument for the requested game
+  //type. takes in a string and the model and constructs a player object, using the model if
+  //necessary, as indicated by the provided string
   private static Player setPlayer(String arg, ReversiModel model) {
-    switch (arg) {
-      case "human":
-        return new HumanPlayer();
-      case "easy":
-        return new EasyAIPlayer(model);
-      case "hard":
-        return new HardAIPlayer(model);
-      default:
+    //the controller ensures the game cannot start with a null player
+    return switch (arg) {
+      case "human" -> new HumanPlayer();
+      case "easy" -> new EasyAIPlayer(model);
+      case "hard" -> new HardAIPlayer(model);
+      default -> {
         System.out.println("The three available players are human, easy, and hard.");
-        //the controller ensures the game cannot start with a null player
-        return null;
-    }
+        yield null;
+      }
+    };
   }
 }

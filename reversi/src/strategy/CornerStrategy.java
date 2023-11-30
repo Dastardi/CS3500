@@ -10,7 +10,7 @@ import java.util.Objects;
  * A strategy that captures the most advantageous corner.
  */
 public class CornerStrategy implements ReversiStrategy {
-  ReadOnlyReversiModel model;
+  private ReadOnlyReversiModel model;
 
   /**
    * Constructs the CornerStrategy using the given model.

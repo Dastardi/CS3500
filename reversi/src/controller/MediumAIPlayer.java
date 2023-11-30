@@ -2,11 +2,19 @@ package controller;
 
 import model.Coordinate;
 import model.ReversiModel;
-import strategy.*;
+import strategy.ReversiStrategy;
+import strategy.CompositeStrategy;
+import strategy.MaxCaptureStrategy;
+import strategy.AvoidCornerAdjacentStrategy;
+import strategy.UpperLeftMostStrategy;
 
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * A medium-difficulty AI to play Reversi against. Always selects the tile with the highest
+ * possible score, and avoids playing next to corners to prevents its opponent from taking them.
+ */
 public class MediumAIPlayer implements Player {
   private final ReversiStrategy strategy;
   public MediumAIPlayer(ReversiModel model) {
