@@ -272,7 +272,7 @@ public class ReversiPanel extends JPanel
         String moveMessage = notifyMoveMade(new Coordinate(this.selectedTile.getQ(),
             this.selectedTile.getR()));
         if (!moveMessage.equals("valid")) {
-          URL catImageUrl = getClass().getResource("./img/cat.png");
+          URL catImageUrl = getClass().getResource("/view/gui/img/cat.png");
           ImageIcon catIcon = new ImageIcon(catImageUrl);
           JOptionPane.showMessageDialog(this, moveMessage,
               "Game Status", JOptionPane.INFORMATION_MESSAGE, catIcon);
@@ -282,7 +282,7 @@ public class ReversiPanel extends JPanel
 
     //space bar = pass
     if (e.getKeyCode() == KeyEvent.VK_SPACE) {
-      URL oranguImageURL = getClass().getResource("./img/orangutan.png");
+      URL oranguImageURL = getClass().getResource("/view/gui/img/orangutan.png");
       ImageIcon oranguImage = new ImageIcon(oranguImageURL);
       int passed = JOptionPane.showConfirmDialog(this, "Pass your turn?",
           "Game Status", JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE, oranguImage);
@@ -293,7 +293,7 @@ public class ReversiPanel extends JPanel
 
     //q key = quit game (and close both frames)
     if (e.getKeyCode() == KeyEvent.VK_Q) {
-      URL dawgImageURL = getClass().getResource("./img/dawg.png");
+      URL dawgImageURL = getClass().getResource("/view/gui/img/dawg.png");
       ImageIcon dawgImage = new ImageIcon(dawgImageURL);
       int quit = JOptionPane.showConfirmDialog(this, "Quit the game?",
           "Game Status", JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE, dawgImage);
