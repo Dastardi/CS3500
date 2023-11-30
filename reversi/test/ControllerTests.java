@@ -52,38 +52,38 @@ public class ControllerTests {
         controller.moveMade(new Coordinate(0, 0)));
   }
 
-  @Test
-  public void testPassed() {
+//  @Test
+//  public void testPassed() {
+//
+//  }
 
-  }
+//  @Test
+//  public void testUpdateTurnEndsGame() {
+//
+//  }
 
-  @Test
-  public void testUpdateTurnEndsGame() {
+//  @Test
+//  public void testUpdateTurnCallsCheckTurn() {
+//
+//  }
 
-  }
+//  @Test
+//  public void testHumanCheckTurnReturns() {
+//
+//  }
 
-  @Test
-  public void testUpdateTurnCallsCheckTurn() {
+//  @Test
+//  public void testAICheckTurnMoves() {
+//
+//  }
 
-  }
+//  @Test
+//  public void testAICheckTurnPasses() {
+//
+//  }
 
-  @Test
-  public void testHumanCheckTurnReturns() {
-
-  }
-
-  @Test
-  public void testAICheckTurnMoves() {
-
-  }
-
-  @Test
-  public void testAICheckTurnPasses() {
-
-  }
-
-  @Test
-  public void testHandleGameOver() {
-
-  }
+//  @Test
+//  public void testHandleGameOver() {
+//
+//  }
 }
