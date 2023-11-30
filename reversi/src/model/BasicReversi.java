@@ -177,6 +177,7 @@ public class BasicReversi implements ReversiModel {
     }
     //if no rows fulfill valid move criteria, throw an exception
     else {
+      System.out.println("Invalid move.");
       throw new IllegalStateException("Invalid move.");
     }
 
@@ -196,7 +197,7 @@ public class BasicReversi implements ReversiModel {
       throw new IllegalArgumentException("Given coordinate out of bounds of board.");
     }
     List<List<Tile>> validRows = getValidRows(coordinate, getCurrentPlayer());
-    return !validRows.isEmpty();
+    return !validRows.isEmpty() && getTileAt(coordinate).isEmpty();
   }
 
   @Override
@@ -204,7 +205,7 @@ public class BasicReversi implements ReversiModel {
     boolean hasLegalMove = false;
     for (Tile[] row : this.board) {
       for (Tile tile : row) {
-        if (tile.isEmpty()) {
+        if (tile != null && tile.isEmpty()) {
           if (isMoveLegal(tile.getCoordinate())) {
             hasLegalMove = true;
           }
@@ -218,6 +219,9 @@ public class BasicReversi implements ReversiModel {
   public int getMoveScore(Coordinate coordinate) {
     if (!tileInBoard(coordinate.getQ(), coordinate.getR())) {
       throw new IllegalArgumentException("Given coordinate out of bounds of board.");
+    }
+    if (!getTileAt(new Coordinate(coordinate.getQ(), coordinate.getR())).isEmpty()) {
+      return 0;
     }
     int moveScore = 0;
     List<List<Tile>> validRows = getValidRows(coordinate, getCurrentPlayer());
@@ -249,7 +253,7 @@ public class BasicReversi implements ReversiModel {
         //while the next row is the opposite color, keep iterating and adding to the row
         while (nextTile != null && !nextTile.isEmpty() && nextTile.getContents() != currentColor) {
           row.add(nextTile);
-          nextTile = getNextInRow(neighbor, nextTile);
+          nextTile = getNextInRow(row.get(row.size() - 2), row.get(row.size() - 1));
         }
         //if it's not empty and would be the correct color to create a sandwich, it's a valid row
         if (nextTile != null && nextTile.getContents() == currentColor) {
