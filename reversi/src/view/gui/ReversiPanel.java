@@ -296,7 +296,7 @@ public class ReversiPanel extends JPanel
     //h key - basic help method, tells you if you have any valid moves
     if (e.getKeyCode() == KeyEvent.VK_H) {
       JOptionPane.showMessageDialog(this, "It is " + model.playerHasLegalMoves()
-          + " that you have a legal move.", "Game Status", JOptionPane.INFORMATION_MESSAGE);
+          + " that you have a legal move.", "Game Status", JOptionPane.INFORMATION_MESSAGE, null);
     }
   }
 

@@ -83,7 +83,6 @@ public class ReversiController implements ViewEventListener, ModelEventListener 
       return;
     }
     if (type.equals(MoveType.VALID)) {
-      System.out.println(coordinate);
       this.model.move(coordinate);
     }
     if (type.equals(MoveType.NOVALID)) {

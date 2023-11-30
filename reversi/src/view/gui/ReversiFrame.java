@@ -80,8 +80,15 @@ public class ReversiFrame extends JFrame implements ReversiView, ViewEventListen
 
   @Override
   public void displayPopup(String messageToDisplay) {
-    JOptionPane.showMessageDialog(this, messageToDisplay,
-        "Game Status", JOptionPane.INFORMATION_MESSAGE);
+    if (messageToDisplay.equals("It's your turn!")) {
+      URL thumbImageUrl = getClass().getResource("thumb.png");
+      ImageIcon thumbIcon = new ImageIcon(thumbImageUrl);
+      JOptionPane.showMessageDialog(this, messageToDisplay,
+          "Game Status", JOptionPane.INFORMATION_MESSAGE, thumbIcon);
+    } else {
+      JOptionPane.showMessageDialog(this, messageToDisplay,
+          "Game Status", JOptionPane.INFORMATION_MESSAGE);
+    }
   }
 
   @Override
