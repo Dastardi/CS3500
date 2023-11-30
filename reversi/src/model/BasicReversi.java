@@ -177,6 +177,7 @@ public class BasicReversi implements ReversiModel {
     }
     //if no rows fulfill valid move criteria, throw an exception
     else {
+      System.out.println("Invalid move.");
       throw new IllegalStateException("Invalid move.");
     }
 
@@ -196,7 +197,7 @@ public class BasicReversi implements ReversiModel {
       throw new IllegalArgumentException("Given coordinate out of bounds of board.");
     }
     List<List<Tile>> validRows = getValidRows(coordinate, getCurrentPlayer());
-    return !validRows.isEmpty();
+    return !validRows.isEmpty() && getTileAt(coordinate).isEmpty();
   }
 
   @Override
@@ -204,7 +205,7 @@ public class BasicReversi implements ReversiModel {
     boolean hasLegalMove = false;
     for (Tile[] row : this.board) {
       for (Tile tile : row) {
-        if (tile.isEmpty()) {
+        if (tile != null && tile.isEmpty()) {
           if (isMoveLegal(tile.getCoordinate())) {
             hasLegalMove = true;
           }
@@ -218,6 +219,9 @@ public class BasicReversi implements ReversiModel {
   public int getMoveScore(Coordinate coordinate) {
     if (!tileInBoard(coordinate.getQ(), coordinate.getR())) {
       throw new IllegalArgumentException("Given coordinate out of bounds of board.");
+    }
+    if (!getTileAt(new Coordinate(coordinate.getQ(), coordinate.getR())).isEmpty()) {
+      return 0;
     }
     int moveScore = 0;
     List<List<Tile>> validRows = getValidRows(coordinate, getCurrentPlayer());
@@ -249,7 +253,7 @@ public class BasicReversi implements ReversiModel {
         //while the next row is the opposite color, keep iterating and adding to the row
         while (nextTile != null && !nextTile.isEmpty() && nextTile.getContents() != currentColor) {
           row.add(nextTile);
-          nextTile = getNextInRow(neighbor, nextTile);
+          nextTile = getNextInRow(row.get(row.size() - 2), row.get(row.size() - 1));
         }
         //if it's not empty and would be the correct color to create a sandwich, it's a valid row
         if (nextTile != null && nextTile.getContents() == currentColor) {
@@ -359,6 +363,7 @@ public class BasicReversi implements ReversiModel {
         //only iterate over tiles that are actually on the board (skip null values in the array)
         if (tileInBoard(q, r) && getTileAt(new Coordinate(r, q)).isEmpty()) {
           boardFull = false;
+          break;
         }
       }
     }
@@ -366,6 +371,7 @@ public class BasicReversi implements ReversiModel {
     return this.passCount >= 2 || boardFull;
   }
 
+  /*
   @Override
   public PlayerColor getCurrentWinner() {
     //to keep track of the current highest score of all players
@@ -386,6 +392,33 @@ public class BasicReversi implements ReversiModel {
         //set their score as the new highest score and make them the winner
         highestScore = playerScore;
         winner = color;
+      }
+    }
+    return winner;
+  }
+
+   */
+
+  @Override
+  public int getCurrentWinner() {
+    //to keep track of the current highest score of all players
+    int highestScore = 0;
+    //to keep track of the winner
+    int winner = 2;
+    //go through all player colors
+    for (PlayerColor color : PlayerColor.values()) {
+      int playerScore = getPlayerScore(color);
+
+      //if this player's score is higher than the current highest
+      //if there is a tie, return null
+      if (playerScore == highestScore) {
+        winner = 2;
+      }
+
+      if (playerScore > highestScore) {
+        //set their score as the new highest score and make them the winner
+        highestScore = playerScore;
+        winner = color.ordinal();
       }
     }
     return winner;
@@ -430,13 +463,17 @@ public class BasicReversi implements ReversiModel {
 
   @Override
   public void startGame() {
-    boolean playerOneFound = false;
-
     for(ModelEventListener listener : listeners) {
       listener.initializeGame();
-      if (listener instanceof ReversiController && !playerOneFound) {
+    }
+    activateFirstTurn();
+  }
+
+  private void activateFirstTurn() {
+    for(ModelEventListener listener : listeners) {
+      if (listener instanceof ReversiController) {
         listener.updateTurn();
-        playerOneFound = true;
+        return;
       }
     }
   }

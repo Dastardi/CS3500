@@ -28,7 +28,7 @@ public interface ReadOnlyReversiModel extends TurnTaker {
    * If the players have the exact same score (same number of tiles on the board), returns null.
    * @return the PlayerColor of the player with more discs on the board, or null
    */
-  PlayerColor getCurrentWinner();
+  int getCurrentWinner();
 
   /**
    * Returns the score of the given player where the score represents
