@@ -80,14 +80,41 @@ public class ReversiFrame extends JFrame implements ReversiView, ViewEventListen
 
   @Override
   public void displayPopup(String messageToDisplay) {
-    if (messageToDisplay.equals("It's your turn!")) {
-      URL thumbImageUrl = getClass().getResource("thumb.png");
-      ImageIcon thumbIcon = new ImageIcon(thumbImageUrl);
-      JOptionPane.showMessageDialog(this, messageToDisplay,
-          "Game Status", JOptionPane.INFORMATION_MESSAGE, thumbIcon);
-    } else {
-      JOptionPane.showMessageDialog(this, messageToDisplay,
-          "Game Status", JOptionPane.INFORMATION_MESSAGE);
+    switch (messageToDisplay) {
+      case "It's your turn!":
+        URL thumbImageUrl = getClass().getResource("./img/thumb.png");
+        ImageIcon thumbIcon = new ImageIcon(thumbImageUrl);
+        JOptionPane.showMessageDialog(this, messageToDisplay,
+            "Game Status", JOptionPane.INFORMATION_MESSAGE, thumbIcon);
+        break;
+      case "You provided an invalid player. LOL!":
+        URL koalaImageURL = getClass().getResource("./img/koala.png");
+        ImageIcon koalaIcon = new ImageIcon(koalaImageURL);
+        JOptionPane.showMessageDialog(this, messageToDisplay,
+            "Game Status", JOptionPane.INFORMATION_MESSAGE, koalaIcon);
+        break;
+      case "Game ended!\nWinner: Black":
+        URL blackBearImageURL = getClass().getResource("./img/blackbear.png");
+        ImageIcon blackBearIcon = new ImageIcon(blackBearImageURL);
+        JOptionPane.showMessageDialog(this, messageToDisplay,
+            "Game Status", JOptionPane.INFORMATION_MESSAGE, blackBearIcon);
+        break;
+      case "Game ended!\nWinner: White":
+        URL polarImageIcon = getClass().getResource("./img/polar.png");
+        ImageIcon polarIcon = new ImageIcon(polarImageIcon);
+        JOptionPane.showMessageDialog(this, messageToDisplay,
+            "Game Status", JOptionPane.INFORMATION_MESSAGE, polarIcon);
+        break;
+      case "Game ended in a tie!":
+        URL penguinImageIcon = getClass().getResource("./img/penguins.png");
+        ImageIcon penguinIcon = new ImageIcon(penguinImageIcon);
+        JOptionPane.showMessageDialog(this, messageToDisplay,
+            "Game Status", JOptionPane.INFORMATION_MESSAGE, penguinIcon);
+        break;
+      default:
+        JOptionPane.showMessageDialog(this, messageToDisplay,
+            "Game Status", JOptionPane.INFORMATION_MESSAGE);
+        break;
     }
   }
 

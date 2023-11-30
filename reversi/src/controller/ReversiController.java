@@ -6,6 +6,9 @@ import view.gui.ViewEventListener;
 import view.gui.ReversiFrame;
 import view.text.ReversiTextualView;
 
+import javax.swing.*;
+import java.net.URL;
+
 /**
  * TODO WRITE A JAVADOC HERE!!!!!!!!!!!!!!!!
  */
@@ -98,12 +101,10 @@ public class ReversiController implements ViewEventListener, ModelEventListener 
   private void handleGameOver() {
     switch (model.getCurrentWinner()) {
       case 0:
-        this.view.displayPopup("Game ended!\n" +
-            "Winner: Black");
+        this.view.displayPopup("Game ended!\nWinner: Black");
         break;
       case 1:
-        this.view.displayPopup("Game ended!\n" +
-            "Winner: White");
+        this.view.displayPopup("Game ended!\nWinner: White");
         break;
       case 2:
         this.view.displayPopup("Game ended in a tie!");
