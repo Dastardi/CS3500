@@ -7,19 +7,20 @@ import view.gui.ReversiFrame;
  * to return the inputs being passed in.
  */
 public class MockView extends ReversiFrame {
-    private StringBuilder log;
+  private StringBuilder log;
 
-    /**
-     * Constructs the mock view.
-     * @param model the Reversi model to use for the view
-     * @param log the StringBuilder to append validation messages to
-     */
-    public MockView(ReadOnlyReversiModel model, StringBuilder log) {
-        super(model);
-        this.log = log;
-    }
-    @Override
-    public void displayPopup(String messageToDisplay) {
-        this.log.append(messageToDisplay);
-    }
+  /**
+   * Constructs the mock view.
+   * @param model the Reversi model to use for the view
+   * @param log the StringBuilder to append validation messages to
+   */
+  public MockView(ReadOnlyReversiModel model, StringBuilder log) {
+    super(model);
+    this.log = log;
+  }
+
+  @Override
+  public void displayPopup(String messageToDisplay) {
+    this.log.append(messageToDisplay);
+  }
 }

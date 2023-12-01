@@ -23,7 +23,7 @@ public interface ReversiModel extends ReadOnlyReversiModel {
   void pass() throws IllegalStateException;
 
   /**
-   * Informs the listeners of this model that the game has begun. //todo should this be in TurnTaker?
+   * Informs the listeners of this model that the game has begun.
    */
   void startGame();
 }
