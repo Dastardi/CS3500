@@ -3,7 +3,9 @@ package controller;
 import model.Coordinate;
 
 /**
- * An interface for a player in a game of Reversi.
+ * An interface for a player in a game of Reversi. This interface is very broad
+ * and can be implemented by both AI and human players and simply provides the ability
+ * to make a move, in the form of the Coordinate for that move and its status (see MoveType enum).
  */
 public interface Player {
   /**

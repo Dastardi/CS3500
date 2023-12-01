@@ -12,8 +12,7 @@ import javax.swing.WindowConstants;
 
 import java.awt.BorderLayout;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Optional;
 
 /**
  * The frame, otherwise called the window, of the GUI for a reversi game.
@@ -28,7 +27,8 @@ import java.util.List;
 public class ReversiFrame extends JFrame
     implements ReversiView, ViewEventListener, Emitter, ModelEventListener {
   //holds all listeners to this panel, which handle moves and passes
-  private final List<ViewEventListener> listeners;
+  //not final because it needs to be able to be set from empty to a given ViewEventListener
+  private Optional<ViewEventListener> listener;
   private final ReversiPanel panel;
 
   /**
@@ -42,8 +42,8 @@ public class ReversiFrame extends JFrame
     this.panel = new ReversiPanel(model);
     //the frame is a listener of the panel, allowing it to get user interaction information
     this.panel.addListener(this);
-    //model.addListener(this); //TODO
-    this.listeners = new ArrayList<>();
+    model.addListener(this);
+    this.listener = Optional.empty();
     //the panel is the only object in this frame, therefore it is placed in the center
     //of a simple border layout
     add(this.panel, BorderLayout.CENTER);
@@ -56,31 +56,21 @@ public class ReversiFrame extends JFrame
     if (listener == null) {
       throw new IllegalArgumentException("Cannot provide a null listener to the frame.");
     }
-    this.listeners.add(listener);
+    this.listener = Optional.of(listener);
   }
 
   @Override
-  public String moveMade(Coordinate coordinate) { //todo
-    //see PanelEventListener interface
-
-    //this method is currently a stub
-    //when we add a controller to this code, this method will pass information
-    //from the panel through here and through to the controller.
-    //the controller, in turn, will pass information back (from the model)
-    //about whether the move is valid so that the view knows whether it is okay
-    //to display the requested move
-    //this method should only return true if the controller says the model says the move is valid
-    return listeners.get(0).moveMade(coordinate);
+  public String moveMade(Coordinate coordinate) {
+    if (this.listener.isPresent()) {
+      return this.listener.get().moveMade(coordinate);
+    } else {
+      return "Could not make move; the view is disconnected from the rest of the system.";
+    }
   }
 
   @Override
-  public void passed() { //todo
-    //see PanelEventListener interface
-
-    //this method is currently a stub
-    //when we add a controller to this code, this method will pass information
-    //from the panel through here and through to the controller
-    listeners.get(0).passed();
+  public void passed() {
+    this.listener.ifPresent(ViewEventListener::passed);
   }
 
   //we decided to have some fun with it and add some images to our popups. this is by no means

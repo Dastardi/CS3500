@@ -119,7 +119,7 @@ public class BasicReversi implements ReversiModel {
 
   @Override
   public Tile[][] getBoard() {
-    return this.board; //todo CHANGE
+    return copyBoard(this.board);
   }
 
   //helps set up game state by filling the 2D array representing the game board
