@@ -21,6 +21,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import javax.swing.JPanel;
 import javax.swing.ImageIcon;
@@ -50,7 +51,8 @@ public class ReversiPanel extends JPanel
   //to the center of the opposite straight edge
   private final double tileWidth;
   //holds all listeners to this panel, which handle moves and passes
-  private final List<ViewEventListener> listeners;
+  //not final because it needs to be able to be set from empty to a given ViewEventListener
+  private Optional<ViewEventListener> listener;
   //when not selected, all tiles are gray
   private final Color baseColor = Color.GRAY;
   //when selected (via mouse click), tiles are cyan
@@ -87,7 +89,7 @@ public class ReversiPanel extends JPanel
     //must be focusable in order to take key presses
     setFocusable(true);
     addKeyListener(this);
-    this.listeners = new ArrayList<>();
+    this.listener = Optional.empty();
     //add this as a listener to the model for repainting
     model.addListener(this);
     //set up the tiles and starting discs
@@ -202,7 +204,12 @@ public class ReversiPanel extends JPanel
    * @param coordinate the coordinate of the tile the user indicated a move to
    */
   private String notifyMoveMade(Coordinate coordinate) {
-    return listeners.get(0).moveMade(coordinate);
+    if (this.listener.isPresent()) {
+      return this.listener.get().moveMade(coordinate);
+    }
+    else {
+      return "Could not make move; the panel is disconnected from the rest of the system.";
+    }
   }
 
   /**
@@ -211,7 +218,7 @@ public class ReversiPanel extends JPanel
    * therefore no information must be passed regarding validity.
    */
   private void notifyPassed() {
-    listeners.get(0).passed();
+    this.listener.ifPresent(ViewEventListener::passed);
   }
 
   @Override
@@ -219,7 +226,7 @@ public class ReversiPanel extends JPanel
     if (listener == null) {
       throw new IllegalArgumentException("Cannot provide a null listener to the panel.");
     }
-    this.listeners.add(listener);
+    this.listener = Optional.of(listener);
   }
 
   @Override
@@ -232,6 +239,9 @@ public class ReversiPanel extends JPanel
       //if this is the tile the click happened in
       if (tile.containsPoint(pointClicked)) {
         tileClicked = true;
+        //note: still printing this as requested in the previous assignment,
+        //as instructions were very unclear as to whether we should keep this functionality
+        //so we are erring on the side of caution
         System.out.println("Clicked tile coordinates: " + tile.getQ() + ", " + tile.getR());
         //if the tile is not currently selected, it becomes the selected tile and changes color
         if (tile.getColor() == this.baseColor) {
@@ -307,7 +317,7 @@ public class ReversiPanel extends JPanel
 
     //h key - basic help method, tells you if you have any valid moves
     if (e.getKeyCode() == KeyEvent.VK_H) {
-      JOptionPane.showMessageDialog(this, "It is " + model.playerHasLegalMoves()
+      JOptionPane.showMessageDialog(this, "It is " + this.model.playerHasLegalMoves()
           + " that you have a legal move.", "Game Status", JOptionPane.INFORMATION_MESSAGE, null);
     }
   }

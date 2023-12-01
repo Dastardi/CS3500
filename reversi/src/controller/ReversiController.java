@@ -13,9 +13,14 @@ import view.gui.ReversiFrame;
  * dictated by the model.
  */
 public class ReversiController implements ViewEventListener, ModelEventListener {
+  //represents the game's model
   private final ReversiModel model;
+  //represents the player that interacts with this controller, either human or AI
   private final Player player;
+  //represents the view that is associated with and communicates with this controller
   private final ReversiFrame view;
+  //represents whether it is this controller's turn, as opposed to the other player's controller
+  //not final because whose turn it is obviously changes every turn
   private boolean myTurn;
 
   /**

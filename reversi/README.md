@@ -179,3 +179,36 @@ This means that the board size will be highly customizable, and makes our calcul
 
 ## CHANGES FOR PART 3
 
+Interface changes
+- Renamed the ViewPanel interface to the Emitter interface. Previously, it contained one method, addPanelListener(), which we changed to addListener(). This is so that we can now use this as a generic interface for any class that has listeners it wants to notify of events.
+- Similarly, renamed PanelEventListener to ViewEventListener. For the previous assignment, we had a PanelEventListener and a ViewEventListener, implemented by the view and the controller (in theory), respectively. However, now that we are sure the panel and the view are passing along exactly the same information, we know that the controller and the view can both be ViewEventListeners and there's no need to distinguish the two.
+- ReversiFrame now implements Emitter so that it is able to emit events to the controller.
+- ReversiFrame now implements ModelEventListener (see below) so that the model is able to tell it when a turn has been made so that the view can display the updated game state appropriately.
+
+New interfaces
+- Created a TurnTaker interface which is now implemented by the model, BasicReversi. It is the more specific model version of the Emitter interface. Similar to Emitter, it contains addListener(), so the model can add listeners, but it also has updateTurn() to notify listeners when a turn has ben taken.
+- Created a ModelEventListener interface. Since the model emits different kinds of events than the view, the controller needs different methods to be able to listen. ModelEventListener contains the methods initializeGame() and updateTurn(), which must be implemented by all listeners of the model, which is how the model is able to notify them.
+- Created ReversiView which is now implemented by ReversiFrame, the class for the view/window. It contains one simple method, displayPopup(), which displays a popup window. This gives other classes the ability to send a message they want displayed, via the view.
+
+BasicReversi (model)
+- Added a simple getter method, getBoard(), which uses the private helper copyBoard() to make a copy of the board field and return it. This is used in ReversiPanel to get the state of the board whenever it needs to be drawn. This method was also added to the model interface, ReversiModel.
+- Changed the getCurrentWinner() method to return integers instead of PlayerColors (or null). This separates the meaning a bit by having integers arbitrarily represent colors, but it also makes it cleaner by eliminating null and the need for null checks. 0 represents black, 1 represents white, and 2 represents a tie. This makes it substantially easier for the controller to determine the current winner.
+
+ReversiPanel
+- paintComponent()
+  - Every time repaint() or paintComponent() is called, the entire board is redrawn. We use getBoard() from the model to get the current state of the game and loop through each tile to draw it (and the disc on it, if one exists). In part 2, we simply iterated through the tileList field in the panel and had each tile draw itself, but the view wasn't updating correctly once we had two views operating. It is more foolproof to get the information directly from the model.
+- keyPressed()
+    - Added an option to press the h key as a "help" button to check if you have legal moves. Gives the user more options and makes testing easier.
+    - Added images that correspond with each type of window/message.
+    - Instead of calling notifyMoveMade() in the if statements, we separate its return value into an integer to make the code cleaner.
+- Other
+  - Changed the name of notifyMoveMadeAndCheckValidity() to notifyMoveMade()
+
+Panel and View Listener Fields
+- Changed the structure of listeners to both the panel and the view. Since these objects will only ever have one listener (the panel only emits to the window/view that holds it, and the window/view only emits to its controller), it doesn't really make sense to use a list of listeners, which we had in part 2. Originally, we changed this structure to keep a list of listeners and simply only ever use the first element in the list, but that is bad design. Instead, we changed both classes' fields to an Optional<ViewEventListener>, which is initially empty and is then set once the view adds itself as a listener to the panel/the controller adds itself as a listener to the view. This way, there is clearly only one listener object.
+
+### USER INTERACTION DESIGN CHOICES
+- Each player gets their own game ended dialog because we want each user to be notified when the game is over.
+- We customized our popups!
+  - We gave different types of messages different types of buttons. For example, the "It's your turn" popup only gives the user an "Ok" button, because all they have to do is acknowledge that they've seen the message. Attemping to quit the game, however, shows a popup with "Yes" and "No" options so that the user can choose to either go ahead with quitting or go back to the game. This gives the user more options and control over game play.
+  - We added custom icons. Each message type has a different icon depending on the message content. This was to make gameplay more fun and interesting!
