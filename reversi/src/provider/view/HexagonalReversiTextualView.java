@@ -1,6 +1,7 @@
 package provider.view;
 
 
+import provider.model.CoordinateUtils;
 import provider.model.HexPosn;
 import provider.model.HexState;
 import provider.model.ReadOnlyHexagonalReversi;

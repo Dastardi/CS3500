@@ -12,6 +12,7 @@ import java.util.List;
 import javax.swing.JComponent;
 
 import provider.controller.PlayerActionListener;
+import provider.model.CoordinateUtils;
 import provider.model.HexPosn;
 import provider.model.HexState;
 import provider.model.ReadOnlyHexagonalReversi;
