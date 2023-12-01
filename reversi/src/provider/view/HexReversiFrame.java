@@ -7,8 +7,8 @@ import javax.swing.JFrame;
 import javax.swing.WindowConstants;
 import javax.swing.JOptionPane;
 
-import cs3500.reversi.controller.PlayerActionListener;
-import cs3500.reversi.model.ReadOnlyHexagonalReversi;
+import provider.controller.PlayerActionListener;
+import provider.model.ReadOnlyHexagonalReversi;
 
 /**
  * A JFrame for Reversi.

@@ -14,10 +14,9 @@ import java.util.Objects;
 
 import javax.swing.JPanel;
 
-import cs3500.reversi.controller.PlayerActionListener;
-import cs3500.reversi.model.HexPosn;
-import cs3500.reversi.model.ReadOnlyHexagonalReversi;
-import cs3500.reversi.model.CoordinateUtils;
+import provider.controller.PlayerActionListener;
+import provider.model.HexPosn;
+import provider.model.ReadOnlyHexagonalReversi;
 
 /**
  * Represents a JPanel for Reversi.

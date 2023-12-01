@@ -1,9 +1,9 @@
 package provider.view;
 
-import cs3500.reversi.model.CoordinateUtils;
-import cs3500.reversi.model.HexPosn;
-import cs3500.reversi.model.HexState;
-import cs3500.reversi.model.ReadOnlyHexagonalReversi;
+
+import provider.model.HexPosn;
+import provider.model.HexState;
+import provider.model.ReadOnlyHexagonalReversi;
 
 /**
  * Represents a method of viewing a game of Reversi via a String.

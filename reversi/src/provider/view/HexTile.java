@@ -11,11 +11,10 @@ import java.util.List;
 
 import javax.swing.JComponent;
 
-import cs3500.reversi.controller.PlayerActionListener;
-import cs3500.reversi.model.CoordinateUtils;
-import cs3500.reversi.model.HexPosn;
-import cs3500.reversi.model.HexState;
-import cs3500.reversi.model.ReadOnlyHexagonalReversi;
+import provider.controller.PlayerActionListener;
+import provider.model.HexPosn;
+import provider.model.HexState;
+import provider.model.ReadOnlyHexagonalReversi;
 
 /**
  * Represents a Hex as a JComponent.

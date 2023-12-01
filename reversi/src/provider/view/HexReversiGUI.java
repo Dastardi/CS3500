@@ -1,6 +1,6 @@
 package provider.view;
 
-import cs3500.reversi.controller.PlayerActionListener;
+import provider.controller.PlayerActionListener;
 
 /**
  * Represents a GUI for Reversi.
