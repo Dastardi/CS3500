@@ -10,26 +10,28 @@ import view.gui.ReversiFrame;
  * to return the inputs being passed in.
  */
 public class MockReversiController extends ReversiController {
-    private StringBuilder log;
-    /**
-     * Constructs the mock controller.
-     * @param model the Reversi model to use with the controller
-     * @param player the player using this controller
-     * @param view the view that interacts with this controller
-     * @param log the StringBuilder to append messages to
-     */
-    public MockReversiController(ReversiModel model, Player player, ReversiFrame view, StringBuilder log) {
-        super(model, player, view);
-        this.log = log;
-    }
+  private StringBuilder log;
 
-    @Override
-    public String moveMade(Coordinate coordinate) {
-        return "Received move at: " + coordinate.toString();
-    }
+  /**
+   * Constructs the mock controller.
+   * @param model the Reversi model to use with the controller
+   * @param player the player using this controller
+   * @param view the view that interacts with this controller
+   * @param log the StringBuilder to append messages to
+   */
+  public MockReversiController(ReversiModel model, Player player,
+                               ReversiFrame view, StringBuilder log) {
+    super(model, player, view);
+    this.log = log;
+  }
 
-    @Override
-    public void passed() {
-        this.log.append("Received pass");
-    }
+  @Override
+  public String moveMade(Coordinate coordinate) {
+    return "Received move at: " + coordinate.toString();
+  }
+
+  @Override
+  public void passed() {
+    this.log.append("Received pass");
+  }
 }

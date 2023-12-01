@@ -37,8 +37,10 @@ public class ControllerTests {
     this.view = new ReversiFrame(this.model);
     this.controller = new ReversiController(this.model, this.playerHuman, this.view);
     this.mockView = new MockView(this.model, this.log);
-    this.controllerWithMockView = new ReversiController(this.model, this.playerHuman, this.mockView);
-    this.mockController = new MockReversiController(this.model, this.playerHuman, this.view, this.log);
+    this.controllerWithMockView =
+        new ReversiController(this.model, this.playerHuman, this.mockView);
+    this.mockController =
+        new MockReversiController(this.model, this.playerHuman, this.view, this.log);
   }
 
   @Test
@@ -85,7 +87,8 @@ public class ControllerTests {
 
   @Test
   public void testMoveCoordinateProperlyReceived() {
-    Assert.assertTrue(this.mockController.moveMade(new Coordinate(6, 3)).contains("Received move at: 6, 3"));
+    Assert.assertTrue(this.mockController.moveMade(new Coordinate(6, 3))
+        .contains("Received move at: 6, 3"));
   }
 
   @Test
