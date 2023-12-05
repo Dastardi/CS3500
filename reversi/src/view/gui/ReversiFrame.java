@@ -60,6 +60,11 @@ public class ReversiFrame extends JFrame
   }
 
   @Override
+  public void removeView() {
+    this.dispose();
+  }
+
+  @Override
   public String moveMade(Coordinate coordinate) {
     if (this.listener.isPresent()) {
       return this.listener.get().moveMade(coordinate);
@@ -115,6 +120,11 @@ public class ReversiFrame extends JFrame
             "Game Status", JOptionPane.INFORMATION_MESSAGE);
         break;
     }
+  }
+
+  @Override
+  public void showBoard() {
+    this.setVisible(true);
   }
 
   @Override

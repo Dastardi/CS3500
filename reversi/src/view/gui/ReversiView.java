@@ -1,5 +1,7 @@
 package view.gui;
 
+import controller.ViewEventListener;
+
 /**
  * This interface allows the controller to interact with the view by telling it to send
  * any message to the player via JOptionPanels.
@@ -10,4 +12,10 @@ public interface ReversiView {
    * @param messageToDisplay the text of the message. This text also determines the image shown.
    */
   void displayPopup(String messageToDisplay);
+
+  void showBoard();
+
+  void addListener(ViewEventListener listener);
+
+  void removeView();
 }

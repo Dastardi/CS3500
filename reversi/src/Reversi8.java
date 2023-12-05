@@ -2,7 +2,9 @@ import controller.*;
 import model.BasicReversi;
 import model.ReversiModel;
 import provider.view.HexReversiFrame;
+import view.gui.AdapterReversiFrame;
 import view.gui.ReversiFrame;
+import view.gui.ReversiView;
 
 /**
  * Runs a two-player game of hexagonal reversi with full GUI and AI capabilities.
@@ -22,16 +24,16 @@ public class Reversi8 {
       System.out.println("Must provide at least two player types.");
       return;
     }
-    /*
+
     ReversiModel model = new BasicReversi();
-    ReversiFrame viewPlayer1 = new ReversiFrame(model);
-    ReversiFrame viewPlayer2 = new HexReversiFrame(model);
+    ReversiView viewPlayer1 = new ReversiFrame(model);
+    ReversiView viewPlayer2 = new AdapterReversiFrame(model);
     Player player1 = setPlayer(args[0], model);
     Player player2 = setProviderPlayer(args[1], model);
     ReversiController controller1 = new ReversiController(model, player1, viewPlayer1);
     ReversiController controller2 = new ReversiController(model, player2, viewPlayer2);
     model.startGame();
-    */
+
   }
 
   //helps the main method construct the game by parsing a given argument for the requested game
@@ -51,5 +53,9 @@ public class Reversi8 {
         //the controller ensures the game cannot start with a null player
         return null;
     }
+  }
+
+  private static Player setProviderPlayer(String arg, ReversiModel model) {
+    return null;
   }
 }

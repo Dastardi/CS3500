@@ -2,6 +2,10 @@ package model;
 
 import controller.ModelEventListener;
 import controller.ReversiController;
+import provider.model.HexPosn;
+import provider.model.HexState;
+import provider.model.HexagonalReversi;
+import provider.model.ReadOnlyHexagonalReversi;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -371,34 +375,6 @@ public class BasicReversi implements ReversiModel {
     return this.passCount >= 2 || boardFull;
   }
 
-  /*
-  @Override
-  public PlayerColor getCurrentWinner() {
-    //to keep track of the current highest score of all players
-    int highestScore = 0;
-    //to keep track of the winner
-    PlayerColor winner = null;
-    //go through all player colors
-    for (PlayerColor color : PlayerColor.values()) {
-      int playerScore = getPlayerScore(color);
-
-      //if this player's score is higher than the current highest
-      //if there is a tie, return null
-      if (playerScore == highestScore) {
-        winner = null;
-      }
-
-      if (playerScore > highestScore) {
-        //set their score as the new highest score and make them the winner
-        highestScore = playerScore;
-        winner = color;
-      }
-    }
-    return winner;
-  }
-
-   */
-
   @Override
   public int getCurrentWinner() {
     //to keep track of the current highest score of all players
@@ -495,4 +471,6 @@ public class BasicReversi implements ReversiModel {
       listener.updateTurn();
     }
   }
+
+
 }

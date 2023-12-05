@@ -3,6 +3,7 @@ package controller;
 import model.Coordinate;
 import model.ReversiModel;
 import view.gui.ReversiFrame;
+import view.gui.ReversiView;
 
 /**
  * A controller for a player to interact with the model and view in a game of Reversi.
@@ -18,7 +19,7 @@ public class ReversiController implements ViewEventListener, ModelEventListener 
   //represents the player that interacts with this controller, either human or AI
   private final Player player;
   //represents the view that is associated with and communicates with this controller
-  private final ReversiFrame view;
+  private final ReversiView view;
   //represents whether it is this controller's turn, as opposed to the other player's controller
   //not final because whose turn it is obviously changes every turn
   private boolean myTurn;
@@ -31,7 +32,7 @@ public class ReversiController implements ViewEventListener, ModelEventListener 
    * When it constructs itself, the controller must add itself as a listener to both the
    * model and its respective view.
    */
-  public ReversiController(ReversiModel model, Player player, ReversiFrame view) {
+  public ReversiController(ReversiModel model, Player player, ReversiView view) {
     if (model == null || view == null) {
       throw new IllegalArgumentException("Model and view inputs to controller must be non-null.");
     }
@@ -68,7 +69,7 @@ public class ReversiController implements ViewEventListener, ModelEventListener 
 
   @Override
   public void initializeGame() {
-    this.view.setVisible(true);
+    this.view.showBoard();
   }
 
   @Override
@@ -127,6 +128,6 @@ public class ReversiController implements ViewEventListener, ModelEventListener 
       default:
         //getCurrentWinner always returns one of 0, 1, or 2.
     }
-    this.view.dispose();
+    this.view.removeView();
   }
 }
