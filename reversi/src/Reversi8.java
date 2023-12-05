@@ -40,7 +40,6 @@ public class Reversi8 {
   //type. takes in a string and the model and constructs a player object, using the model if
   //necessary, as indicated by the provided string
   private static Player setPlayer(String arg, ReversiModel model) {
-    //the controller ensures the game cannot start with a null player
     switch (arg) {
       case "human":
         return new HumanPlayer();
@@ -49,13 +48,27 @@ public class Reversi8 {
       case "hard":
         return new HardAIPlayer(model);
       default:
-        System.out.println("The three available players are human, easy, and hard.");
+        System.out.println("The three available players for Player 1 are human, easy, and hard.");
         //the controller ensures the game cannot start with a null player
         return null;
     }
   }
 
   private static Player setProviderPlayer(String arg, ReversiModel model) {
-    return null;
+    switch (arg) {
+      case "greedy":
+        return new GreedyProviderPlayer();
+      case "aatc":
+        return new AATCProviderPlayer();
+      case "corner":
+        return new CornerProviderPlayer();
+      case "minimax":
+        return new MinimaxProviderPlayer();
+      default:
+        System.out.println("The four available players for Player 2 are " +
+            "greedy, aatc, corner, and minimax.");
+        //the controller ensures the game cannot start with a null player
+        return null;
+    }
   }
 }
