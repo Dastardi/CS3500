@@ -1,5 +1,12 @@
 package controller;
 
-public class MinimaxProviderPlayer {
+import model.Coordinate;
 
+public class MinimaxProviderPlayer implements Player {
+  //if the optional is empty, return NOVALID and null
+  //if the optional has a value, return VALID and the translation of the HexPosn into a Coordinate
+  @Override
+  public Pair<MoveType, Coordinate> move() {
+    return null;
+  }
 }
