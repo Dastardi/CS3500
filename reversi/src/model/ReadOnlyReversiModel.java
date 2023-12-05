@@ -1,10 +1,12 @@
 package model;
 
+import provider.model.ReadOnlyHexagonalReversi;
+
 /**
  * Represents the primary interface for playing a game of Reversi.
  * Holds all methods necessary for internal gameplay.
  */
-public interface ReadOnlyReversiModel extends TurnTaker {
+public interface ReadOnlyReversiModel extends TurnTaker, ReadOnlyHexagonalReversi {
   /**
    * Gets the color of the player that is making the current turn.
    * @return the color of the current player

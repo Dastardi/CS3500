@@ -2,6 +2,7 @@ package model;
 
 import controller.ModelEventListener;
 import controller.ReversiController;
+import controller.Translator;
 import provider.model.HexPosn;
 import provider.model.HexState;
 import provider.model.HexagonalReversi;
@@ -472,5 +473,67 @@ public class BasicReversi implements ReversiModel {
     }
   }
 
+  //methods for provider HexagonalReversi
 
+  @Override
+  public void placePiece(int q, int r, int s, HexState color) throws IllegalStateException {
+    if (getCurrentPlayer() != Translator.hexStateToPlayerColor(color)) {
+      throw new IllegalStateException("Not your turn!");
+    }
+    this.move(new Coordinate(q, r));
+  }
+
+  @Override
+  public void pass(HexState color) throws IllegalStateException {
+    if (getCurrentPlayer() != Translator.hexStateToPlayerColor(color)) {
+      throw new IllegalStateException("Not your turn!");
+    }
+    this.pass();
+  }
+
+  //methods for provider ReadOnlyHexagonalReversi
+  @Override
+  public boolean validateMove(int q, int r, int s, HexState color) {
+    return false;
+  }
+
+  @Override
+  public HexState getNextTurn() {
+    return Translator.playerColorToHexState(getCurrentPlayer());
+  }
+
+  @Override
+  public HexState getHexState(int q, int r, int s) {
+    return Translator.playerColorToHexState(getTileAt(new Coordinate(q, r)).getContents());
+  }
+
+  @Override
+  public int getScore(HexState color) {
+    return getPlayerScore(Translator.hexStateToPlayerColor(color));
+  }
+
+  @Override
+  public int getNumLayers() {
+    return this.boardSize;
+  }
+
+  @Override
+  public boolean playableMoveExists(HexState color) {
+    return false;
+  }
+
+  @Override
+  public List<HexPosn> collectAllPossibleMoves(HexState color) {
+    return null;
+  }
+
+  @Override
+  public HexagonalReversi deepCopy() {
+    return new BasicReversi(this.board);
+  }
+
+  @Override
+  public void addModelEventListener(provider.model.ModelEventListener listener) {
+    //stub implementation
+  }
 }

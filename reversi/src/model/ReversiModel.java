@@ -1,5 +1,7 @@
 package model;
 
+import provider.model.HexagonalReversi;
+
 /**
  * Represents the actions that a player can make in Reversi.
  * A player's only actions are making a move and passing their turn.
@@ -7,7 +9,7 @@ package model;
  * as extensions of basic observational functionality held in the main model.
  * This interface provides the functionality for interacting with the model.
  */
-public interface ReversiModel extends ReadOnlyReversiModel {
+public interface ReversiModel extends ReadOnlyReversiModel, HexagonalReversi {
   /**
    * Makes a move in a game of Reversi by placing a disc of the given color in the provided space.
    * @throws IllegalArgumentException if the given coordinate is not on the game board.

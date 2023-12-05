@@ -57,13 +57,13 @@ public class Reversi8 {
   private static Player setProviderPlayer(String arg, ReversiModel model) {
     switch (arg) {
       case "greedy":
-        return new GreedyProviderPlayer();
+        return new GreedyProviderPlayer(model);
       case "aatc":
-        return new AATCProviderPlayer();
+        return new AATCProviderPlayer(model);
       case "corner":
-        return new CornerProviderPlayer();
+        return new CornerProviderPlayer(model);
       case "minimax":
-        return new MinimaxProviderPlayer();
+        return new MinimaxProviderPlayer(model);
       default:
         System.out.println("The four available players for Player 2 are " +
             "greedy, aatc, corner, and minimax.");
