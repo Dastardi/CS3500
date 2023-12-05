@@ -2,6 +2,9 @@ package controller;
 
 import model.Coordinate;
 import model.ReversiModel;
+import provider.controller.PlayerActionListener;
+import provider.model.HexPosn;
+import view.gui.AdapterReversiFrame;
 import view.gui.ReversiFrame;
 import view.gui.ReversiView;
 
@@ -13,7 +16,7 @@ import view.gui.ReversiView;
  * and model in order to ensure that the game is represented correctly in the view as
  * dictated by the model.
  */
-public class ReversiController implements ViewEventListener, ModelEventListener {
+public class ReversiController implements ViewEventListener, ModelEventListener, PlayerActionListener {
   //represents the game's model
   private final ReversiModel model;
   //represents the player that interacts with this controller, either human or AI
@@ -45,6 +48,7 @@ public class ReversiController implements ViewEventListener, ModelEventListener 
     this.player = player;
     //add this controller as a listener to the view and model
     this.view.addListener(this);
+    if (this.view instanceof AdapterReversiFrame) { ((AdapterReversiFrame) this.view).addPlayerActionListener(this); }
     this.model.addListener(this);
     this.myTurn = false;
   }
@@ -129,5 +133,16 @@ public class ReversiController implements ViewEventListener, ModelEventListener 
         //getCurrentWinner always returns one of 0, 1, or 2.
     }
     this.view.removeView();
+  }
+
+  @Override
+  public void processPiecePlaced(int q, int r, int s) {
+    Coordinate coordinate = Translator.hexPosnToCoordinate(model.getBoardSize(), new HexPosn(q, r, s));
+    this.moveMade(coordinate);
+  }
+
+  @Override
+  public void processTurnPassed() {
+    this.passed();
   }
 }

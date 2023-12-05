@@ -26,7 +26,7 @@ import java.util.Optional;
  */
 public class ReversiFrame extends JFrame
     implements ReversiView, ViewEventListener, Emitter, ModelEventListener {
-  //holds all listeners to this panel, which handle moves and passes
+  //holds the listener to this panel, which handles moves and passes
   //not final because it needs to be able to be set from empty to a given ViewEventListener
   private Optional<ViewEventListener> listener;
   private final ReversiPanel panel;

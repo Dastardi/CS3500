@@ -1,8 +1,4 @@
-import controller.EasyAIPlayer;
-import controller.HardAIPlayer;
-import controller.HumanPlayer;
-import controller.Player;
-import controller.ReversiController;
+import controller.*;
 import model.BasicReversi;
 import model.ReversiModel;
 import view.gui.ReversiFrame;
@@ -22,13 +18,18 @@ public final class Reversi {
       System.out.println("Must provide at least two player types.");
       return;
     }
+
     ReversiModel model = new BasicReversi();
+
     ReversiFrame viewPlayer1 = new ReversiFrame(model);
     ReversiFrame viewPlayer2 = new ReversiFrame(model);
+
     Player player1 = setPlayer(args[0], model);
     Player player2 = setPlayer(args[1], model);
+
     ReversiController controller1 = new ReversiController(model, player1, viewPlayer1);
     ReversiController controller2 = new ReversiController(model, player2, viewPlayer2);
+
     model.startGame();
   }
 
@@ -42,6 +43,8 @@ public final class Reversi {
         return new HumanPlayer();
       case "easy":
         return new EasyAIPlayer(model);
+      case "medium":
+        return new MediumAIPlayer(model);
       case "hard":
         return new HardAIPlayer(model);
       default:

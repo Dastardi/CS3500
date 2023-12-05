@@ -25,10 +25,13 @@ public class Reversi8 {
     }
 
     ReversiModel model = new BasicReversi();
+
     ReversiView viewPlayer1 = new ReversiFrame(model);
     ReversiView viewPlayer2 = new AdapterReversiFrame(model);
+
     Player player1 = setPlayer(args[0], model);
     Player player2 = setProviderPlayer(args[1], model);
+
     ReversiController controller1 = new ReversiController(model, player1, viewPlayer1);
     ReversiController controller2 = new ReversiController(model, player2, viewPlayer2);
     model.startGame();
@@ -44,10 +47,13 @@ public class Reversi8 {
         return new HumanPlayer();
       case "easy":
         return new EasyAIPlayer(model);
+      case "medium":
+        return new MediumAIPlayer(model);
       case "hard":
         return new HardAIPlayer(model);
       default:
-        System.out.println("The three available players for Player 1 are human, easy, and hard.");
+        System.out.println("The four available players for Player 1 are " +
+            "human, easy, medium, and hard.");
         //the controller ensures the game cannot start with a null player
         return null;
     }
@@ -55,6 +61,8 @@ public class Reversi8 {
 
   private static Player setProviderPlayer(String arg, ReversiModel model) {
     switch (arg) {
+      case "human":
+        return new HumanProviderPlayer();
       case "greedy":
         return new GreedyProviderPlayer(model);
       case "aatc":
@@ -64,7 +72,7 @@ public class Reversi8 {
       case "minimax":
         return new MinimaxProviderPlayer(model);
       default:
-        System.out.println("The four available players for Player 2 are " +
+        System.out.println("The five available players for Player 2 are human, " +
             "greedy, aatc, corner, and minimax.");
         //the controller ensures the game cannot start with a null player
         return null;

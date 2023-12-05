@@ -2,6 +2,8 @@ package view.gui;
 
 import controller.ViewEventListener;
 
+import javax.swing.*;
+
 /**
  * This interface allows the controller to interact with the view by telling it to send
  * any message to the player via JOptionPanels.

@@ -6,7 +6,6 @@ import controller.Translator;
 import provider.model.HexPosn;
 import provider.model.HexState;
 import provider.model.HexagonalReversi;
-import provider.model.ReadOnlyHexagonalReversi;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -167,7 +166,7 @@ public class BasicReversi implements ReversiModel {
     throwIfGameOver();
     //cannot make a move to a coordinate that is not a part of the board
     if (!tileInBoard(coordinate.getQ(), coordinate.getR())) {
-      throw new IllegalArgumentException("Given coordinate out of bounds of board.");
+      throw new IllegalArgumentException("Given coordinate out of bounds of board moving.");
     }
     //get the current player and increment the player index
     PlayerColor currentColor = getCurrentPlayer();
@@ -199,7 +198,7 @@ public class BasicReversi implements ReversiModel {
   @Override
   public boolean isMoveLegal(Coordinate coordinate) {
     if (!tileInBoard(coordinate.getQ(), coordinate.getR())) {
-      throw new IllegalArgumentException("Given coordinate out of bounds of board.");
+      throw new IllegalArgumentException("Given coordinate out of bounds of board checking legality.");
     }
     List<List<Tile>> validRows = getValidRows(coordinate, getCurrentPlayer());
     return !validRows.isEmpty() && getTileAt(coordinate).isEmpty();
@@ -223,7 +222,7 @@ public class BasicReversi implements ReversiModel {
   @Override
   public int getMoveScore(Coordinate coordinate) {
     if (!tileInBoard(coordinate.getQ(), coordinate.getR())) {
-      throw new IllegalArgumentException("Given coordinate out of bounds of board.");
+      throw new IllegalArgumentException("Given coordinate out of bounds of board getting moveScore.");
     }
     if (!getTileAt(new Coordinate(coordinate.getQ(), coordinate.getR())).isEmpty()) {
       return 0;
@@ -494,7 +493,11 @@ public class BasicReversi implements ReversiModel {
   //methods for provider ReadOnlyHexagonalReversi
   @Override
   public boolean validateMove(int q, int r, int s, HexState color) {
-    return false;
+    if (tileInBoard(this.boardSize/2 + q, this.boardSize / 2 + r)) {
+      return isMoveLegal(Translator.hexPosnToCoordinate(boardSize, new HexPosn(q, r, s)));
+    } else {
+      return false;
+    }
   }
 
   @Override
@@ -504,7 +507,8 @@ public class BasicReversi implements ReversiModel {
 
   @Override
   public HexState getHexState(int q, int r, int s) {
-    return Translator.playerColorToHexState(getTileAt(new Coordinate(q, r)).getContents());
+    return Translator.playerColorToHexState(getTileAt
+        (Translator.hexPosnToCoordinate(this.getNumLayers(), new HexPosn(q, r, s))).getContents());
   }
 
   @Override
@@ -519,11 +523,12 @@ public class BasicReversi implements ReversiModel {
 
   @Override
   public boolean playableMoveExists(HexState color) {
-    return false;
+    return playerHasLegalMoves();
   }
 
   @Override
   public List<HexPosn> collectAllPossibleMoves(HexState color) {
+    //no usages, stub implementation from provider code
     return null;
   }
 
@@ -534,6 +539,6 @@ public class BasicReversi implements ReversiModel {
 
   @Override
   public void addModelEventListener(provider.model.ModelEventListener listener) {
-    //stub implementation
+    //no usages, stub implementation from provider code
   }
 }

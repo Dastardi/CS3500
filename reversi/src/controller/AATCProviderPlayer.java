@@ -6,13 +6,15 @@ import provider.model.HexagonalReversi;
 import provider.strategy.AbstractStrategy;
 import provider.strategy.AggregateStrategy;
 import provider.strategy.AvoidAdjacentToCornersStrategy;
-import strategy.AvoidCornerAdjacentStrategy;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
+/**
+ * An AI player in a Reversi game that always plays in the first available corner when possible.
+ */
 public class AATCProviderPlayer implements Player {
   private final AggregateStrategy strategy;
   private final HexagonalReversi model;
@@ -34,7 +36,7 @@ public class AATCProviderPlayer implements Player {
   public Pair<MoveType, Coordinate> move() {
     Optional<HexPosn> move = strategy.bestMove(this.model, this.model.getNextTurn());
     if (move.isPresent()) {
-      return new Pair<>(MoveType.VALID, Translator.hexPosnToCoordinate(move.get()));
+      return new Pair<>(MoveType.VALID, Translator.hexPosnToCoordinate(model.getNumLayers(), move.get()));
     } else {
       return new Pair<>(MoveType.NOVALID, null);
     }
