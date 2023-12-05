@@ -1,7 +1,6 @@
 import controller.*;
 import model.BasicReversi;
 import model.ReversiModel;
-import provider.view.HexReversiFrame;
 import view.gui.AdapterReversiFrame;
 import view.gui.ReversiFrame;
 import view.gui.ReversiView;
