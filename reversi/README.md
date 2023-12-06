@@ -1,4 +1,8 @@
 # CS3500 Reversi
+
+## PROVIDER ADAPTATION FEATURES
+We were able to create a fully functional game of reversi using all features created by the providers, in which the first player and view are from our code and the second player and view are from theirs. 
+
 ## OVERVIEW
 This is a codebase for playing a game of Reversi, or Othello, on a hexagonal board rather than the traditional square. 
 The code supports both human vs human and human vs computer play, as well as supervised computer vs computer play. 
