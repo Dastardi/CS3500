@@ -48,7 +48,9 @@ public class ReversiController
     this.player = player;
     //add this controller as a listener to the view and model
     this.view.addListener(this);
-    if (this.view instanceof AdapterReversiFrame) { ((AdapterReversiFrame) this.view).addPlayerActionListener(this); }
+    if (this.view instanceof AdapterReversiFrame) {
+      ((AdapterReversiFrame) this.view).addPlayerActionListener(this);
+    }
     this.model.addListener(this);
     this.myTurn = false;
   }

@@ -11,10 +11,11 @@ import java.util.Optional;
 
 /**
  * Represents the frame, otherwise called the window, of the GUI for a reversi game.
- * This frame is an adapter of our providers' code by using a HexReversiFrame, the provided view class, as a delegate.
- * It implements our view interface and the given view interface and therefore has the functionality of
- * both types. This allows it to be a functional view in conjunction with our controller, thus allowing us to use
- * our controller for both view types.
+ * This frame is an adapter of our providers' code by using a HexReversiFrame,
+ * the provided view class, as a delegate.
+ * It implements our view interface and the given view interface and therefore has the
+ * functionality of both types. This allows it to be a functional view in conjunction
+ * with our controller, thus allowing us to use our controller for both view types.
  */
 public class AdapterReversiFrame implements ReversiView, HexReversiGUI {
   //holds the delegate object to use the provided view
@@ -31,17 +32,18 @@ public class AdapterReversiFrame implements ReversiView, HexReversiGUI {
    * Uses a HexReversiFrame as the delegate so that it can adapt the providers' view.
    * @param delegate an object of the providers' view to adapt within this class
    */
-  public AdapterReversiFrame (HexReversiFrame delegate) {
+  public AdapterReversiFrame(HexReversiFrame delegate) {
     this.delegate = Objects.requireNonNull(delegate);
     this.listener = Optional.empty();
   }
 
   /**
-   * Alternate constructor that takes in the model and constructs its own delegate as a new HexReversiFrame object.
+   * Alternate constructor that takes in the model and constructs
+   * its own delegate as a new HexReversiFrame object.
    * Uses the other constructor to initialize fields.
    * @param model the model for this game of Reversi
    */
-  public AdapterReversiFrame (ReadOnlyReversiModel model) {
+  public AdapterReversiFrame(ReadOnlyReversiModel model) {
     this(new HexReversiFrame(model));
   }
 

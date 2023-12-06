@@ -1,4 +1,4 @@
-package controller.providerPlayer;
+package controller.providerplayer;
 
 import controller.MoveType;
 import controller.Pair;
@@ -17,7 +17,8 @@ import java.util.Objects;
 import java.util.Optional;
 
 /**
- * An AI player in a Reversi game that chooses the move that flips the largest number of the opponent's discs.
+ * An AI player in a Reversi game that chooses the move
+ * that flips the largest number of the opponent's discs.
  */
 public class GreedyProviderPlayer implements Player {
   //represents the strategy this player uses
@@ -42,7 +43,8 @@ public class GreedyProviderPlayer implements Player {
   public Pair<MoveType, Coordinate> move() {
     Optional<HexPosn> move = strategy.bestMove(this.model, this.model.getNextTurn());
     if (move.isPresent()) {
-      return new Pair<>(MoveType.VALID, Translator.hexPosnToCoordinate(model.getNumLayers(), move.get()));
+      return new Pair<>(MoveType.VALID,
+              Translator.hexPosnToCoordinate(model.getNumLayers(), move.get()));
     } else {
       return new Pair<>(MoveType.NOVALID, null);
     }

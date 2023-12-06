@@ -177,10 +177,10 @@ class HexReversiPanel extends JPanel {
      */
     @Override
     public void mousePressed(MouseEvent e) {
-//      System.out.println(
-//              "Nothing happens, but I'm forced to implement this method," +
-//              "and if I don't leave something here I lose Javadoc points"
-//      );
+      System.out.println(
+              "Nothing happens, but I'm forced to implement this method," +
+              "and if I don't leave something here I lose Javadoc points"
+      );
     }
 
     /**
@@ -190,10 +190,10 @@ class HexReversiPanel extends JPanel {
      */
     @Override
     public void mouseReleased(MouseEvent e) {
-//      System.out.println(
-//              "Nothing happens, but I'm forced to implement this method," +
-//                      "and if I don't leave something here I lose Javadoc points"
-//      );
+      System.out.println(
+              "Nothing happens, but I'm forced to implement this method," +
+                      "and if I don't leave something here I lose Javadoc points"
+      );
     }
 
     /**
@@ -203,10 +203,10 @@ class HexReversiPanel extends JPanel {
      */
     @Override
     public void mouseEntered(MouseEvent e) {
-//      System.out.println(
-//              "Nothing happens, but I'm forced to implement this method," +
-//                      "and if I don't leave something here I lose Javadoc points"
-//      );
+      System.out.println(
+              "Nothing happens, but I'm forced to implement this method," +
+                      "and if I don't leave something here I lose Javadoc points"
+      );
     }
 
     /**
@@ -216,10 +216,10 @@ class HexReversiPanel extends JPanel {
      */
     @Override
     public void mouseExited(MouseEvent e) {
-//      System.out.println(
-//              "Nothing happens, but I'm forced to implement this method," +
-//                      "and if I don't leave something here I lose Javadoc points"
-//      );
+      System.out.println(
+              "Nothing happens, but I'm forced to implement this method," +
+                      "and if I don't leave something here I lose Javadoc points"
+      );
     }
 
     /**
@@ -255,10 +255,10 @@ class HexReversiPanel extends JPanel {
      */
     @Override
     public void keyPressed(KeyEvent e) {
-//      System.out.println(
-//              "Nothing happens, but I'm forced to implement this method," +
-//                      "and if I don't leave something here I lose Javadoc points"
-//      );
+      System.out.println(
+              "Nothing happens, but I'm forced to implement this method," +
+                      "and if I don't leave something here I lose Javadoc points"
+      );
     }
 
     /**
@@ -268,10 +268,10 @@ class HexReversiPanel extends JPanel {
      */
     @Override
     public void keyReleased(KeyEvent e) {
-//      System.out.println(
-//              "Nothing happens, but I'm forced to implement this method," +
-//                      "and if I don't leave something here I lose Javadoc points"
-//      );
+      System.out.println(
+              "Nothing happens, but I'm forced to implement this method," +
+                      "and if I don't leave something here I lose Javadoc points"
+      );
     }
 
     /**
@@ -292,10 +292,10 @@ class HexReversiPanel extends JPanel {
      */
     @Override
     public void componentMoved(ComponentEvent e) {
-//      System.out.println(
-//              "Nothing happens, but I'm forced to implement this method," +
-//                      "and if I don't leave something here I lose Javadoc points"
-//      );
+      System.out.println(
+              "Nothing happens, but I'm forced to implement this method," +
+                      "and if I don't leave something here I lose Javadoc points"
+      );
     }
 
     /**
@@ -305,10 +305,10 @@ class HexReversiPanel extends JPanel {
      */
     @Override
     public void componentShown(ComponentEvent e) {
-//      System.out.println(
-//              "Nothing happens, but I'm forced to implement this method," +
-//                      "and if I don't leave something here I lose Javadoc points"
-//      );
+      System.out.println(
+              "Nothing happens, but I'm forced to implement this method," +
+                      "and if I don't leave something here I lose Javadoc points"
+      );
     }
 
     /**
@@ -318,10 +318,10 @@ class HexReversiPanel extends JPanel {
      */
     @Override
     public void componentHidden(ComponentEvent e) {
-//      System.out.println(
-//              "Nothing happens, but I'm forced to implement this method," +
-//                      "and if I don't leave something here I lose Javadoc points"
-//      );
+      System.out.println(
+              "Nothing happens, but I'm forced to implement this method," +
+                      "and if I don't leave something here I lose Javadoc points"
+      );
     }
   }
 }

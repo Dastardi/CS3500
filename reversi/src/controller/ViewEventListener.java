@@ -1,7 +1,6 @@
 package controller;
 
 import model.Coordinate;
-import provider.controller.PlayerActionListener;
 
 /**
  * A ReversiEventListener provides the capability for objects to listen to the ReversiPanel

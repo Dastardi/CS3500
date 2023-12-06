@@ -1,4 +1,4 @@
-package controller.providerPlayer;
+package controller.providerplayer;
 
 import controller.MoveType;
 import controller.Pair;
