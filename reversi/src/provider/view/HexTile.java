@@ -172,11 +172,12 @@ class HexTile extends JComponent implements CanvasEventListener {
 
     if (isSelected) {
       if (e.getKeyChar() == '\n') {
-
+        System.out.println("Enter detected");
         HexPosn qrs = CoordinateUtils.rowAndIndexToQRS(row, index, modelLayers);
 
         // callback to player action listener list
         for (PlayerActionListener listener : playerActionListeners) {
+          System.out.println("Listener notified!");
           listener.processPiecePlaced(qrs.q, qrs.r, qrs.s);
         }
       }

@@ -138,7 +138,7 @@ public class ReversiController
 
   @Override
   public void processPiecePlaced(int q, int r, int s) {
-    Coordinate coordinate = Translator.hexPosnToCoordinate(model.getBoardSize(), new HexPosn(q, r, s));
+    Coordinate coordinate = Translator.hexPosnToCoordinate(model.getNumLayers(), new HexPosn(q, r, s));
     this.moveMade(coordinate);
   }
 

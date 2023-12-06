@@ -231,7 +231,6 @@ class HexReversiPanel extends JPanel {
     public void keyTyped(KeyEvent e) {
 
       char key = e.getKeyChar();
-      System.out.println(key);
 
       if (key == 'P' || key == 'p') {
 
