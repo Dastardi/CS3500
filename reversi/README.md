@@ -113,7 +113,7 @@ There are some supporting classes with no interfaces, such as Circle2D and Hexag
 
 The test directory contains separate test classes for each class in the src folder.
 
-## CHANGES FOR PART 2: 
+## CHANGES FOR PART 2
 Task: explain what functionality was missing, and why, and how you chose to add it.
 
 BasicReversi
