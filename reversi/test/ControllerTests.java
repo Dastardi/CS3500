@@ -1,6 +1,6 @@
-import controller.EasyAIPlayer;
-import controller.HumanPlayer;
-import controller.Player;
+import controller.player.EasyAIPlayer;
+import controller.player.HumanPlayer;
+import controller.player.Player;
 import controller.ReversiController;
 
 import model.BasicReversi;

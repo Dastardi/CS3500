@@ -14,7 +14,7 @@ public class Pair<T, U> {
    * @param first the first object
    * @param second the second object
    */
-  Pair(T first, U second) {
+  public Pair(T first, U second) {
     this.first = first;
     this.second = second;
   }

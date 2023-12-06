@@ -1,5 +1,7 @@
-package controller;
+package controller.player;
 
+import controller.MoveType;
+import controller.Pair;
 import model.Coordinate;
 
 /**

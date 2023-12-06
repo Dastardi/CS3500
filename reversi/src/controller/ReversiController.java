@@ -1,5 +1,6 @@
 package controller;
 
+import controller.player.Player;
 import model.Coordinate;
 import model.ReversiModel;
 import view.gui.ReversiFrame;

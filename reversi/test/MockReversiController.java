@@ -1,4 +1,4 @@
-import controller.Player;
+import controller.player.Player;
 import controller.ReversiController;
 import model.Coordinate;
 import model.ReversiModel;
