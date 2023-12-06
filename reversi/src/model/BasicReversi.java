@@ -343,6 +343,16 @@ public class BasicReversi implements ReversiModel {
     notifyTurn();
   }
 
+  //this method comes from our providers' model but relocated it here
+  //to avoid an overload method declaration order error
+  @Override
+  public void pass(HexState color) throws IllegalStateException {
+    if (getCurrentPlayer() != Translator.hexStateToPlayerColor(color)) {
+      throw new IllegalStateException("Not your turn!");
+    }
+    this.pass();
+  }
+
   @Override
   public PlayerColor getCurrentPlayer() {
     throwIfGameOver();
@@ -480,14 +490,6 @@ public class BasicReversi implements ReversiModel {
     } catch (IllegalStateException e) {
       //pass
     }
-  }
-
-  @Override
-  public void pass(HexState color) throws IllegalStateException {
-    if (getCurrentPlayer() != Translator.hexStateToPlayerColor(color)) {
-      throw new IllegalStateException("Not your turn!");
-    }
-    this.pass();
   }
 
   //methods for provider ReadOnlyHexagonalReversi
