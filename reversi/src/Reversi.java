@@ -1,4 +1,5 @@
-import controller.*;
+import controller.ReversiController;
+import controller.Player;
 import controller.player.EasyAIPlayer;
 import controller.player.HardAIPlayer;
 import controller.player.HumanPlayer;
@@ -8,7 +9,7 @@ import model.ReversiModel;
 import view.gui.ReversiFrame;
 
 /**
- * Runs a two-player game of hexagonal reversi with full GUI and AI capabilities.
+ * Runs a two-player game of hexagonal Reversi with full GUI and AI capabilities.
  */
 public final class Reversi {
   /**

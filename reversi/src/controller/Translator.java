@@ -11,7 +11,7 @@ import provider.model.HexState;
  */
 public class Translator {
   /**
-   * Translates a provider HexPosn into a Coordinate
+   * Translates a provider HexPosn into a Coordinate.
    * @param numLayers the size of the board in provider terms, so we can get the center coordinate
    * @param posn the HexPosn to translate into a Coordinate
    * @return a matching Coordinate for the given HexPosn
@@ -22,7 +22,7 @@ public class Translator {
   }
 
   /**
-   * Translates a Coordinate into a provider HexPosn
+   * Translates a Coordinate into a provider HexPosn.
    * @param boardSize the size of the board, so that we can get the center coordinate
    * @param coordinate the Coordinate to translate into a HexPosn
    * @return a matching HexPosn for the given Coordinate
@@ -35,7 +35,7 @@ public class Translator {
   }
 
   /**
-   * Translates a provider HexState into a PlayerColor
+   * Translates a provider HexState into a PlayerColor.
    * @param color the color that should be given in PlayerColor form
    * @return BLACK iff BLACK, WHITE iff WHITE, null if EMPTY
    */
@@ -51,7 +51,7 @@ public class Translator {
   }
 
   /**
-   * Translates a PlayerColor into a provider HexState
+   * Translates a PlayerColor into a provider HexState.
    * @param color the color that should be given in HexState form
    * @return BLACK iff BLACK, WHITE iff WHITE, EMPTY if null
    */

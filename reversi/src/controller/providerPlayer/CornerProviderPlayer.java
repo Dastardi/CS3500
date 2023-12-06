@@ -20,7 +20,9 @@ import java.util.Optional;
  * An AI player in a Reversi game that always plays in the first available corner when possible.
  */
 public class CornerProviderPlayer implements Player {
+  //represents the strategy this player uses
   private final AggregateStrategy strategy;
+  //represents the game model
   private final HexagonalReversi model;
 
   /**

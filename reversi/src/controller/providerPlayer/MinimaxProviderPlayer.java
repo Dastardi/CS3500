@@ -16,8 +16,14 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
+/**
+ * An AI player in a Reversi game that values moves based on how little value they provide
+ * for the opponent based on the opponent's strategy and picks the one that leaves the opponent worst off.
+ */
 public class MinimaxProviderPlayer implements Player {
+  //represents the strategy this player uses
   private final AggregateStrategy strategy;
+  //represents the game model
   private final HexagonalReversi model;
 
   /**

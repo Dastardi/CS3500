@@ -2,8 +2,6 @@ package view.gui;
 
 import controller.ViewEventListener;
 
-import javax.swing.*;
-
 /**
  * This interface allows the controller to interact with the view by telling it to send
  * any message to the player via JOptionPanels.
@@ -15,9 +13,19 @@ public interface ReversiView {
    */
   void displayPopup(String messageToDisplay);
 
+  /**
+   * Displays the board by setting the visibility to true.
+   */
   void showBoard();
 
+  /**
+   * Adds a listener. Primarily used to connect the controller to the view.
+   * @param listener the listener to add
+   */
   void addListener(ViewEventListener listener);
 
+  /**
+   * Destroys and releases this view and all its subcomponents.
+   */
   void removeView();
 }

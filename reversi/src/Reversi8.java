@@ -1,4 +1,5 @@
-import controller.*;
+import controller.ReversiController;
+import controller.Player;
 import controller.player.EasyAIPlayer;
 import controller.player.HardAIPlayer;
 import controller.player.HumanPlayer;
@@ -40,9 +41,9 @@ public class Reversi8 {
     ReversiController controller1 = new ReversiController(model, player1, viewPlayer1);
     ReversiController controller2 = new ReversiController(model, player2, viewPlayer2);
     model.startGame();
-
   }
 
+  //player constructor for our player
   //helps the main method construct the game by parsing a given argument for the requested game
   //type. takes in a string and the model and constructs a player object, using the model if
   //necessary, as indicated by the provided string
@@ -64,6 +65,10 @@ public class Reversi8 {
     }
   }
 
+  //player constructor for provider's player
+  //helps the main method construct the game by parsing a given argument for the requested game
+  //type. takes in a string and the model and constructs a player object, using the model if
+  //necessary, as indicated by the provided string
   private static Player setProviderPlayer(String arg, ReversiModel model) {
     switch (arg) {
       case "human":

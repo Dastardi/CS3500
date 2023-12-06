@@ -5,7 +5,6 @@ import model.ReversiModel;
 import provider.controller.PlayerActionListener;
 import provider.model.HexPosn;
 import view.gui.AdapterReversiFrame;
-import view.gui.ReversiFrame;
 import view.gui.ReversiView;
 
 /**

@@ -16,8 +16,13 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
+/**
+ * An AI player in a Reversi game that chooses the move that flips the largest number of the opponent's discs.
+ */
 public class GreedyProviderPlayer implements Player {
+  //represents the strategy this player uses
   private final AggregateStrategy strategy;
+  //represents the game model
   private final HexagonalReversi model;
 
   /**

@@ -1,28 +1,42 @@
 # CS3500 Reversi
 
-### OVERVIEW
-This is a codebase for playing a game of Reversi (or Othello) on a hexagonal board rather than the traditional square.
-The code is designed to support both human vs human and human vs computer play.
+## PROVIDER ADAPTATION FEATURES
+We were able to create a fully functional game of Reversi using all features created by the providers, in which the first player and view are from our code and the second player and view are from theirs.
+See "Changes for part 4" section below for more details on adaptation.
 
-It is built to be playable both in textual form in the terminal and through clicking via a GUI.
-The code is designed to be modular and extendable for custom functionalities and rules alterations, and provides options such as variable board size for a more interesting experience as well as ease of testing and implementation.
+## OVERVIEW
+This is a codebase for playing a game of Reversi, or Othello, on a hexagonal board rather than the traditional square.
+The code supports both human vs human and human vs computer play, as well as supervised computer vs computer play.
 
-The game should be playable by someone with minimal technical experience, and provide a fun and challenging diversion for anyone who likes a little strategy!
+It is playable both in textual form in the terminal and through clicking via a GUI.
+The code is designed to be modular and extendable for custom functionalities and rules alterations.
+
+The game is playable by someone with minimal technical experience, and provides a fun and challenging diversion for anyone who likes a little strategy game!
 
 ### QUICK START
-To display and interact with the board, navigate to the Reversi file and run the main() method.
-This will create a new window in which a reversi board will be displayed.
-You can use your mouse to select and deselect tiles, hit ENTER to place a disc, press SPACE to pass your turn, and press Q to quit.
+In IntelliJ, to display and interact with the board, navigate to the Reversi file and run the main() method.
+This will create a new Swing window in which the reversi board will be displayed.
+Alternatively, with a .jar file, navigate to the location of the file in the command line and type "java -jar JARNAME.jar ____ ____", where ____ represents one of "human", "easy", "medium", or "hard".
+Human will open a spot for a human to click the board, and the other three will be AIs of varying difficulty.
 
-Without a controller, the game can't actually be played according to the rules - that means that hitting enter will always place a black disc regardless of turn order, so passing doesn't do much.
-That being said, as we are still in an early phase of the game and want to be able to easily create boards, W and B can place white and black discs and R can remove a tile's disc, so have fun clicking around!
-These methods will be removed once the controller is implemented, so have no fear of players being able to cheat when playing the game - these are methods solely for testing purposes.
+You can use your mouse to select and deselect tiles, hit ENTER to place a disc in a selected tile, press SPACE to pass your turn, and press Q to quit.
+If you're ever not sure of whether you're able to make a move, pressing H will let you know if you have moves available!
+You will need to acknowledge that it's the AI's turn each time it runs, as a way of slowing down the pace of the game when AI is involved - it felt too snappy.
 
 ### KEY COMPONENTS
-**Model** is where the majority of the current code is held, and contains the implementation and documentation of the model.
+**Model** contains the implementation and documentation of the model.
 The model holds the logic for running a game of Reversi - making the board, players taking turns, and performing operations on the board such as flipping tiles.
 It's organized into two interfaces - PlayerActions and ReversiModel -  which are both implemented by a model class, BasicReversi.
 PlayerActions is extended by ReversiModel in order to ensure that a ReversiModel always has access to the moves required to play the game.
+
+**Controller** contains the controller implementation as well as the interface and classes which enable players (both human and AI) to be created.
+Alongside the controller come two Listener interfaces, ModelEventListener and ViewEventListener.
+These interfaces are what enable communication between our model, controllers, and views.
+The ReversiController class implements both of these.
+
+**Strategy** contains the implementation of the strategies that the AI players use.
+Individual strategies take in and output sorted lists of Coordinates that represent potential moves, and can be chained together using CompositeStrategies.
+The final results of the CompositeStrategy (or the individual strategy) can be submitted to a Player, which understands that the first item in the list is the most preferred move for the strategy it's employing.
 
 **View** contains the gui and text packages, which represent a GUI visual representation and a textual representation of a game of Reversi.
 
@@ -69,17 +83,28 @@ GetPlayerScore(PlayerColor) returns the score (number of tiles on the board) of 
 GetTileAt(Coordinate) returns the board space of the given coordinate. <br>
 GetBoardSize is a getter for the private final boardSize variable which we use for a number of our calculations when looking at the Tile array.
 
+In the controller, the most important assets are the Pair class, which allows for easy communication between a player and its controller, and the Listener interfaces which enable communication between the controller and the model/view.
+
+In the GUI view, the most important subcomponents are ViewableTiles, the custom Path2D classes Hexagon2D and Circle2D, as well as the Frame->Panel structure.
+
+ViewableTiles are GUI representations of the Tiles held in the model. When one is constructed, it creates a hexagon and a circle using Hexagon2D and Circle2D (see below), and holds them internally to act as its border and the border of its disc, if it ever gets one.
+The ViewableTile knows how to draw itself, and always draws the hexagon before the circle, which means that there is no possibility of a disc being covered accidentally.
+ViewableTiles also hold information about their state, such as their logical coordinate and their physical coordinate, which makes them easy to interface with for the rest of the view.
+
+Hexagon2D and Circle2D are simple function objects which create versions of their respective shapes for ViewableTiles to hold.
+Both of them are drawn from the center of the shape rather than the top left, as is standard, because the physical coordinates of our ViewableTile objects are also held at the center.
+This makes drawing these custom objects easy for the ViewableTile!
+
 ### SOURCE ORGANIZATION
 The code is held in the cs3500.reversi folder, which is split into src (source code of the model) and test (a test directory for validating classes and methods).
 Src has four parts: controller, model, strategy, and view.
 
-Controller currently contains only the ViewEventListener, which is not implemented,
-but will be implemented when a controller is added in (presumably) the next assignment.
+Controller contains the interfaces for Player and both Listeners, as well as the implementation of all four kinds of Player, Pair and MoveType, and the Controller itself.
 
 Model contains the PlayerActions and ReversiModel interface, both of which dictate the methods in the BasicReversi class.
 Additionally, interfaces and implementations of Tile, Coordinate, and PlayerColor are held in this directory.
 
-Strategy contains the implementation of our AI strategies, as well as the HumanPlayer class, which will pass information from the view to the controller.
+Strategy contains the implementation of our AI strategies, as well as the HumanPlayer class, which pass information from the view to the controller.
 
 View contains two packages: gui and text.
 <br>GUI contains the ViewPanel, ViewableReversiTile, and PanelEventListener interface.
@@ -159,3 +184,53 @@ Tile
 
 ## CHANGES FOR PART 3
 
+Interface changes
+- Renamed the ViewPanel interface to the Emitter interface. Previously, it contained one method, addPanelListener(), which we changed to addListener(). This is so that we can now use this as a generic interface for any class that has listeners it wants to notify of events.
+- Similarly, renamed PanelEventListener to ViewEventListener. For the previous assignment, we had a PanelEventListener and a ViewEventListener, implemented by the view and the controller (in theory), respectively. However, now that we are sure the panel and the view are passing along exactly the same information, we know that the controller and the view can both be ViewEventListeners and there's no need to distinguish the two.
+- ReversiFrame now implements Emitter so that it is able to emit events to the controller.
+- ReversiFrame now implements ModelEventListener (see below) so that the model is able to tell it when a turn has been made so that the view can display the updated game state appropriately.
+
+New interfaces
+- Created a TurnTaker interface which is now implemented by the model, BasicReversi. It is the more specific model version of the Emitter interface. Similar to Emitter, it contains addListener(), so the model can add listeners, but it also has updateTurn() to notify listeners when a turn has ben taken.
+- Created a ModelEventListener interface. Since the model emits different kinds of events than the view, the controller needs different methods to be able to listen. ModelEventListener contains the methods initializeGame() and updateTurn(), which must be implemented by all listeners of the model, which is how the model is able to notify them.
+- Created ReversiView which is now implemented by ReversiFrame, the class for the view/window. It contains one simple method, displayPopup(), which displays a popup window. This gives other classes the ability to send a message they want displayed, via the view.
+
+BasicReversi (model)
+- Added a simple getter method, getBoard(), which uses the private helper copyBoard() to make a copy of the board field and return it. This is used in ReversiPanel to get the state of the board whenever it needs to be drawn. This method was also added to the model interface, ReversiModel.
+- Changed the getCurrentWinner() method to return integers instead of PlayerColors (or null). This separates the meaning a bit by having integers arbitrarily represent colors, but it also makes it cleaner by eliminating null and the need for null checks. 0 represents black, 1 represents white, and 2 represents a tie. This makes it substantially easier for the controller to determine the current winner.
+
+ReversiPanel
+- paintComponent()
+  - Every time repaint() or paintComponent() is called, the entire board is redrawn. We use getBoard() from the model to get the current state of the game and loop through each tile to draw it (and the disc on it, if one exists). In part 2, we simply iterated through the tileList field in the panel and had each tile draw itself, but the view wasn't updating correctly once we had two views operating. It is more foolproof to get the information directly from the model.
+- keyPressed()
+  - Added an option to press the h key as a "help" button to check if you have legal moves. Gives the user more options and makes testing easier.
+  - Added images that correspond with each type of window/message.
+  - Instead of calling notifyMoveMade() in the if statements, we separate its return value into an integer to make the code cleaner.
+- Other
+  - Changed the name of notifyMoveMadeAndCheckValidity() to notifyMoveMade()
+
+Panel and View Listener Fields
+- Changed the structure of listeners to both the panel and the view. Since these objects will only ever have one listener (the panel only emits to the window/view that holds it, and the window/view only emits to its controller), it doesn't really make sense to use a list of listeners, which we had in part 2. Originally, we changed this structure to keep a list of listeners and simply only ever use the first element in the list, but that is bad design. Instead, we changed both classes' fields to an Optional<ViewEventListener>, which is initially empty and is then set once the view adds itself as a listener to the panel/the controller adds itself as a listener to the view. This way, there is clearly only one listener object.
+
+### USER INTERACTION DESIGN CHOICES
+- Each player gets their own game ended dialog because we want each user to be notified when the game is over.
+- We customized our popups!
+  - We gave different types of messages different types of buttons. For example, the "It's your turn" popup only gives the user an "Ok" button, because all they have to do is acknowledge that they've seen the message. Attemping to quit the game, however, shows a popup with "Yes" and "No" options so that the user can choose to either go ahead with quitting or go back to the game. This gives the user more options and control over game play.
+  - We added custom icons. Each message type has a different icon depending on the message content. This was to make gameplay more fun and interesting!
+
+## CHANGES FOR PART 4
+Adapting new code:
+The structure of our codebase after incorporating our providers' code, at a high level, is this...
+- We use our model, though we implement their model interface and therefore implement their model's methods inside our model.
+  However, these methods are mostly shells that use our own model methods to create functionality.
+- Down our code branch, we still obviously use our controller, which is connected to our view, which is connected to our panel, and which is controlled by one of our players.
+- Down the branch using the providers' code, we still use our controller, because the adaptability of our controller design make it easy to adapt to work with the new code.
+  - The main change there was that we had to implement PlayerActionListener, one of the providers' interfaces, which is extremely simple and uses its methods, which are effectively exactly the same as the methods in our ViewEventListener interface, to pass the information along to our ViewEventListener methods in our controller.
+  - Another change was that our controller previously took in a ReversiFrame, as that was the main structure of our view. For this assignment, we fleshed out our view a little more by adding more methods to the ReversiView interface, which is implemented by ReversiFrame.
+    ReversiView now contains showBoard(), addListener(), and removeView(), which allows the controller to direct these functions which allows us to use both types of views.
+  - Following up on that, one of the most significant changes/adaptations was the creation of the AdapterReversiFrame class.
+    This class implements both our view interface and our providers' view interface and uses a HexReversiFrame, our providers' view object, as a delegate.
+    It implements both our view methods and their view methods, and by doing so is able to be used as a view with our controller but still maintain the functionality of their view.
+
+Other: We previously had a medium-difficulty AI implemented but forgot to make it a command-line option.
+For this assignment, we simply added "medium" as a valid command-line argument to construct a medium-difficulty AI player.

@@ -20,9 +20,6 @@ import java.util.Optional;
  * The panel does the work of displaying the board and directly interacting with the user.
  * The frame's job is to construct and accurately display the panel, as well as to
  * pass information from user input, via the panel, to the controller.
- * Note for this hw06: there is currently no controller in the code, so there is a disconnect
- * between the view and the model. Once the controller is implemented, it will be a listener
- * of this view.
  */
 public class ReversiFrame extends JFrame
     implements ReversiView, ViewEventListener, Emitter, ModelEventListener {

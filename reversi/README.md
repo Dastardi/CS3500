@@ -1,7 +1,8 @@
 # CS3500 Reversi
 
 ## PROVIDER ADAPTATION FEATURES
-We were able to create a fully functional game of reversi using all features created by the providers, in which the first player and view are from our code and the second player and view are from theirs. 
+We were able to create a fully functional game of Reversi using all features created by the providers, in which the first player and view are from our code and the second player and view are from theirs.
+See "Changes for part 4" section below for more details on adaptation.
 
 ## OVERVIEW
 This is a codebase for playing a game of Reversi, or Othello, on a hexagonal board rather than the traditional square. 
@@ -216,3 +217,20 @@ Panel and View Listener Fields
 - We customized our popups!
   - We gave different types of messages different types of buttons. For example, the "It's your turn" popup only gives the user an "Ok" button, because all they have to do is acknowledge that they've seen the message. Attemping to quit the game, however, shows a popup with "Yes" and "No" options so that the user can choose to either go ahead with quitting or go back to the game. This gives the user more options and control over game play.
   - We added custom icons. Each message type has a different icon depending on the message content. This was to make gameplay more fun and interesting!
+
+## CHANGES FOR PART 4
+Adapting new code:
+The structure of our codebase after incorporating our providers' code, at a high level, is this... 
+- We use our model, though we implement their model interface and therefore implement their model's methods inside our model.
+However, these methods are mostly shells that use our own model methods to create functionality.
+- Down our code branch, we still obviously use our controller, which is connected to our view, which is connected to our panel, and which is controlled by one of our players.
+- Down the branch using the providers' code, we still use our controller, because the adaptability of our controller design make it easy to adapt to work with the new code.
+  - The main change there was that we had to implement PlayerActionListener, one of the providers' interfaces, which is extremely simple and uses its methods, which are effectively exactly the same as the methods in our ViewEventListener interface, to pass the information along to our ViewEventListener methods in our controller.
+  - Another change was that our controller previously took in a ReversiFrame, as that was the main structure of our view. For this assignment, we fleshed out our view a little more by adding more methods to the ReversiView interface, which is implemented by ReversiFrame.
+  ReversiView now contains showBoard(), addListener(), and removeView(), which allows the controller to direct these functions which allows us to use both types of views.
+  - Following up on that, one of the most significant changes/adaptations was the creation of the AdapterReversiFrame class.
+  This class implements both our view interface and our providers' view interface and uses a HexReversiFrame, our providers' view object, as a delegate.
+  It implements both our view methods and their view methods, and by doing so is able to be used as a view with our controller but still maintain the functionality of their view.
+
+Other: We previously had a medium-difficulty AI implemented but forgot to make it a command-line option.
+For this assignment, we simply added "medium" as a valid command-line argument to construct a medium-difficulty AI player.
