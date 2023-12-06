@@ -1,4 +1,8 @@
 import controller.*;
+import controller.player.EasyAIPlayer;
+import controller.player.HardAIPlayer;
+import controller.player.HumanPlayer;
+import controller.player.MediumAIPlayer;
 import model.BasicReversi;
 import model.ReversiModel;
 import view.gui.ReversiFrame;
@@ -48,7 +52,7 @@ public final class Reversi {
       case "hard":
         return new HardAIPlayer(model);
       default:
-        System.out.println("The three available players are human, easy, and hard.");
+        System.out.println("The four available players are human, easy, medium, and hard.");
         //the controller ensures the game cannot start with a null player
         return null;
     }

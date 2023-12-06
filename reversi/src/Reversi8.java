@@ -1,4 +1,9 @@
 import controller.*;
+import controller.player.EasyAIPlayer;
+import controller.player.HardAIPlayer;
+import controller.player.HumanPlayer;
+import controller.player.MediumAIPlayer;
+import controller.providerPlayer.*;
 import model.BasicReversi;
 import model.ReversiModel;
 import view.gui.AdapterReversiFrame;

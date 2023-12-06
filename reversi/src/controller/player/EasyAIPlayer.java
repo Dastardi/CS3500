@@ -1,5 +1,8 @@
-package controller;
+package controller.player;
 
+import controller.MoveType;
+import controller.Pair;
+import controller.Player;
 import model.Coordinate;
 import model.ReversiModel;
 import strategy.CompositeStrategy;

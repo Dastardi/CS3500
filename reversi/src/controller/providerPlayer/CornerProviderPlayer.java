@@ -1,11 +1,15 @@
-package controller;
+package controller.providerPlayer;
 
+import controller.MoveType;
+import controller.Pair;
+import controller.Player;
+import controller.Translator;
 import model.Coordinate;
 import provider.model.HexPosn;
 import provider.model.HexagonalReversi;
 import provider.strategy.AbstractStrategy;
 import provider.strategy.AggregateStrategy;
-import provider.strategy.AvoidAdjacentToCornersStrategy;
+import provider.strategy.PrioritizeCornersStrategy;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,7 +19,7 @@ import java.util.Optional;
 /**
  * An AI player in a Reversi game that always plays in the first available corner when possible.
  */
-public class AATCProviderPlayer implements Player {
+public class CornerProviderPlayer implements Player {
   private final AggregateStrategy strategy;
   private final HexagonalReversi model;
 
@@ -23,10 +27,10 @@ public class AATCProviderPlayer implements Player {
    * Constructs the AI and its composite strategy.
    * @param model the model from which the strategy reads.
    */
-  public AATCProviderPlayer(HexagonalReversi model) {
+  public CornerProviderPlayer(HexagonalReversi model) {
     this.model = Objects.requireNonNull(model);
     List<AbstractStrategy> strategyList = new ArrayList<>();
-    strategyList.add(new AvoidAdjacentToCornersStrategy());
+    strategyList.add(new PrioritizeCornersStrategy());
     this.strategy = new AggregateStrategy(strategyList);
   }
 

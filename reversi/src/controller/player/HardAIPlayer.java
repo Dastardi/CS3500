@@ -1,30 +1,34 @@
-package controller;
+package controller.player;
 
+import controller.MoveType;
+import controller.Pair;
+import controller.Player;
 import model.Coordinate;
 import model.ReversiModel;
-import strategy.ReversiStrategy;
 import strategy.CompositeStrategy;
+import strategy.CornerStrategy;
 import strategy.MaxCaptureStrategy;
-import strategy.AvoidCornerAdjacentStrategy;
+import strategy.ReversiStrategy;
 import strategy.UpperLeftMostStrategy;
 
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * A medium-difficulty AI to play Reversi against. Always selects the tile with the highest
- * possible score, and avoids playing next to corners to prevents its opponent from taking them.
+ * A hard AI to give a proper challenge in a Reversi game. Understands the strength of the corner
+ * and uses it to its advantage, playing in corners when possible and attempting to prevent its
+ * opponent from playing in the corner.
  */
-public class MediumAIPlayer implements Player {
+public class HardAIPlayer implements Player {
   private final ReversiStrategy strategy;
 
   /**
    * Constructs the AI and its composite strategy.
    * @param model the model from which the strategy reads.
    */
-  public MediumAIPlayer(ReversiModel model) {
-    this.strategy = new CompositeStrategy(new MaxCaptureStrategy(model),
-        new CompositeStrategy(new AvoidCornerAdjacentStrategy(model),
+  public HardAIPlayer(ReversiModel model) {
+    this.strategy = new CompositeStrategy(new CornerStrategy(model),
+        new CompositeStrategy(new MaxCaptureStrategy(model),
             new UpperLeftMostStrategy()));
   }
 

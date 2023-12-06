@@ -31,6 +31,7 @@ public abstract class AbstractStrategy implements Strategy {
     List<HexPosn> bestMoves = getAllLegalMoves(model, color);
 
     if (bestMoves.isEmpty()) {
+      System.out.println("No moves found.");
       return Optional.empty();
     }
 

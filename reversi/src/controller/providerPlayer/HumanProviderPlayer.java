@@ -1,5 +1,8 @@
-package controller;
+package controller.providerPlayer;
 
+import controller.MoveType;
+import controller.Pair;
+import controller.Player;
 import model.Coordinate;
 
 public class HumanProviderPlayer implements Player {

@@ -16,7 +16,8 @@ import view.gui.ReversiView;
  * and model in order to ensure that the game is represented correctly in the view as
  * dictated by the model.
  */
-public class ReversiController implements ViewEventListener, ModelEventListener, PlayerActionListener {
+public class ReversiController
+    implements ViewEventListener, ModelEventListener, PlayerActionListener {
   //represents the game's model
   private final ReversiModel model;
   //represents the player that interacts with this controller, either human or AI

@@ -1,5 +1,5 @@
-import controller.EasyAIPlayer;
-import controller.HumanPlayer;
+import controller.player.EasyAIPlayer;
+import controller.player.HumanPlayer;
 import controller.Player;
 import controller.ReversiController;
 

@@ -181,7 +181,6 @@ public class BasicReversi implements ReversiModel {
     }
     //if no rows fulfill valid move criteria, throw an exception
     else {
-      System.out.println("Invalid move.");
       throw new IllegalStateException("Invalid move.");
     }
 
@@ -198,7 +197,7 @@ public class BasicReversi implements ReversiModel {
   @Override
   public boolean isMoveLegal(Coordinate coordinate) {
     if (!tileInBoard(coordinate.getQ(), coordinate.getR())) {
-      throw new IllegalArgumentException("Given coordinate out of bounds of board checking legality.");
+      return false;
     }
     List<List<Tile>> validRows = getValidRows(coordinate, getCurrentPlayer());
     return !validRows.isEmpty() && getTileAt(coordinate).isEmpty();
@@ -473,13 +472,13 @@ public class BasicReversi implements ReversiModel {
   }
 
   //methods for provider HexagonalReversi
-
   @Override
   public void placePiece(int q, int r, int s, HexState color) throws IllegalStateException {
-    if (getCurrentPlayer() != Translator.hexStateToPlayerColor(color)) {
-      throw new IllegalStateException("Not your turn!");
+    try {
+      this.move(Translator.hexPosnToCoordinate(this.getNumLayers(), new HexPosn(q, r, s)));
+    } catch (IllegalStateException e) {
+      //pass
     }
-    this.move(new Coordinate(q, r));
   }
 
   @Override
@@ -494,7 +493,7 @@ public class BasicReversi implements ReversiModel {
   @Override
   public boolean validateMove(int q, int r, int s, HexState color) {
     if (tileInBoard(this.boardSize/2 + q, this.boardSize / 2 + r)) {
-      return isMoveLegal(Translator.hexPosnToCoordinate(boardSize, new HexPosn(q, r, s)));
+      return isMoveLegal(Translator.hexPosnToCoordinate(this.getNumLayers(), new HexPosn(q, r, s)));
     } else {
       return false;
     }
@@ -518,7 +517,7 @@ public class BasicReversi implements ReversiModel {
 
   @Override
   public int getNumLayers() {
-    return this.boardSize;
+    return this.boardSize / 2 + 1;
   }
 
   @Override
