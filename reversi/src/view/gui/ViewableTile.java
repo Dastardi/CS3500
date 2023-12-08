@@ -1,5 +1,7 @@
 package view.gui;
 
+import controller.Pair;
+
 import java.awt.*;
 import java.awt.geom.Path2D;
 import java.awt.geom.Point2D;
@@ -30,7 +32,7 @@ public class ViewableTile implements ViewableReversiTile {
   private final Hexagon2D hexagon;
   private final Path2D.Double disc;
   //represents whether this tile should currently be displaying a hint.
-  private boolean hinting;
+  private Pair<Boolean, Integer> hinting;
 
   /**
    * Constructs the ViewableTile from a number of inputs, described below. Radius, x, and y are
@@ -55,6 +57,8 @@ public class ViewableTile implements ViewableReversiTile {
 
     this.hexagon = new Hexagon2D(x, y, radius);
     this.disc = new Circle2D(x, y, radius / 1.5);
+
+    this.hinting = new Pair<>(false, null);
   }
 
   @Override
@@ -65,29 +69,11 @@ public class ViewableTile implements ViewableReversiTile {
     g.setColor(this.color);
     g2d.fill(hexagon);
     g.setColor(Color.BLACK);
-    String hintNumber = "" + 5;
-    Font font = new Font("ComicSans", Font.PLAIN, 21);
-    g2d.setFont(font);
-    g2d.drawString(hintNumber, (int)this.x, (int)this.y);
-    if (discColor != null) {
-      g.setColor(discColor);
-      g2d.fill(disc);
-    }
-  }
-
-  @Override
-  public void draw(Graphics g, int score) {
-    Graphics2D g2d = (Graphics2D) g;
-    g.setColor(Color.BLACK);
-    g2d.draw(hexagon);
-    g.setColor(this.color);
-    g2d.fill(hexagon);
-    if (hinting) {
-      g.setColor(Color.BLACK);
-      String hintString = "" + score;
+    if (hinting.getFirst()) {
+      String hintNumber = "" + hinting.getSecond();
       Font font = new Font("ComicSans", Font.PLAIN, 21);
       g2d.setFont(font);
-      g2d.drawString(hintString, (int)this.x, (int)this.y);
+      g2d.drawString(hintNumber, (int)this.x, (int)this.y);
     }
     if (discColor != null) {
       g.setColor(discColor);
@@ -123,5 +109,10 @@ public class ViewableTile implements ViewableReversiTile {
   @Override
   public boolean containsPoint(Point2D point) {
     return this.hexagon.contains(point);
+  }
+
+  @Override
+  public void setHint(Pair<Boolean, Integer> hint) {
+    this.hinting = hint;
   }
 }

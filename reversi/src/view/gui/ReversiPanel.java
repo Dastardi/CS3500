@@ -1,6 +1,7 @@
 package view.gui;
 
 import controller.ModelEventListener;
+import controller.Pair;
 import controller.ViewEventListener;
 import model.Coordinate;
 import model.PlayerColor;
@@ -62,6 +63,8 @@ public class ReversiPanel extends JPanel
   //represents the tile that is selected at any given time, if one exists
   private ViewableTile selectedTile;
 
+  private boolean hinting;
+
   /**
    * Constructs the Reversi panel.
    * Uses a set radius to perform the calculations for the size of the panel
@@ -97,6 +100,7 @@ public class ReversiPanel extends JPanel
     setTilePositions(boardSize);
     this.selectedTile = null;
     drawStartingDiscs(boardSize);
+    this.hinting = false;
   }
 
   //adds all the board tiles to tileList
@@ -248,6 +252,8 @@ public class ReversiPanel extends JPanel
           setAllTilesToBase();
           tile.setColor(this.clickedColor);
           this.selectedTile = tile;
+          tile.setHint(new Pair<>(hinting,
+              model.getMoveScore(new Coordinate(tile.getQ(), tile.getR()))));
         }
         //else, i.e. if the clicked tile is already selected, all tiles are reset to base color
         //and there is no currently selected tile
@@ -272,6 +278,7 @@ public class ReversiPanel extends JPanel
     for (Map.Entry<Coordinate, ViewableTile> pair : tileList.entrySet()) {
       ViewableTile tile = pair.getValue();
       tile.setColor(this.baseColor);
+      tile.setHint(new Pair<>(false, null));
     }
   }
 
@@ -317,8 +324,7 @@ public class ReversiPanel extends JPanel
 
     //h key - basic help method, tells you if you have any valid moves
     if (e.getKeyCode() == KeyEvent.VK_H) {
-      JOptionPane.showMessageDialog(this, "It is " + this.model.playerHasLegalMoves()
-          + " that you have a legal move.", "Game Status", JOptionPane.INFORMATION_MESSAGE, null);
+      this.hinting = !hinting;
     }
   }
 
