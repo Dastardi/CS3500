@@ -240,7 +240,7 @@ public class ReversiPanel extends JPanel
       if (tile.containsPoint(pointClicked)) {
         tileClicked = true;
         //note: still printing this as requested in the previous assignment,
-        //as instructions were very unclear as to whether we should keep this functionality
+        //as instructions were very unclear as to whether we should keep this functionality,
         //so we are erring on the side of caution
         System.out.println("Clicked tile coordinates: " + tile.getQ() + ", " + tile.getR());
         //if the tile is not currently selected, it becomes the selected tile and changes color

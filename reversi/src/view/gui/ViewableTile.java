@@ -1,8 +1,6 @@
 package view.gui;
 
-import java.awt.Color;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
+import java.awt.*;
 import java.awt.geom.Path2D;
 import java.awt.geom.Point2D;
 import java.util.Objects;
@@ -22,12 +20,17 @@ public class ViewableTile implements ViewableReversiTile {
   //that this ViewableTile corresponds to
   private final int q;
   private final int r;
+  //x and y represent the pixel location of the hexagon
+  private final double x;
+  private final double y;
   //represents the current color of this tile
   private Color color;
   //represents the color of the disc on this tile, if one exists
   private Color discColor;
   private final Hexagon2D hexagon;
   private final Path2D.Double disc;
+  //represents whether this tile should currently be displaying a hint.
+  private boolean hinting;
 
   /**
    * Constructs the ViewableTile from a number of inputs, described below. Radius, x, and y are
@@ -47,9 +50,11 @@ public class ViewableTile implements ViewableReversiTile {
     this.color = Objects.requireNonNull(color);
     this.q = q;
     this.r = r;
+    this.x = x;
+    this.y = y;
 
     this.hexagon = new Hexagon2D(x, y, radius);
-    this.disc = new Circle2D(x, y, radius / 2);
+    this.disc = new Circle2D(x, y, radius / 1.5);
   }
 
   @Override
@@ -59,6 +64,31 @@ public class ViewableTile implements ViewableReversiTile {
     g2d.draw(hexagon);
     g.setColor(this.color);
     g2d.fill(hexagon);
+    g.setColor(Color.BLACK);
+    String hintNumber = "" + 5;
+    Font font = new Font("ComicSans", Font.PLAIN, 21);
+    g2d.setFont(font);
+    g2d.drawString(hintNumber, (int)this.x, (int)this.y);
+    if (discColor != null) {
+      g.setColor(discColor);
+      g2d.fill(disc);
+    }
+  }
+
+  @Override
+  public void draw(Graphics g, int score) {
+    Graphics2D g2d = (Graphics2D) g;
+    g.setColor(Color.BLACK);
+    g2d.draw(hexagon);
+    g.setColor(this.color);
+    g2d.fill(hexagon);
+    if (hinting) {
+      g.setColor(Color.BLACK);
+      String hintString = "" + score;
+      Font font = new Font("ComicSans", Font.PLAIN, 21);
+      g2d.setFont(font);
+      g2d.drawString(hintString, (int)this.x, (int)this.y);
+    }
     if (discColor != null) {
       g.setColor(discColor);
       g2d.fill(disc);
