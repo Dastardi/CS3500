@@ -45,11 +45,7 @@ public class ReversiPanel extends JPanel
   private final HashMap<Coordinate, ViewableTile> tileList;
   //represents the radius of each hexagonal tile
   //the radius is the distance from the center to a corner
-  private final double radius;
-  //represents the width of each hexagonal tile
-  //width is measured from the center of one straight edge
-  //to the center of the opposite straight edge
-  private final double tileWidth;
+  private final int sideLength;
   //holds all listeners to this panel, which handle moves and passes
   //not final because it needs to be able to be set from empty to a given ViewEventListener
   private Optional<ViewEventListener> listener;
@@ -61,6 +57,7 @@ public class ReversiPanel extends JPanel
   private final Color backgroundColor = Color.BLACK;
   //represents the tile that is selected at any given time, if one exists
   private ViewableTile selectedTile;
+  private boolean hinting;
 
   /**
    * Constructs the Reversi panel.
@@ -76,11 +73,9 @@ public class ReversiPanel extends JPanel
     this.model = model;
     int boardSize = this.model.getBoardSize();
     //set up the panel
-    this.radius = 40;
-    int frameWidth = (int)(Math.sqrt(3) * boardSize * radius);
-    int frameHeight = (int)((boardSize / 2 * radius) + ((boardSize / 2 + 1) * 2 * radius));
-    setPreferredSize(new Dimension(frameWidth, frameHeight));
-    this.tileWidth = Math.sqrt(3) * this.radius;
+    this.sideLength = 60;
+    int frameWidth = boardSize * this.sideLength;
+    setPreferredSize(new Dimension(frameWidth, frameWidth));
     setBackground(backgroundColor);
 
     //the panel needs to be able to take clicks, so it is a mouse listener
@@ -101,22 +96,11 @@ public class ReversiPanel extends JPanel
 
   //adds all the board tiles to tileList
   private void setTilePositions(int boardSize) {
-    int halfBoard = boardSize / 2;
-    for (int row = 0; row >= -halfBoard; row--) {
-      for (int index = row; index <= halfBoard; index++) {
-        ViewableTile tile = new ViewableTile(baseColor,
-            getCenter(boardSize).width + (tileWidth * index) - (tileWidth * (halfBoard + row) / 2),
-            getCenter(boardSize).height - radius * (1.5 * (halfBoard + row)),
-            radius, halfBoard + index, -row);
+    for (int row = 0; row < boardSize; row++) {
+      for (int col = 0; col < boardSize; col++) {
+        ViewableTile tile = new ViewableTile(baseColor, col * this.sideLength,
+            row * this.sideLength, this.sideLength, col, row);
         tileList.put(new Coordinate(tile.getQ(), tile.getR()), tile);
-        if (row != -halfBoard) {
-          ViewableTile tile2 = new ViewableTile(baseColor,
-              getCenter(boardSize).width + (tileWidth * index)
-                  - (tileWidth * (halfBoard + row) / 2),
-              getCenter(boardSize).height + radius * (1.5 * (halfBoard + row)),
-              radius,index + Math.abs(row),boardSize + row - 1);
-          tileList.put(new Coordinate(tile2.getQ(), tile2.getR()), tile2);
-        }
       }
     }
   }
@@ -127,18 +111,14 @@ public class ReversiPanel extends JPanel
     ViewableTile centerTile = tileList.get(new Coordinate(centerTileQR, centerTileQR));
 
     List<ViewableTile> neighbors = new ArrayList<>();
-    //tile to the right of center
-    neighbors.add(tileList.get(new Coordinate(centerTile.getQ() + 1, centerTile.getR())));
-    //tile to the bottom right of center
-    neighbors.add(tileList.get(new Coordinate(centerTile.getQ(), centerTile.getR() + 1)));
-    //tile to the bottom left of center
-    neighbors.add(tileList.get(new Coordinate(centerTile.getQ() - 1, centerTile.getR() + 1)));
-    //tile to the left of center
-    neighbors.add(tileList.get(new Coordinate(centerTile.getQ() - 1, centerTile.getR())));
-    //tile to the top left of center
-    neighbors.add(tileList.get(new Coordinate(centerTile.getQ(), centerTile.getR() - 1)));
-    //tile to the top right of center
-    neighbors.add(tileList.get(new Coordinate(centerTile.getQ() + 1, centerTile.getR() - 1)));
+    //tile to the top left
+    neighbors.add(tileList.get(new Coordinate(boardSize / 2 - 1, boardSize / 2 - 1)));
+    //tile to the bottom left
+    neighbors.add(tileList.get(new Coordinate(boardSize / 2, boardSize / 2 - 1)));
+    //tile to the bottom right
+    neighbors.add(tileList.get(new Coordinate(boardSize / 2, boardSize / 2)));
+    //tile to the top right
+    neighbors.add(tileList.get(new Coordinate(boardSize / 2 - 1, boardSize / 2)));
 
     for (int i = 0; i < neighbors.size(); i++) {
       if (i % 2 == 0) {
@@ -151,14 +131,6 @@ public class ReversiPanel extends JPanel
     }
   }
 
-  //returns the center-most tile of the board to allow for easier arrangement calculations.
-  private Dimension getCenter(int boardSize) {
-    int halfBoard = boardSize / 2;
-    int frameWidth = (int)(Math.sqrt(3) * boardSize * radius);
-    int frameHeight = (int)((halfBoard * radius) + ((halfBoard + 1) * 2 * radius));
-    return new Dimension(frameWidth / 2, frameHeight / 2);
-  }
-
   //we customized paintComponent in order to ensure that we draw the board correctly
   //whenever a change is made.
   @Override
@@ -168,26 +140,21 @@ public class ReversiPanel extends JPanel
     //we iterate over the model's board, because going the other way created issues with
     //trying to fetch before the board was populated with tiles.
     for (Tile[] row : board) {
-      //for every tile in the board, we first do a null check to avoid the pitfalls of our
-      //2d array axial system, which has null values in the top left and bottom right.
       for (Tile tile : row) {
-        //once we know it's not null, we get the matching viewable tile.
-        if (tile != null) {
-          ViewableTile viewTile = tileList.get(tile.getCoordinate());
-          //we check the contents of the BOARD tile and use a pair of if statements to
-          //change the VIEW tile accordingly.
-          if (!tile.isEmpty()) {
-            PlayerColor tileContents = tile.getContents();
-            if (tileContents == PlayerColor.BLACK) {
-              viewTile.setDisc(Color.BLACK);
-            }
-            else if (tileContents == PlayerColor.WHITE) {
-              viewTile.setDisc(Color.WHITE);
-            }
+        ViewableTile viewTile = tileList.get(tile.getCoordinate());
+        //we check the contents of the BOARD tile and use a pair of if statements to
+        //change the VIEW tile accordingly.
+        if (!tile.isEmpty()) {
+          PlayerColor tileContents = tile.getContents();
+          if (tileContents == PlayerColor.BLACK) {
+            viewTile.setDisc(Color.BLACK);
           }
-          //finally, we tell the view tile to draw itself.
-          viewTile.draw(g);
+          else if (tileContents == PlayerColor.WHITE) {
+            viewTile.setDisc(Color.WHITE);
+          }
         }
+        //finally, we tell the view tile to draw itself.
+        viewTile.draw(g);
       }
     }
   }
@@ -317,8 +284,7 @@ public class ReversiPanel extends JPanel
 
     //h key - basic help method, tells you if you have any valid moves
     if (e.getKeyCode() == KeyEvent.VK_H) {
-      JOptionPane.showMessageDialog(this, "It is " + this.model.playerHasLegalMoves()
-          + " that you have a legal move.", "Game Status", JOptionPane.INFORMATION_MESSAGE, null);
+      this.hinting = !this.hinting;
     }
   }
 

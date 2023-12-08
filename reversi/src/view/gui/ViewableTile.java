@@ -1,6 +1,12 @@
 package view.gui;
 
-import java.awt.*;
+import controller.Pair;
+
+import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Font;
+import java.awt.Rectangle;
 import java.awt.geom.Path2D;
 import java.awt.geom.Point2D;
 import java.util.Objects;
@@ -27,10 +33,10 @@ public class ViewableTile implements ViewableReversiTile {
   private Color color;
   //represents the color of the disc on this tile, if one exists
   private Color discColor;
-  private final Hexagon2D hexagon;
+  private final Rectangle rect;
   private final Path2D.Double disc;
   //represents whether this tile should currently be displaying a hint.
-  private boolean hinting;
+  private Pair<Boolean, Integer> hinting;
 
   /**
    * Constructs the ViewableTile from a number of inputs, described below. Radius, x, and y are
@@ -39,11 +45,11 @@ public class ViewableTile implements ViewableReversiTile {
    * @param color the initial color of the tile.
    * @param x the x coordinate of the center of the tile.
    * @param y the y coordinate of the center of the tile.
-   * @param radius the radius of the tile, for drawing its hexagon and later its disc.
+   * @param width the width and height of the tile, for drawing its square and later its disc.
    * @param q the q value of the tile in the axial coordinate array.
    * @param r the r value of the tile in the axial coordinate array.
    */
-  public ViewableTile(Color color, double x, double y, double radius, int q, int r) {
+  public ViewableTile(Color color, double x, double y, double width, int q, int r) {
     if (x < 0 || y < 0) {
       throw new IllegalArgumentException("Coordinates cannot be negative.");
     }
@@ -53,41 +59,26 @@ public class ViewableTile implements ViewableReversiTile {
     this.x = x;
     this.y = y;
 
-    this.hexagon = new Hexagon2D(x, y, radius);
-    this.disc = new Circle2D(x, y, radius / 1.5);
+    this.rect = new Rectangle((int)x, (int)y, (int)width, (int)width);
+    //x coord = (x1 + x2) / 2 = (x + (x + sideLength)) / 2
+    //y coord = (y1 + y2) / 2 = (y + (y + sideLength)) / 2
+    this.disc = new Circle2D((x + (x + width)) / 2, (y + (y + width)) / 2, width / 3);
+    this.hinting = new Pair<>(false, null);
   }
 
   @Override
   public void draw(Graphics g) {
     Graphics2D g2d = (Graphics2D) g;
     g.setColor(Color.BLACK);
-    g2d.draw(hexagon);
+    g2d.draw(rect);
     g.setColor(this.color);
-    g2d.fill(hexagon);
-    g.setColor(Color.BLACK);
-    String hintNumber = "" + 5;
-    Font font = new Font("ComicSans", Font.PLAIN, 21);
-    g2d.setFont(font);
-    g2d.drawString(hintNumber, (int)this.x, (int)this.y);
-    if (discColor != null) {
-      g.setColor(discColor);
-      g2d.fill(disc);
-    }
-  }
-
-  @Override
-  public void draw(Graphics g, int score) {
-    Graphics2D g2d = (Graphics2D) g;
-    g.setColor(Color.BLACK);
-    g2d.draw(hexagon);
-    g.setColor(this.color);
-    g2d.fill(hexagon);
-    if (hinting) {
+    g2d.fill(rect);
+    if (hinting.getFirst()) {
       g.setColor(Color.BLACK);
-      String hintString = "" + score;
+      String hintNumber = "" + hinting.getSecond();
       Font font = new Font("ComicSans", Font.PLAIN, 21);
       g2d.setFont(font);
-      g2d.drawString(hintString, (int)this.x, (int)this.y);
+      g2d.drawString(hintNumber, (int)this.x, (int)this.y);
     }
     if (discColor != null) {
       g.setColor(discColor);
@@ -122,6 +113,6 @@ public class ViewableTile implements ViewableReversiTile {
 
   @Override
   public boolean containsPoint(Point2D point) {
-    return this.hexagon.contains(point);
+    return this.rect.contains(point);
   }
 }

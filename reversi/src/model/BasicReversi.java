@@ -20,6 +20,7 @@ import java.util.List;
  */
 public class BasicReversi implements ReversiModel {
   //represents the size of the game board (the number of tiles in the longest row)
+  //INVARIANT: boardSize is always even
   private final int boardSize;
 
   //represents the game board in a 2D array
@@ -44,7 +45,7 @@ public class BasicReversi implements ReversiModel {
   public BasicReversi() {
     //the default side length for a game of Reversi is 6
     //results in a board size of 11
-    this(6);
+    this(8);
   }
 
   /**
@@ -52,18 +53,22 @@ public class BasicReversi implements ReversiModel {
    * Useful for testing to be able to set custom board size, or if the user
    * wants a different size board.
    * Initializes all class fields for the game.
-   * @param sideLength the custom side length
+   * @param boardSize the custom board size, which is the length of one side
    * @throws IllegalArgumentException if the given side length is less than 3
    */
-  public BasicReversi(int sideLength) {
+  public BasicReversi(int boardSize) {
     //side lengths of less than 3 result in an invalid/unplayable board
-    if (sideLength < 3) {
-      throw new IllegalArgumentException("Minimum side length of 3 required"
+    if (boardSize < 4) {
+      throw new IllegalArgumentException("Minimum side length of 4 required"
               + "for a playable game of Reversi.");
+    }
+    if (boardSize % 2 != 0) {
+      throw new IllegalArgumentException("Side length must be even"
+          + "for a playable game of Reversi.");
     }
     //the size of the board holds the size of the longest row,
     //which is double each side length minus 1
-    this.boardSize = (sideLength * 2) - 1;
+    this.boardSize = boardSize;
     this.board = new Tile[this.boardSize][this.boardSize];
     //no moves or passes have been made, so set the number of previous passes to 0
     this.passCount = 0;
@@ -86,7 +91,11 @@ public class BasicReversi implements ReversiModel {
    */
   public BasicReversi(Tile[][] givenBoard) {
     if (givenBoard == null || givenBoard.length < 5) {
-      throw new IllegalArgumentException("Minimum side length of 3 required"
+      throw new IllegalArgumentException("Minimum side length of 4 required"
+          + "for a playable game of Reversi.");
+    }
+    if (givenBoard.length % 2 != 0) {
+      throw new IllegalArgumentException("Side length must be even"
           + "for a playable game of Reversi.");
     }
     this.boardSize = givenBoard.length;
@@ -104,13 +113,9 @@ public class BasicReversi implements ReversiModel {
     Tile[][] board = new Tile[boardSize][boardSize];
     for (int r = 0; r < boardSize; r++) {
       for (int q = 0; q < boardSize; q++) {
-        if (r + q > (boardSize / 2) * 3 || r + q < boardSize / 2) {
-          board[r][q] = null;
-        } else {
-          board[r][q] = new Tile(r, q);
-          if (!givenBoard[r][q].isEmpty()) {
-            board[r][q].placeDisc(givenBoard[r][q].getContents());
-          }
+        board[r][q] = new Tile(r, q);
+        if (!givenBoard[r][q].isEmpty()) {
+          board[r][q].placeDisc(givenBoard[r][q].getContents());
         }
       }
     }
@@ -132,29 +137,17 @@ public class BasicReversi implements ReversiModel {
         //any coordinates that add to less than the board size * (3/2)
         //or greater than the board size / 2 are null
         //for a standard board size of 11, this will be less than 5 or greater than 15
-        if (r + q > (boardSize / 2) * 3 || r + q < boardSize / 2) {
-          this.board[r][q] = null;
-        } else {
-          this.board[r][q] = new Tile(r, q);
-        }
+        this.board[r][q] = new Tile(r, q);
       }
     }
   }
 
-  //sets up game state by placing alternating discs in the tiles around the center of the board
+  //sets up game state by placing alternating discs in the four center tiles
   private void placeStartingTiles() {
-    int centerTileQR = this.boardSize / 2;
-    //get all the neighbors of the center tile
-    List<Tile> neighborsOfCenter = getNeighbors(new Coordinate(centerTileQR, centerTileQR));
-    for (int i = 0; i < neighborsOfCenter.size(); i++) {
-      if (i % 2 == 0) {
-        //place a black disc in the top left, bottom left, and right
-        neighborsOfCenter.get(i).placeDisc(PlayerColor.BLACK);
-      } else {
-        //place a white disc in the top right, bottom right, and left
-        neighborsOfCenter.get(i).placeDisc(PlayerColor.WHITE);
-      }
-    }
+    board[boardSize/2 - 1][boardSize/2 - 1].placeDisc(PlayerColor.BLACK);
+    board[boardSize/2][boardSize/2 - 1].placeDisc(PlayerColor.WHITE);
+    board[boardSize/2 - 1][boardSize/2].placeDisc(PlayerColor.WHITE);
+    board[boardSize/2][boardSize/2].placeDisc(PlayerColor.BLACK);
   }
 
   @Override
@@ -205,7 +198,7 @@ public class BasicReversi implements ReversiModel {
     boolean hasLegalMove = false;
     for (Tile[] row : this.board) {
       for (Tile tile : row) {
-        if (tile != null && tile.isEmpty()) {
+        if (tile.isEmpty()) {
           if (isMoveLegal(tile.getCoordinate())) {
             hasLegalMove = true;
           }
@@ -233,14 +226,14 @@ public class BasicReversi implements ReversiModel {
     return moveScore;
   }
 
-  //returns a list of all rows emanating out from a coordinate
+  //returns a list of all four rows emanating out from a coordinate
   //that would render a move there legal
   private List<List<Tile>> getValidRows(Coordinate coordinate, PlayerColor currentColor) {
     //initialize a variable to return at the end of the function
     List<List<Tile>> validRows = new ArrayList<>();
     //get the neighbors of the given tile
     List<Tile> neighbors = getNeighbors(coordinate);
-    //iterate over all six potential valid rows
+    //iterate over all four potential valid rows
     for (Tile neighbor : neighbors) {
       //if the neighbor is empty or the same as the color, it doesn't count - ignore it
       if (!neighbor.isEmpty() && neighbor.getContents() != currentColor) {
@@ -295,18 +288,22 @@ public class BasicReversi implements ReversiModel {
   private List<Tile> getNeighbors(Coordinate coordinate) {
     List<Tile> neighbors = new ArrayList<>();
 
-    //tile to the right of center
-    addTileIfInBoard(neighbors, coordinate.getQ() + 1, coordinate.getR());
-    //tile to the bottom right of center
+    //tile above
     addTileIfInBoard(neighbors, coordinate.getQ(), coordinate.getR() + 1);
-    //tile to the bottom left of center
-    addTileIfInBoard(neighbors, coordinate.getQ() - 1, coordinate.getR() + 1);
-    //tile to the left of center
+    //tile below
+    addTileIfInBoard(neighbors, coordinate.getQ(), coordinate.getR() - 1);
+    //tile to the left
     addTileIfInBoard(neighbors, coordinate.getQ() - 1, coordinate.getR());
-    //tile to the top left of center
-    addTileIfInBoard(neighbors, coordinate.getQ() , coordinate.getR() - 1);
-    //tile to the top right of center
+    //tile to the right
+    addTileIfInBoard(neighbors, coordinate.getQ() + 1, coordinate.getR());
+    //tile to the top left
+    addTileIfInBoard(neighbors, coordinate.getQ() - 1, coordinate.getR() + 1);
+    //tile to the top right
     addTileIfInBoard(neighbors, coordinate.getQ() + 1, coordinate.getR() - 1);
+    //tile to the bottom left
+    addTileIfInBoard(neighbors, coordinate.getQ() - 1, coordinate.getR() - 1);
+    //tile to the bottom right
+    addTileIfInBoard(neighbors, coordinate.getQ() + 1, coordinate.getR() + 1);
 
     return neighbors;
   }
@@ -322,10 +319,7 @@ public class BasicReversi implements ReversiModel {
   //checks for a null value because in our 2d array there are values in the top left
   //and bottom right which act as null placeholder values.
   private boolean tileInBoard(int q, int r) {
-    if (q >= 0 && q < this.boardSize && r >= 0 && r < this.boardSize) {
-      return getTileAt(new Coordinate(q, r)) != null;
-    }
-    return false;
+    return q >= 0 && q < this.boardSize && r >= 0 && r < this.boardSize;
   }
 
   @Override
@@ -371,34 +365,6 @@ public class BasicReversi implements ReversiModel {
     return this.passCount >= 2 || boardFull;
   }
 
-  /*
-  @Override
-  public PlayerColor getCurrentWinner() {
-    //to keep track of the current highest score of all players
-    int highestScore = 0;
-    //to keep track of the winner
-    PlayerColor winner = null;
-    //go through all player colors
-    for (PlayerColor color : PlayerColor.values()) {
-      int playerScore = getPlayerScore(color);
-
-      //if this player's score is higher than the current highest
-      //if there is a tie, return null
-      if (playerScore == highestScore) {
-        winner = null;
-      }
-
-      if (playerScore > highestScore) {
-        //set their score as the new highest score and make them the winner
-        highestScore = playerScore;
-        winner = color;
-      }
-    }
-    return winner;
-  }
-
-   */
-
   @Override
   public int getCurrentWinner() {
     //to keep track of the current highest score of all players
@@ -432,7 +398,7 @@ public class BasicReversi implements ReversiModel {
       for (int q = 0; q < this.boardSize; q++) {
         Tile tile = getTileAt(new Coordinate(q, r));
         //if it holds a disc belonging to the given player
-        if (tile != null && tile.getContents() == color) {
+        if (tile.getContents() == color) {
           score++;
         }
       }
