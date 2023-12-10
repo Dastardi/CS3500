@@ -14,3 +14,6 @@ public class LiarMockReversiModel extends MockReversiModel {
 
   @Override
   public boolean isMoveLegal(Coordinate coordinate) {
+    return coordinate.equals(new Coordinate(0, 0));
+  }
+}
