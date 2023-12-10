@@ -24,7 +24,7 @@ PlayerActions is extended by ReversiModel in order to ensure that a ReversiModel
 
 GUI View
 - The GUI is the primary way for a player to interact with a game of Reversi via Java Swing.
-- It consists of a Panel within a Frame, which the player can click and interact with. Hexagonal tiles are arranged according to a specified board size and tile radius, and discs can be placed within tiles.
+- It consists of a Panel within a Frame, which the player can click and interact with. Tiles are arranged according to a specified board size and tile radius, and discs can be placed within tiles.
 - To interact with the board, players use their mouse to select and deselect tiles and their keyboard to move in selected tiles, pass, and quit the game.
 
 Textual View
@@ -37,12 +37,12 @@ Within the model, the most important subcomponents are the board and Tile, Coord
 The PlayerColor enum represents the players involved in the game and is the basis for how much of the game is run.
 It contains two values, BLACK and WHITE, and is used to track turn-taking using its ordinal index values and determines the contents of tiles.
 
-Coordinates are positional representations of Tiles on a hexagonal board, using the axial coordinate method.
-They contain a q and r value, which together can be used to conceptually represent the third value s required to have an effective hexagonal mapping system.
+Coordinates are positional representations of Tiles on a square board.
+They contain a q and r value, which together are used to map out coordinates on a square board.
 
 Tiles are the spaces on the board, which can be empty or hold discs in them.
 There is no actual disc object - instead, the Tile tracks the state of the disc within it in order to reduce code complication.
-These Tiles also each hold an axial coordinate to track their position on the board.
+These Tiles also each hold a coordinate to track their position on the board.
 
 Tiles all share some public methods which are used by the model to manipulate the board.<br>
 The placeDisc(PlayerColor) method changes the contents of the Tile to reflect a Tile being put down.<br>
@@ -51,7 +51,7 @@ The isEmpty() method returns true if the Tile has no disc in it, and false if it
 The getContents() method returns the color of the disc currently held in the Tile.<br>
 Finally, the getCoordinate() method returns the Coordinate location of the Tile.<br>
 
-The board is a 2D array of Tiles, with null placeholder values in the top left and bottom right corners to create a hexagonal structure.
+The board is a 2D array of Tiles.
 The Tiles' r value is the row it occupies in the array, and the q value is its position in its respective inner array.
 This system of holding coordinate values of Tiles allows for easy and efficient access to the board's fields, simplifying the operations required to run a game of Reversi.
 
@@ -79,7 +79,7 @@ Strategy contains the implementation of our AI strategies, as well as the HumanP
 
 View contains two packages: gui and text.
 <br>GUI contains the ViewPanel, ViewableReversiTile, and PanelEventListener interface.
-There are some supporting classes with no interfaces, such as Circle2D and Hexagon2D, which are used to draw shapes in the panel, and then implementations of the aforementioned interfaces: ViewableTile, ReversiFrame, and ReversiPanel.
+There are some supporting classes with no interfaces, such as Circle2D, which is used to draw shapes in the panel, and then implementations of the aforementioned interfaces: ViewableTile, ReversiFrame, and ReversiPanel.
 <br>Text contains the TextualView interface and ReversiTextualView, the implementation of the view.
 
 The test directory contains separate test classes for each class in the src folder.
@@ -122,25 +122,7 @@ Tile
 
 ### GUI DESIGN CHOICES
 <b>How the board is created:</b>
-- The setTilePositions method creates and adds a board of ViewableTiles to a hashmap of tiles.
-  Each ViewableTile has a hexagon which is determined by the values passed into its constructor through this method, and knows how and where to draw itself.
-  Thus, once this method is called, the board can be drawn simply by telling each tile to draw itself.
-- The row for loops moves from 0 to negative half of board size (which is a variable representing the number of tiles in the center row), in order to represent half a board - the top row is 0 to half of the board size, the next row is -1 to half the board size, and so on until the center row which should be the full board size.
-- There are two separate for loops in the row loop, one to draw the top half of the board (including the center row) and another to draw the bottom half (without the center row).
-- Inside it, index is based on row, and moves from the value of row to half the size of the board. This will always generate the correct amount of tiles for that row.
-- There are two tile additions here, one locked behind a for loop - the former is for drawing the top half of the board from the top down, and the second is for drawing from the bottom up.
-  The latter does not draw the center row, hence the if statement.
-- Based on the horizontal center of the board, we offset by the correct amount based on the index, the tile width, and the row number.
-- Then, based on the vertical center of the board, offset by the correct amount based on the row number. As we don't need to do the offset calculations, this is a lot simpler than calculating x.
-- The radius is simple to pass to the ViewableTile, but the q and r values are less so.
-- Since q is offset to the right in the top half of the axial array, the range of values starts at its smallest at the top and increases as we go down. Since index gets more negative over time, halfBoard-index does that.
-- r starts at 0 and goes up, whereas row starts at 0 and goes down. This means that getting the inverse of row is equivalent to getting the r-value for a top-half tile.
-- For the bottom rows, a few things need to change. We do the same horizontal and radius calculations as before, but the rest is different.
-- We have a slightly different y-calculation - it adds the value rather than subtracting it to place the row further down the frame, as (0,0) is in the top left.
-- Since q is offset to the left in the bottom half of the axial array instead of the right as in the top half, the range of values must stay consistent on the left and increase as we go up. Index and row are always going to be the same on the first run of the inner for loop, but as it continues index will increase and the offset from row will stay the same. Thus, q is equal to index + the absolute value of row.
-- r has to start at boardSize-1 and go down - as the row loop continues, it will decrease over time, so adding it allows us to build from the bottom up.
-- When each tile is created, it is added to the tile list hashmap.
-- And there we are! A completed board held in a hashmap of new viewable tiles ready to display a game of Reversi.
+We use similar logic to our system for hexagonal reversi, but simplified due to the lack of null values in the corners of the array.
 
 <b>How we interact with the board as users:</b>
 - Clicking a tile selects it. When a tile is selected, you can deselect it by clicking it again, clicking another tile (which then selects that tile instead), or clicking outside of the board on the background.
