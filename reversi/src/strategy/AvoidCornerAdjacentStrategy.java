@@ -49,13 +49,10 @@ public class AvoidCornerAdjacentStrategy implements ReversiStrategy {
   //gets the existing corners next to a given coordinate.
   List<Coordinate> getCorners() {
     int boardSize = model.getBoardSize();
-    int halfBoard = boardSize / 2;
     List<Coordinate> coordList = new ArrayList<>();
-    for (int r = 0; r < boardSize; r += halfBoard) {
-      for (int q = 0; q < boardSize; q += halfBoard) {
-        if (q != r) {
-          coordList.add(new Coordinate(q,r));
-        }
+    for (int r = 0; r < boardSize; r += boardSize - 1) {
+      for (int q = 0; q < boardSize; q += boardSize - 1) {
+        coordList.add(new Coordinate(q,r));
       }
     }
     return coordList;
@@ -66,10 +63,12 @@ public class AvoidCornerAdjacentStrategy implements ReversiStrategy {
     List<Coordinate> neighbors = new ArrayList<>();
 
     addCoordIfInBoard(neighbors, coordinate.getQ() + 1, coordinate.getR());
+    addCoordIfInBoard(neighbors, coordinate.getQ() + 1, coordinate.getR() + 1);
     addCoordIfInBoard(neighbors, coordinate.getQ(), coordinate.getR() + 1);
     addCoordIfInBoard(neighbors, coordinate.getQ() - 1, coordinate.getR() + 1);
     addCoordIfInBoard(neighbors, coordinate.getQ() - 1, coordinate.getR());
-    addCoordIfInBoard(neighbors, coordinate.getQ() , coordinate.getR() - 1);
+    addCoordIfInBoard(neighbors, coordinate.getQ() - 1, coordinate.getR() - 1);
+    addCoordIfInBoard(neighbors, coordinate.getQ(), coordinate.getR() - 1);
     addCoordIfInBoard(neighbors, coordinate.getQ() + 1, coordinate.getR() - 1);
 
     return neighbors;
@@ -86,9 +85,6 @@ public class AvoidCornerAdjacentStrategy implements ReversiStrategy {
   //checks for a null value because in our 2d array there are values in the top left
   //and bottom right which act as null placeholder values.
   private boolean tileInBoard(int q, int r) {
-    if (q >= 0 && q < this.model.getBoardSize() && r >= 0 && r < this.model.getBoardSize()) {
-      return model.getTileAt(new Coordinate(q, r)) != null;
-    }
-    return false;
+    return q >= 0 && q < this.model.getBoardSize() && r >= 0 && r < this.model.getBoardSize();
   }
 }

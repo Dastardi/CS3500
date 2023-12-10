@@ -4,8 +4,6 @@ import model.PlayerColor;
 import model.ReversiModel;
 import org.junit.Before;
 import org.junit.Test;
-import squaretests.LiarMockReversiModel;
-import squaretests.MockReversiModel;
 import strategy.ReversiStrategy;
 import strategy.CompositeStrategy;
 import strategy.MaxCaptureStrategy;
@@ -75,7 +73,7 @@ public class StrategyTests {
     cornerAdjacentCornerOpenModel.getTileAt(new Coordinate(3,5)).placeDisc(PlayerColor.WHITE);
     cornerAdjacentCornerOpenModel.getTileAt(new Coordinate(2,0)).placeDisc(PlayerColor.WHITE);
     cornerAdjacentCornerOpenModel.getTileAt(new Coordinate(3,0)).placeDisc(PlayerColor.WHITE);
-    cornerAdjacentCornerOpenModel.getTileAt(new Coordinate(4,5)).placeDisc(PlayerColor.BLACK);
+    cornerAdjacentCornerOpenModel.getTileAt(new Coordinate(4,0)).placeDisc(PlayerColor.BLACK);
 
     this.log = new StringBuilder();
 
@@ -158,11 +156,11 @@ public class StrategyTests {
   //and that max capture moves in the top left regardless of strategic implications
   @Test
   public void testDifferencesBetweenAllThree() {
-    assertEquals(new Coordinate(3,6),
+    assertEquals(new Coordinate(1,0),
         adjacentMaxCapture.chooseMove(new ArrayList<>()).get(0));
     assertEquals(new Coordinate(3,6),
         adjacentAvoidCornerAdjacent.chooseMove(new ArrayList<>()).get(0));
-    assertEquals(new Coordinate(3,6),
+    assertEquals(new Coordinate(7,7),
         adjacentCornerCapture.chooseMove(new ArrayList<>()).get(0));
   }
 
@@ -170,11 +168,11 @@ public class StrategyTests {
   //a corner, avoid corner capture strategy has the same behavior as max capture strategy
   @Test
   public void testCornerStrategyFocusesOnCorner() {
-    assertEquals(new Coordinate(1,4),
-        cornerMaxCapture.chooseMove(new ArrayList<>()).get(0));
-    assertEquals(new Coordinate(1,4),
-        cornerAvoidCornerAdjacent.chooseMove(new ArrayList<>()).get(0));
     assertEquals(new Coordinate(3,6),
+        cornerMaxCapture.chooseMove(new ArrayList<>()).get(0));
+    assertEquals(new Coordinate(3,6),
+        cornerAvoidCornerAdjacent.chooseMove(new ArrayList<>()).get(0));
+    assertEquals(new Coordinate(7,7),
         cornerCornerCapture.chooseMove(new ArrayList<>()).get(0));
   }
 
@@ -184,19 +182,17 @@ public class StrategyTests {
   @Test
   public void testMaxCaptureMock() {
     mockMaxCapture.chooseMove(new ArrayList<>());
-    assertTrue(log.toString().contains("Getting score at 6, 3"));
-    assertTrue(log.toString().contains("Getting score at 4, 4"));
-    assertTrue(log.toString().contains("Getting score at 7, 4"));
-    assertTrue(log.toString().contains("Getting score at 3, 6"));
-    assertTrue(log.toString().contains("Getting score at 6, 6"));
-    assertTrue(log.toString().contains("Getting score at 4, 7"));
-    assertEquals(new Coordinate(6,3), mockMaxCapture.chooseMove(new ArrayList<>()).get(0));
+    assertTrue(log.toString().contains("Getting score at 4, 2"));
+    assertTrue(log.toString().contains("Getting score at 5, 3"));
+    assertTrue(log.toString().contains("Getting score at 2, 4"));
+    assertTrue(log.toString().contains("Getting score at 3, 5"));
+    assertEquals(new Coordinate(4,2), mockMaxCapture.chooseMove(new ArrayList<>()).get(0));
   }
 
   //liar mock alters the validity check to ensure that the strategy follows the model in
   //determining its choices for best moves.
   @Test
   public void testLiarMock() {
-    assertEquals(new Coordinate(3,3), liarMockMaxCapture.chooseMove(new ArrayList<>()).get(0));
+    assertEquals(new Coordinate(0,0), liarMockMaxCapture.chooseMove(new ArrayList<>()).get(0));
   }
 }

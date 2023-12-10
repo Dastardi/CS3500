@@ -1,5 +1,3 @@
-package squaretests;
-
 import controller.player.Player;
 import controller.ReversiController;
 import model.Coordinate;

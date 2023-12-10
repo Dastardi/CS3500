@@ -1,5 +1,3 @@
-package squaretests;
-
 import controller.player.EasyAIPlayer;
 import controller.player.HumanPlayer;
 import controller.player.Player;
@@ -10,8 +8,6 @@ import model.Coordinate;
 import model.PlayerColor;
 import model.ReversiModel;
 
-import squaretests.MockReversiController;
-import squaretests.MockView;
 import view.gui.ReversiFrame;
 
 import org.junit.Assert;

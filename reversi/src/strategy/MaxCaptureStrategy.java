@@ -3,6 +3,7 @@ package strategy;
 import model.Coordinate;
 import model.ReadOnlyReversiModel;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -34,17 +35,15 @@ public class MaxCaptureStrategy implements ReversiStrategy {
 
     for (int r = 0; r < boardSize; r++) {
       for (int q = 0; q < boardSize; q++) {
-        if (r + q <= (boardSize / 2) * 3 && r + q >= boardSize / 2) {
-          Coordinate coordinate = new Coordinate(q, r);
-          if (model.isMoveLegal(coordinate)) {
-            int moveScore = model.getMoveScore(coordinate);
-            if (moveScore > topScore) {
-              topScore = moveScore;
-              moveList.clear();
-              moveList.add(coordinate);
-            } else if (moveScore == topScore) {
-              moveList.add(coordinate);
-            }
+        Coordinate coordinate = new Coordinate(q, r);
+        if (model.isMoveLegal(coordinate)) {
+          int moveScore = model.getMoveScore(coordinate);
+          if (moveScore > topScore) {
+            topScore = moveScore;
+            moveList.clear();
+            moveList.add(coordinate);
+          } else if (moveScore == topScore) {
+            moveList.add(coordinate);
           }
         }
       }

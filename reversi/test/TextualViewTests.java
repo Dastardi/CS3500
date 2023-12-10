@@ -1,5 +1,3 @@
-package squaretests;
-
 import model.BasicReversi;
 import model.ReversiModel;
 import model.Coordinate;

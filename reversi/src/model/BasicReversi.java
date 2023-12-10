@@ -20,7 +20,7 @@ import java.util.List;
  */
 public class BasicReversi implements ReversiModel {
   //represents the size of the game board (the number of tiles in the longest row)
-  //INVARIANT: boardSize is always even
+  //INVARIANT: boardSize is always positive and even
   private final int boardSize;
 
   //represents the game board in a 2D array

@@ -1,5 +1,3 @@
-package squaretests;
-
 import model.Coordinate;
 import model.PlayerColor;
 import org.junit.Assert;

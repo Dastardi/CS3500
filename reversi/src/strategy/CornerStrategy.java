@@ -23,22 +23,19 @@ public class CornerStrategy implements ReversiStrategy {
   @Override
   public List<Coordinate> chooseMove(List<Coordinate> moveList) {
     int boardSize = this.model.getBoardSize();
-    int halfBoard = boardSize / 2;
     int topScore = 0;
 
-    for (int r = 0; r < boardSize; r += halfBoard) {
-      for (int q = 0; q < boardSize; q += halfBoard) {
-        if (q != r) {
-          Coordinate coordinate = new Coordinate(q, r);
-          if (model.isMoveLegal(coordinate)) {
-            int moveScore = model.getMoveScore(coordinate);
-            if (moveScore > topScore) {
-              topScore = moveScore;
-              moveList.clear();
-              moveList.add(coordinate);
-            } else if (moveScore == topScore) {
-              moveList.add(coordinate);
-            }
+    for (int r = 0; r < boardSize; r += boardSize - 1) {
+      for (int q = 0; q < boardSize; q += boardSize - 1) {
+        Coordinate coordinate = new Coordinate(q, r);
+        if (model.isMoveLegal(coordinate)) {
+          int moveScore = model.getMoveScore(coordinate);
+          if (moveScore > topScore) {
+            topScore = moveScore;
+            moveList.clear();
+            moveList.add(coordinate);
+          } else if (moveScore == topScore) {
+            moveList.add(coordinate);
           }
         }
       }
