@@ -18,17 +18,18 @@ import java.util.Objects;
  * where it should be drawn, where (in terms of coordinate) it is on the board,
  * how big it is, what color it is at any given time,
  * and the color of the disc on the tile, if one exists.
- * A ViewableTile holds two shape objects - a hexagon, which is the tile,
+ * A ViewableTile holds two shape objects - a square, which is the tile,
  * and a circle, which is the disc that is drawn if one is placed in the tile.
  */
 public class ViewableTile implements ViewableReversiTile {
-  //q and r represent the logical axial coordinates of the Tile object in the model
+  //q and r represent the logical coordinates of the Tile object in the model
   //that this ViewableTile corresponds to
   private final int q;
   private final int r;
-  //x and y represent the pixel location of the hexagon
+  //x and y represent the pixel location of the square
   private final double x;
   private final double y;
+  private final double width;
   //represents the current color of this tile
   private Color color;
   //represents the color of the disc on this tile, if one exists
@@ -40,14 +41,14 @@ public class ViewableTile implements ViewableReversiTile {
 
   /**
    * Constructs the ViewableTile from a number of inputs, described below. Radius, x, and y are
-   * not fields of ViewableTile because they are only used to construct the hexagon and circle
+   * not fields of ViewableTile because they are only used to construct the square and circle
    * fields and don't need to be accessed later.
    * @param color the initial color of the tile.
    * @param x the x coordinate of the center of the tile.
    * @param y the y coordinate of the center of the tile.
    * @param width the width and height of the tile, for drawing its square and later its disc.
-   * @param q the q value of the tile in the axial coordinate array.
-   * @param r the r value of the tile in the axial coordinate array.
+   * @param q the q value of the tile in the logical coordinate array.
+   * @param r the r value of the tile in the logical coordinate array.
    */
   public ViewableTile(Color color, double x, double y, double width, int q, int r) {
     if (x < 0 || y < 0) {
@@ -58,6 +59,7 @@ public class ViewableTile implements ViewableReversiTile {
     this.r = r;
     this.x = x;
     this.y = y;
+    this.width = width;
 
     this.rect = new Rectangle((int)x, (int)y, (int)width, (int)width);
     //x coord = (x1 + x2) / 2 = (x + (x + sideLength)) / 2
@@ -78,7 +80,7 @@ public class ViewableTile implements ViewableReversiTile {
       String hintNumber = "" + hinting.getSecond();
       Font font = new Font("ComicSans", Font.PLAIN, 21);
       g2d.setFont(font);
-      g2d.drawString(hintNumber, (int)this.x, (int)this.y);
+      g2d.drawString(hintNumber, (int)(x + (x + width)) / 2, (int)(y + (y + width)) / 2);
     }
     if (discColor != null) {
       g.setColor(discColor);
@@ -114,5 +116,10 @@ public class ViewableTile implements ViewableReversiTile {
   @Override
   public boolean containsPoint(Point2D point) {
     return this.rect.contains(point);
+  }
+
+  @Override
+  public void setHint(Pair<Boolean, Integer> hint) {
+    this.hinting = hint;
   }
 }
