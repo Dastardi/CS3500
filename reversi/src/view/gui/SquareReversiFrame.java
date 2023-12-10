@@ -5,26 +5,12 @@ import controller.ViewEventListener;
 import model.Coordinate;
 import model.ReadOnlyReversiModel;
 
-import javax.swing.JFrame;
-import javax.swing.ImageIcon;
-import javax.swing.JOptionPane;
-import javax.swing.WindowConstants;
-
-import java.awt.BorderLayout;
+import javax.swing.*;
+import java.awt.*;
 import java.net.URL;
 import java.util.Optional;
 
-/**
- * The frame, otherwise called the window, of the GUI for a reversi game.
- * The frame constitutes the view, though it is effectively a wrapper for the panel.
- * The panel does the work of displaying the board and directly interacting with the user.
- * The frame's job is to construct and accurately display the panel, as well as to
- * pass information from user input, via the panel, to the controller.
- * Note for this hw06: there is currently no controller in the code, so there is a disconnect
- * between the view and the model. Once the controller is implemented, it will be a listener
- * of this view.
- */
-public class ReversiFrame extends JFrame
+public class SquareReversiFrame extends JFrame
     implements ReversiView, ViewEventListener, Emitter, ModelEventListener {
   //holds all listeners to this panel, which handle moves and passes
   //not final because it needs to be able to be set from empty to a given ViewEventListener
@@ -37,7 +23,7 @@ public class ReversiFrame extends JFrame
    * the model directly or interact with it other than observing its state.
    * @param model the read-only version of the model to be displayed in the view
    */
-  public ReversiFrame(ReadOnlyReversiModel model) {
+  public SquareReversiFrame(ReadOnlyReversiModel model) {
     setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
     this.panel = new ReversiPanel(model);
     //the frame is a listener of the panel, allowing it to get user interaction information
