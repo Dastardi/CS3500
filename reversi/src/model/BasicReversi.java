@@ -347,18 +347,23 @@ public class BasicReversi implements ReversiModel {
   public boolean isGameOver() {
     //assume the board is full
     boolean boardFull = true;
+    List<Tile> whiteTiles = new ArrayList<>();
+    List<Tile> blackTiles = new ArrayList<>();
     //iterate over the entire board, setting the boolean to false if any of the tiles are empty
     for (int r = 0; r < this.boardSize; r++) {
       for (int q = 0; q < this.boardSize; q++) {
-        //only iterate over tiles that are actually on the board (skip null values in the array)
-        if (tileInBoard(q, r) && getTileAt(new Coordinate(r, q)).isEmpty()) {
+        //only iterate over tiles that are actually on the board
+        if (tileInBoard(q, r) && getTileAt(new Coordinate(q, r)).isEmpty()) {
           boardFull = false;
-          break;
+        } else if (tileInBoard(q, r) && getTileAt(new Coordinate(q, r)).getContents() == PlayerColor.WHITE) {
+          whiteTiles.add(getTileAt(new Coordinate(q, r)));
+        } else if (tileInBoard(q, r) && getTileAt(new Coordinate(q, r)).getContents() == PlayerColor.BLACK) {
+          blackTiles.add(getTileAt(new Coordinate(q, r)));
         }
       }
     }
     //if two both players have passed consecutively or the board is full, the game is over
-    return this.passCount >= 2 || boardFull;
+    return this.passCount >= 2 || boardFull || whiteTiles.isEmpty() || blackTiles.isEmpty();
   }
 
   @Override

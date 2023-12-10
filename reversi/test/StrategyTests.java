@@ -4,6 +4,8 @@ import model.PlayerColor;
 import model.ReversiModel;
 import org.junit.Before;
 import org.junit.Test;
+import squaretests.LiarMockReversiModel;
+import squaretests.MockReversiModel;
 import strategy.ReversiStrategy;
 import strategy.CompositeStrategy;
 import strategy.MaxCaptureStrategy;
@@ -53,27 +55,27 @@ public class StrategyTests {
   @Before
   public void init() {
     //model with just the starting tiles in place
-    this.basicStartModel = new BasicReversi(4);
+    this.basicStartModel = new BasicReversi(8);
 
     //model with an opening to take two tiles in the upper left (upper left is preferred by
     // the strategies as a tiebreaker) or two tiles in the bottom right corner.
-    this.cornerAndUpperLeftOpenModel = new BasicReversi(4);
-    cornerAndUpperLeftOpenModel.getTileAt(new Coordinate(1,6)).placeDisc(PlayerColor.WHITE);
-    cornerAndUpperLeftOpenModel.getTileAt(new Coordinate(2,6)).placeDisc(PlayerColor.WHITE);
-    cornerAndUpperLeftOpenModel.getTileAt(new Coordinate(0,6)).placeDisc(PlayerColor.BLACK);
-    cornerAndUpperLeftOpenModel.getTileAt(new Coordinate(4,1)).placeDisc(PlayerColor.BLACK);
-    cornerAndUpperLeftOpenModel.getTileAt(new Coordinate(3,2)).flip();
+    this.cornerAndUpperLeftOpenModel = new BasicReversi(8);
+    cornerAndUpperLeftOpenModel.getTileAt(new Coordinate(6,7)).placeDisc(PlayerColor.WHITE);
+    cornerAndUpperLeftOpenModel.getTileAt(new Coordinate(5,7)).placeDisc(PlayerColor.WHITE);
+    cornerAndUpperLeftOpenModel.getTileAt(new Coordinate(4,7)).placeDisc(PlayerColor.BLACK);
+    cornerAndUpperLeftOpenModel.getTileAt(new Coordinate(3,5)).placeDisc(PlayerColor.WHITE);
 
     //model with an opening to take two tiles by moving next to a corner in the upper left,
     //take two tiles by moving further away from a corner in the bottom right,
     //or take two tiles by moving to the bottom right corner.
-    this.cornerAdjacentCornerOpenModel = new BasicReversi(4);
-    cornerAdjacentCornerOpenModel.getTileAt(new Coordinate(1,6)).placeDisc(PlayerColor.WHITE);
-    cornerAdjacentCornerOpenModel.getTileAt(new Coordinate(2,6)).placeDisc(PlayerColor.WHITE);
-    cornerAdjacentCornerOpenModel.getTileAt(new Coordinate(0,6)).placeDisc(PlayerColor.BLACK);
-    cornerAdjacentCornerOpenModel.getTileAt(new Coordinate(4,4)).placeDisc(PlayerColor.BLACK);
-    cornerAdjacentCornerOpenModel.getTileAt(new Coordinate(2,2)).placeDisc(PlayerColor.WHITE);
-    cornerAdjacentCornerOpenModel.getTileAt(new Coordinate(4,3)).flip();
+    this.cornerAdjacentCornerOpenModel = new BasicReversi(8);
+    cornerAdjacentCornerOpenModel.getTileAt(new Coordinate(6,7)).placeDisc(PlayerColor.WHITE);
+    cornerAdjacentCornerOpenModel.getTileAt(new Coordinate(5,7)).placeDisc(PlayerColor.WHITE);
+    cornerAdjacentCornerOpenModel.getTileAt(new Coordinate(4,7)).placeDisc(PlayerColor.BLACK);
+    cornerAdjacentCornerOpenModel.getTileAt(new Coordinate(3,5)).placeDisc(PlayerColor.WHITE);
+    cornerAdjacentCornerOpenModel.getTileAt(new Coordinate(2,0)).placeDisc(PlayerColor.WHITE);
+    cornerAdjacentCornerOpenModel.getTileAt(new Coordinate(3,0)).placeDisc(PlayerColor.WHITE);
+    cornerAdjacentCornerOpenModel.getTileAt(new Coordinate(4,5)).placeDisc(PlayerColor.BLACK);
 
     this.log = new StringBuilder();
 
@@ -128,27 +130,26 @@ public class StrategyTests {
   //tests that all strategies break ties correctly by moving in the top left.
   @Test
   public void testAllStrategiesHaveSameStart() {
-    //ensure that the model properly skips null tiles when checking valid rows
-    assertNotEquals(new Coordinate(5,1),
-        basicMaxCapture.chooseMove(new ArrayList<>()).get(0));
     //check that all three strategies have the same starting move
-    assertEquals(new Coordinate(4,1),
+    assertEquals(new Coordinate(4,2),
         basicMaxCapture.chooseMove(new ArrayList<>()).get(0));
-    assertEquals(new Coordinate(4,1),
+    assertEquals(new Coordinate(4,2),
         basicAvoidCornerAdjacent.chooseMove(new ArrayList<>()).get(0));
-    assertEquals(new Coordinate(4,1),
+    assertEquals(new Coordinate(4,2),
         basicCornerCapture.chooseMove(new ArrayList<>()).get(0));
   }
 
   //tests that all three strategies will prioritize the higher-value move
   @Test
   public void testStrategiesTakeHigherValueMove() {
+    basicStartModel.move(new Coordinate(4, 2));
+    basicStartModel.move(new Coordinate(3, 2));
     basicStartModel.move(basicMaxCapture.chooseMove(new ArrayList<>()).get(0));
-    assertEquals(new Coordinate(5,0),
+    assertEquals(new Coordinate(3,1),
         basicMaxCapture.chooseMove(new ArrayList<>()).get(0));
-    assertEquals(new Coordinate(5,0),
+    assertEquals(new Coordinate(3,1),
         basicAvoidCornerAdjacent.chooseMove(new ArrayList<>()).get(0));
-    assertEquals(new Coordinate(5,0),
+    assertEquals(new Coordinate(3,1),
         basicCornerCapture.chooseMove(new ArrayList<>()).get(0));
   }
 
@@ -157,9 +158,9 @@ public class StrategyTests {
   //and that max capture moves in the top left regardless of strategic implications
   @Test
   public void testDifferencesBetweenAllThree() {
-    assertEquals(new Coordinate(2,1),
+    assertEquals(new Coordinate(3,6),
         adjacentMaxCapture.chooseMove(new ArrayList<>()).get(0));
-    assertEquals(new Coordinate(4,1),
+    assertEquals(new Coordinate(3,6),
         adjacentAvoidCornerAdjacent.chooseMove(new ArrayList<>()).get(0));
     assertEquals(new Coordinate(3,6),
         adjacentCornerCapture.chooseMove(new ArrayList<>()).get(0));

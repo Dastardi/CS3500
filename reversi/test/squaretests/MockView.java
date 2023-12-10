@@ -1,3 +1,5 @@
+package squaretests;
+
 import model.ReadOnlyReversiModel;
 import view.gui.ReversiFrame;
 

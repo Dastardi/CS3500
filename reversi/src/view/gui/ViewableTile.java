@@ -76,11 +76,13 @@ public class ViewableTile implements ViewableReversiTile {
     g.setColor(this.color);
     g2d.fill(rect);
     if (hinting.getFirst()) {
-      g.setColor(Color.BLACK);
-      String hintNumber = "" + hinting.getSecond();
-      Font font = new Font("ComicSans", Font.PLAIN, 21);
-      g2d.setFont(font);
-      g2d.drawString(hintNumber, (int)(x + (x + width)) / 2, (int)(y + (y + width)) / 2);
+      if (hinting.getSecond() > 0) {
+        g.setColor(Color.BLACK);
+        String hintNumber = "" + hinting.getSecond();
+        Font font = new Font("ComicSans", Font.PLAIN, 21);
+        g2d.setFont(font);
+        g2d.drawString(hintNumber, (int) (x + (x + width)) / 2, (int) (y + (y + width)) / 2);
+      }
     }
     if (discColor != null) {
       g.setColor(discColor);

@@ -1,3 +1,5 @@
+package squaretests;
+
 import model.Coordinate;
 import model.Tile;
 import org.junit.Assert;

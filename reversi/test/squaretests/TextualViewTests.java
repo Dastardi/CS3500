@@ -1,5 +1,5 @@
 package squaretests;
-import model.PlayerColor;
+
 import model.BasicReversi;
 import model.ReversiModel;
 import model.Coordinate;

@@ -1,3 +1,5 @@
+package squaretests;
+
 import model.BasicReversi;
 import model.PlayerColor;
 import model.Coordinate;
