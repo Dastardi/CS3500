@@ -74,7 +74,7 @@ public class BasicReversi implements ReversiModel {
     this.passCount = 0;
     //create all tiles for the board
     fillBoard(this.boardSize);
-    //place the six starting tiles around the center
+    //place the four starting tiles in the center
     placeStartingTiles();
     //black moves first, and their i
     this.currentPlayerIndex = 0;
@@ -133,10 +133,6 @@ public class BasicReversi implements ReversiModel {
     for (int r = 0; r < size; r++) {
       for (int q = 0; q < size; q++) {
         //using a 2D array to represent the board
-        //since the board is hexagonal, non-used array spaces are null
-        //any coordinates that add to less than the board size * (3/2)
-        //or greater than the board size / 2 are null
-        //for a standard board size of 11, this will be less than 5 or greater than 15
         this.board[r][q] = new Tile(r, q);
       }
     }
@@ -270,7 +266,7 @@ public class BasicReversi implements ReversiModel {
   //given two tiles, this method finds the pattern that connects them and applies that pattern
   // to the board to get the next tile along the row
   private Tile getNextInRow(Tile tile, Tile neighbor) {
-    //get the changes in axial coordinates for finding the next tile in the sequence
+    //get the coordinate changes for finding the next tile in the sequence
     int deltaQ = neighbor.getCoordinate().getQ() - tile.getCoordinate().getQ();
     int deltaR = neighbor.getCoordinate().getR() - tile.getCoordinate().getR();
     int nextTileQ = neighbor.getCoordinate().getQ() + deltaQ;
@@ -284,7 +280,7 @@ public class BasicReversi implements ReversiModel {
     return null;
   }
 
-  //gets all six neighbors of a tile at a given coordinate
+  //gets all eight neighbors of a tile at a given coordinate
   private List<Tile> getNeighbors(Coordinate coordinate) {
     List<Tile> neighbors = new ArrayList<>();
 

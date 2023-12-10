@@ -1,18 +1,18 @@
 package model;
 
 /**
- * Represents a Tile in a hexagonal board for a game of Reversi.
- * A Tile is a hexagonal shape that makes up the larger hexagon that is the board.
+ * Represents a Tile in a square board for a game of Reversi.
+ * A Tile is a square shape that makes up the larger square that is the board.
  * A Tile is the space where a disc, which represents a "piece" in the game, can be played.
  * Tile objects contain information about what, if anything, is placed on them.
- * They also know their own position within the board, represented by an axial coordinate system.
+ * They also know their own position within the board, represented by a simple coordinate system.
  */
 public class Tile implements ReversiTile {
   private final Coordinate coordinate;
   private PlayerColor contents;
 
   /**
-   * Constructs a Tile object that represents a hexagonal space on a hexagonal board.
+   * Constructs a Tile object that represents a space on a square board.
    * @param q the q-coordinate of this Tile
    * @param r the r-coordinate of this Tile
    * @throws IllegalArgumentException if either of the given values are negative

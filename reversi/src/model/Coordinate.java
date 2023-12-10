@@ -12,8 +12,8 @@ public class Coordinate {
 
   /**
    * Constructs the coordinate.
-   * @param q the x-value of the axial coordinate.
-   * @param r the y-value of the axial coordinate.
+   * @param q the x-value of the coordinate.
+   * @param r the y-value of the coordinate.
    * @throws IllegalArgumentException if either of the given values are negative
    */
   public Coordinate(int q, int r) {
@@ -65,7 +65,7 @@ public class Coordinate {
   }
 
   /**
-   * Returns the q value, the first part of an axial coordinate system, of this Coordinate.
+   * Returns the q value of this Coordinate.
    * @return this Coordinate's q value
    */
   public int getQ() {
@@ -73,7 +73,7 @@ public class Coordinate {
   }
 
   /**
-   * Returns the r value, the second part of an axial coordinate system, of this Coordinate.
+   * Returns the r value of this Coordinate.
    * @return this Coordinate's r value
    */
   public int getR() {

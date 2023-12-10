@@ -177,7 +177,7 @@ public class StrategyTests {
         cornerCornerCapture.chooseMove(new ArrayList<>()).get(0));
   }
 
-  //the mock model appends messages to the log. We want to ensure that all six potential
+  //the mock model appends messages to the log. We want to ensure that all eight potential
   //moves are checked, as well as that the strategy checks every tile in the board.
   //in order to see the entire message, check strategy-transcript.txt.
   @Test

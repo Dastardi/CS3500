@@ -5,7 +5,7 @@ import model.ReversiModel;
 import view.gui.ReversiFrame;
 
 /**
- * Runs a two-player game of hexagonal reversi with full GUI and AI capabilities.
+ * Runs a two-player game of square reversi with full GUI and AI capabilities.
  */
 public final class Reversi {
   /**

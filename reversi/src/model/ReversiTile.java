@@ -40,7 +40,7 @@ public interface ReversiTile {
   /**
    * Returns the Coordinate object representing the position of this tile on the board.
    * The Coordinate object contains a q and r value,
-   * the two components of the axial coordinate system the board uses.
+   * the two components of the coordinate system the board uses.
    * @return this tile's coordinate
    */
   Coordinate getCoordinate();

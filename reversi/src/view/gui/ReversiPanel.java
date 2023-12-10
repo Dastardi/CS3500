@@ -1,6 +1,7 @@
 package view.gui;
 
 import controller.ModelEventListener;
+import controller.Pair;
 import controller.ViewEventListener;
 import model.Coordinate;
 import model.PlayerColor;
@@ -43,7 +44,7 @@ public class ReversiPanel extends JPanel
   //represents all the tiles to be displayed
   //effectively the GUI counterpart of the board in the model
   private final HashMap<Coordinate, ViewableTile> tileList;
-  //represents the radius of each hexagonal tile
+  //represents the side length of each square tile
   //the radius is the distance from the center to a corner
   private final int sideLength;
   //holds all listeners to this panel, which handle moves and passes
@@ -61,12 +62,10 @@ public class ReversiPanel extends JPanel
 
   /**
    * Constructs the Reversi panel.
-   * Uses a set radius to perform the calculations for the size of the panel
-   * (which the frame uses to size itself around it). See note in README file regarding radius.
-   * Adds the correct amount of tiles in a hexagonal arrangement.
+   * Adds the correct amount of tiles in a square.
    * Adds itself as a MouseListener and KeyListener to be able to take mouse and key input.
-   * Lastly, draws the six tiles around the center of the board
-   * that are always displayed at the start of a game of Reversi.
+   * Lastly, draws the four tiles at the center of the board that are always displayed
+   * at the start of a game of Reversi.
    * @param model the Reversi game model to be displayed on the panel
    */
   public ReversiPanel(ReadOnlyReversiModel model) {
@@ -92,6 +91,8 @@ public class ReversiPanel extends JPanel
     setTilePositions(boardSize);
     this.selectedTile = null;
     drawStartingDiscs(boardSize);
+
+    hinting = false;
   }
 
   //adds all the board tiles to tileList
@@ -105,7 +106,7 @@ public class ReversiPanel extends JPanel
     }
   }
 
-  //draws the six starting discs in the center of the board, alternating black and white.
+  //draws the starting discs in the center of the board, alternating black and white.
   private void drawStartingDiscs(int boardSize) {
     int centerTileQR = boardSize / 2;
     ViewableTile centerTile = tileList.get(new Coordinate(centerTileQR, centerTileQR));
@@ -215,6 +216,7 @@ public class ReversiPanel extends JPanel
           setAllTilesToBase();
           tile.setColor(this.clickedColor);
           this.selectedTile = tile;
+          tile.setHint(new Pair<>(hinting, model.getMoveScore(new Coordinate(tile.getQ(), tile.getR()))));
         }
         //else, i.e. if the clicked tile is already selected, all tiles are reset to base color
         //and there is no currently selected tile
@@ -239,6 +241,7 @@ public class ReversiPanel extends JPanel
     for (Map.Entry<Coordinate, ViewableTile> pair : tileList.entrySet()) {
       ViewableTile tile = pair.getValue();
       tile.setColor(this.baseColor);
+      tile.setHint(new Pair<>(false, null));
     }
   }
 

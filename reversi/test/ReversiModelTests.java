@@ -64,7 +64,7 @@ public class ReversiModelTests {
 
   @Test
   public void testMoveOutsideBoardThrowsArgument() {
-    //within the array but outside the hexagonal board
+    //within the array but outside the board
     Assert.assertThrows(IllegalArgumentException.class,
         () -> this.model.move(new Coordinate(0, 0)));
     //outside the board entirely

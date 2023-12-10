@@ -1,7 +1,7 @@
 # CS3500 Reversi
 
 ### OVERVIEW
-This is a codebase for playing a game of Reversi (or Othello) on a hexagonal board rather than the traditional square.
+This is a codebase for playing a game of Reversi (or Othello) on a square board.
 The code is designed to support both human vs human and human vs computer play.
 
 It is built to be playable both in textual form in the terminal and through clicking via a GUI.
@@ -12,11 +12,7 @@ The game should be playable by someone with minimal technical experience, and pr
 ### QUICK START
 To display and interact with the board, navigate to the Reversi file and run the main() method.
 This will create a new window in which a reversi board will be displayed.
-You can use your mouse to select and deselect tiles, hit ENTER to place a disc, press SPACE to pass your turn, and press Q to quit.
-
-Without a controller, the game can't actually be played according to the rules - that means that hitting enter will always place a black disc regardless of turn order, so passing doesn't do much.
-That being said, as we are still in an early phase of the game and want to be able to easily create boards, W and B can place white and black discs and R can remove a tile's disc, so have fun clicking around!
-These methods will be removed once the controller is implemented, so have no fear of players being able to cheat when playing the game - these are methods solely for testing purposes.
+You can use your mouse to select and deselect tiles, hit ENTER to place a disc, press SPACE to pass your turn, press H to turn hints on and off, and press Q to quit.
 
 ### KEY COMPONENTS
 **Model** is where the majority of the current code is held, and contains the implementation and documentation of the model.

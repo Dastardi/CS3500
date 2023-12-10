@@ -1,5 +1,7 @@
 package view.gui;
 
+import controller.Pair;
+
 import java.awt.Graphics;
 import java.awt.Color;
 import java.awt.geom.Point2D;
@@ -12,7 +14,7 @@ import java.awt.geom.Point2D;
  */
 public interface ViewableReversiTile {
   /**
-   * Draws this tile using the hexagon and disc fields. Because it holds all the values it
+   * Draws this tile using the rect and disc fields. Because it holds all the values it
    * needs within itself, drawing a tile is easy - it only needs a Graphics object.
    * @param g we have to pass in Graphics in order to draw things
    */
@@ -25,15 +27,15 @@ public interface ViewableReversiTile {
   void setDisc(Color color);
 
   /**
-   * Sets the color of this tile's hexagon to a given color.
+   * Sets the color of this tile's rect to a given color.
    * Used to highlight tiles when clicked.
    * @param color the color to change to.
    */
   void setColor(Color color);
 
   /**
-   * Returns the current color of the hexagon.
-   * @return this tile's hexagon color.
+   * Returns the current color of the tile.
+   * @return this tile's general color.
    */
   Color getColor();
 
@@ -52,7 +54,9 @@ public interface ViewableReversiTile {
   /**
    * Determines whether a clicked point was within this tile.
    * @param point a Point2D object representing a spot on the panel.
-   * @return true iff this tile's hexagon contains the given point.
+   * @return true iff this tile's rect contains the given point.
    */
   boolean containsPoint(Point2D point);
+
+  void setHint(Pair<Boolean, Integer> hint);
 }
