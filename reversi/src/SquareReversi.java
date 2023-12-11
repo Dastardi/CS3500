@@ -1,11 +1,17 @@
 import controller.ReversiController;
-import controller.player.*;
+import controller.player.Player;
+import controller.player.EasyAIPlayer;
+import controller.player.HumanPlayer;
+import controller.player.MediumAIPlayer;
+import controller.player.HardAIPlayer;
 import model.BasicReversi;
 import model.ReversiModel;
-import view.gui.ReversiFrame;
 import view.gui.ReversiView;
 import view.gui.SquareReversiFrame;
 
+/**
+ * Runs a two-player game of square reversi with full GUI and AI capabilities.
+ */
 public class SquareReversi {
   /**
    * Runs the game using command line arguments. Sets up a model, then two each of views,

@@ -61,7 +61,7 @@ public class ReversiFrame extends JFrame
 
   @Override
   public void removeView() {
-
+    this.panel.setVisible(false);
   }
 
   @Override
