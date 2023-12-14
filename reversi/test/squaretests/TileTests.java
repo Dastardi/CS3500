@@ -87,4 +87,5 @@ public class TileTests {
   public void testIsEmpty() {
     Assert.assertTrue(tile1.isEmpty());
     tile2.placeDisc(PlayerColor.WHITE);
-    Assert.assertFalse(t
+  }
+}

@@ -140,10 +140,10 @@ public class SquareBasicReversi implements ReversiModel {
 
   //sets up game state by placing alternating discs in the four center tiles
   private void placeStartingTiles() {
-    board[boardSize/2 - 1][boardSize/2 - 1].placeDisc(PlayerColor.BLACK);
-    board[boardSize/2][boardSize/2 - 1].placeDisc(PlayerColor.WHITE);
-    board[boardSize/2 - 1][boardSize/2].placeDisc(PlayerColor.WHITE);
-    board[boardSize/2][boardSize/2].placeDisc(PlayerColor.BLACK);
+    board[boardSize / 2 - 1][boardSize / 2 - 1].placeDisc(PlayerColor.BLACK);
+    board[boardSize / 2][boardSize / 2 - 1].placeDisc(PlayerColor.WHITE);
+    board[boardSize / 2 - 1][boardSize / 2].placeDisc(PlayerColor.WHITE);
+    board[boardSize / 2][boardSize / 2].placeDisc(PlayerColor.BLACK);
   }
 
   @Override
@@ -355,9 +355,11 @@ public class SquareBasicReversi implements ReversiModel {
         //only iterate over tiles that are actually on the board
         if (tileInBoard(q, r) && getTileAt(new Coordinate(q, r)).isEmpty()) {
           boardFull = false;
-        } else if (tileInBoard(q, r) && getTileAt(new Coordinate(q, r)).getContents() == PlayerColor.WHITE) {
+        } else if (tileInBoard(q, r)
+            && getTileAt(new Coordinate(q, r)).getContents() == PlayerColor.WHITE) {
           whiteTiles.add(getTileAt(new Coordinate(q, r)));
-        } else if (tileInBoard(q, r) && getTileAt(new Coordinate(q, r)).getContents() == PlayerColor.BLACK) {
+        } else if (tileInBoard(q, r)
+            && getTileAt(new Coordinate(q, r)).getContents() == PlayerColor.BLACK) {
           blackTiles.add(getTileAt(new Coordinate(q, r)));
         }
       }

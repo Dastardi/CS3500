@@ -216,7 +216,8 @@ public class SquareReversiPanel extends JPanel
           setAllTilesToBase();
           tile.setColor(this.clickedColor);
           this.selectedTile = tile;
-          tile.setHint(new Pair<>(hinting, model.getMoveScore(new Coordinate(tile.getQ(), tile.getR()))));
+          tile.setHint(new Pair<>(hinting, model.getMoveScore(new Coordinate(tile.getQ(),
+              tile.getR()))));
         }
         //else, i.e. if the clicked tile is already selected, all tiles are reset to base color
         //and there is no currently selected tile

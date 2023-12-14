@@ -2,7 +2,10 @@ package view.gui;
 
 import controller.Pair;
 
-import java.awt.*;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Font;
+import java.awt.Color;
 import java.awt.geom.Path2D;
 import java.awt.geom.Point2D;
 import java.util.Objects;

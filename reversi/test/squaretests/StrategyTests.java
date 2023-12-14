@@ -16,7 +16,6 @@ import strategy.UpperLeftMostStrategy;
 import java.util.ArrayList;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertTrue;
 
 
@@ -100,7 +99,8 @@ public class StrategyTests {
         new UpperLeftMostStrategy());
     this.cornerAvoidCornerAdjacent =
         new SquareCompositeStrategy(new SquareMaxCaptureStrategy(cornerAndUpperLeftOpenModel),
-        new SquareCompositeStrategy(new SquareAvoidCornerAdjacentStrategy(cornerAndUpperLeftOpenModel),
+        new SquareCompositeStrategy(new
+            SquareAvoidCornerAdjacentStrategy(cornerAndUpperLeftOpenModel),
             new UpperLeftMostStrategy()));
     this.cornerCornerCapture =
         new SquareCompositeStrategy(new SquareMaxCaptureStrategy(cornerAndUpperLeftOpenModel),
@@ -112,7 +112,8 @@ public class StrategyTests {
             new UpperLeftMostStrategy());
     this.adjacentAvoidCornerAdjacent =
         new SquareCompositeStrategy(new SquareMaxCaptureStrategy(cornerAdjacentCornerOpenModel),
-            new SquareCompositeStrategy(new SquareAvoidCornerAdjacentStrategy(cornerAdjacentCornerOpenModel),
+            new SquareCompositeStrategy(new
+                SquareAvoidCornerAdjacentStrategy(cornerAdjacentCornerOpenModel),
                 new UpperLeftMostStrategy()));
     this.adjacentCornerCapture =
         new SquareCompositeStrategy(new SquareMaxCaptureStrategy(cornerAdjacentCornerOpenModel),
