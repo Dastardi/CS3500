@@ -3,16 +3,16 @@
 This is a codebase for playing a game of Reversi, or Othello, on a hexagonal board rather than the traditional square. 
 The code supports both human vs human and human vs computer play, as well as supervised computer vs computer play. 
 
-It is playable both in textual form in the terminal and through clicking via a GUI. 
+It is playable both in textual form in an IDE and through clicking via a GUI in a .jar file. 
 The code is designed to be modular and extendable for custom functionalities and rules alterations. 
 
 The game is playable by someone with minimal technical experience, and provides a fun and challenging diversion for anyone who likes a little strategy game!
 
 ### QUICK START 
+To run using the reversi.jar file, download the jar and navigate to it in the terminal, then run "java -jar reversi.jar ___ ___" where ___ represents one of "human", "easy", "medium", or "hard". Human will allow a player to play the game through the GUI, and the other three will create AI players of varying difficulty levels which can match up against either players or other AI. 
+
 In IntelliJ, to display and interact with the board, navigate to the Reversi file and run the main() method. 
 This will create a new Swing window in which the reversi board will be displayed.
-Alternatively, with a .jar file, navigate to the location of the file in the command line and type "java -jar JARNAME.jar ____ ____", where ____ represents one of "human", "easy", "medium", or "hard". 
-Human will open a spot for a human to click the board, and the other three will be AIs of varying difficulty. 
 
 You can use your mouse to select and deselect tiles, hit ENTER to place a disc in a selected tile, press SPACE to pass your turn, and press Q to quit. 
 If you're ever not sure of whether you're able to make a move, pressing H will let you know if you have moves available!
